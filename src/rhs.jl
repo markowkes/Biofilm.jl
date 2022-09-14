@@ -78,12 +78,9 @@ function dPbdt(μb,Sb,Pb,fluxPb,p,g)
     netFlux= (fluxPb[:,2:end]-fluxPb[:,1:end-1])/dz # Flux in/out
     growth = μb.*Pb                                 # Growth
     Source = zeros(Nx,Nz)
-    println("Pb   ",size(Pb),typeof(Pb))
-    println("Sb   ",size(Sb),typeof(Sb))
-    println("rho   ",size(rho),typeof(rho))
     for j in 1:Nx
         for i in 1:Nz
-            Source[j,i] = src[j](Sb[:,i],Pb[i]*rho[j],p)/rho[j]
+            Source[j,i] = src[j](Sb[:,i],Pb[:,i]*rho[j],p)[1]/rho[j]
         end
     end
     dPb  = growth - netFlux + Source;
