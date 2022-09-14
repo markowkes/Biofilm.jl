@@ -52,16 +52,16 @@ end
 
 @with_kw struct ranges
     # Ranges - used for spliting dependent variables in ODE solver
-    X ::UnitRange{Int64}
-    S ::UnitRange{Int64}
-    Pb::UnitRange{Int64}
-    Sb::UnitRange{Int64}
-    Lf::UnitRange{Int64}
+    X 
+    S 
+    Pb
+    Sb
+    Lf
 end
 
 @with_kw struct biofilmGrid
     # Grid
-    z  ::StepRangeLen
-    zm ::StepRangeLen
-    dz ::Float64
+    z 
+    zm
+    dz
 end
