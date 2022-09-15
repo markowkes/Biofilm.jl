@@ -50,7 +50,7 @@ p = param(
     Lfo=5.0E-6,    # Biofilm initial thickness [m]
 
     # Substance Constants
-    Yxs=[0.52],     # Biomass yield coeffficient on substrate
+    Yxs=[-0.52],     # Biomass yield coeffficient on substrate
     Daq=[1.51e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5],    # Substrate diffusion through biofilm     
     rho=[2.5e5],     # Particulate densities
