@@ -35,8 +35,8 @@ function pad_ylim(A)
     ymin=minimum(A)
     ymax=maximum(A)
     yavg=0.5*(ymin+ymax)
-    deltay = max(0.1*yavg,0.5*(ymax-ymin))
-    return [yavg-deltay,yavg+deltay]
+    deltay = max(0.1*yavg,0.6*(ymax-ymin))
+    return [max(0.0,yavg-deltay),yavg+deltay]
 end 
 
 # Make plots
