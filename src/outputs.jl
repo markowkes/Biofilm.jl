@@ -24,6 +24,16 @@ function outputs(integrator)
     end
 end 
 
+# Take in array and compute reasonable ylimits
+function pad_ylim(A)
+    ymin=minimum(A)
+    ymax=maximum(A)
+    yavg=0.5*(ymin+ymax)
+    deltay = max(0.1*yavg,0.5*(ymax-ymin))
+    return [yavg-deltay,yavg+deltay]
+end 
+
+# Make plots
 function outputs(t,X,S,Pb,Sb,Lf,p)
     @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot = p 
 
@@ -36,15 +46,15 @@ function outputs(t,X,S,Pb,Sb,Lf,p)
     zm=0.5*(z[1:Nz]+z[2:Nz+1])
 
     # Make plots
-    p1=plot(t,X',label=Xs)
+    p1=plot(t,X',label=Xs,ylim=pad_ylim(X))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Biomass Con.~} [g/m^3]")
+    yaxis!(L"\textrm{Biomass~Concentration~} [g/m^3]")
 
-    p2=plot(t,S',label=Ss)
+    p2=plot(t,S',label=Ss,ylim=pad_ylim(S))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Substrate Con.~} [g/m^3]")
+    yaxis!(L"\textrm{Substrate~Concentration~} [g/m^3]")
 
-    p3=plot(t,Lf'*1e6,legend=false)
+    p3=plot(t,Lf'*1e6,legend=false,ylim=pad_ylim(Lf*1e6))
     xaxis!(L"\textrm{Time~[days]}")
     yaxis!(L"\textrm{Thickness~} [μm]")
 
@@ -52,17 +62,9 @@ function outputs(t,X,S,Pb,Sb,Lf,p)
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Particulate~Volume~Fraction~[-]}")
     
-    p5=plot(zm,Sb',label=Ss)
+    p5=plot(zm,Sb',label=Ss,ylim=pad_ylim(Sb))
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Substrate~Concentration~} [g/m^3]")
-
-    # N=length(t)
-    # dt=t[2:N]-t[1:N-1]
-    # #display(dt)
-    # p6=plot(1:(N-1),dt)
-    # xaxis!(L"\textrm{Iteration }")
-    # yaxis!(L"\textrm{Timestep } [s]")
-
 
     # Put plots together
     myplt=plot(p1,p2,p3,p4,p5,

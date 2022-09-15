@@ -47,7 +47,8 @@ function BiofilmSolver(p::param)
         abstol=tol,
         callback=cb,
         progress = true,
-        progress_steps = 100
+        progress_steps = 100,
+        alg_hints = [:stiff],
         )
 
     # Convert solution to dependent variables

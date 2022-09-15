@@ -7,22 +7,22 @@ KM = 3;
 # Define a structure to hold all the parameters
 p = param(
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> (mumax * S) ./ (KM .+ S)],
+    mu=[(S,X,Lf,t,z,p) -> (mumax * S) ./ (KM .+ S)],
 
     # Source of particulates
-    src=[(S, X, p) -> 0.0],
+    src=[(S,X,p) -> 0.0],
 
     # Substrate inflow (can be function of time)
     Sin=[(t) -> 100],
 
     # Time
     tFinal=1,   # Simulation time [days]
-    outPeriod=1e-1,  # Time between outputs [days]
+    outPeriod=0.1,  # Time between outputs [days]
 
     # Simulation
-    Title="Single S P Case",
-    SNames=["Oxygen",],
-    XNames=["Bug",],
+    Title="Single Substrate and Particulate Case",
+    SNames=["Oxygen"],
+    XNames=["Bug"],
     makePlots=true,
 
     # Tank Geometry

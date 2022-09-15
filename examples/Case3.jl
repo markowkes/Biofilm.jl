@@ -10,7 +10,7 @@ b=0.1
 # Define a structure to hold all the parameters
 p = param(
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:]),
+    mu=[(S, X, Lf, t, z, p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:]) 
         (S, X, Lf, t, z, p) -> zeros(size(S[1,:]))],
 
     # Source of particulates (constants defined above)
@@ -25,9 +25,9 @@ p = param(
     outPeriod=5,  # Time between outputs [days]
 
     # Simulation
-    Title="Multiple P Case",
+    Title="Multiple Particulate Case",
     SNames=["Substrate"],
-    XNames=["Bug 1", "Bug 2"],
+    XNames=["Bug 1","Bug 2"],
     makePlots=true,
 
     # Tank Geometry
@@ -45,15 +45,14 @@ p = param(
     Lfo=5.0E-6,    # Biofilm initial thickness [m]
 
     # Substance Constants
-    Yxs=[0.378, 
-         Inf],     # Biomass yield coeffficient on substrate
+    Yxs=[0.378, 0],     # Biomass yield coeffficient on substrate
     Daq=[1.38e-4],    # Substrate diffusion through boundary layer
     De =[6.9e-5],    # Substrate diffusion through biofilm     
     rho=[2.5e5,2.5e5],     # Particulate densities
     Kdet=1980.0,     # Particulates detachment coefficient
 
     # Tolerance
-    tol=1e-2,
+    tol=1e-4,
 )
 
 sol,t,X,S,Pb,Sb,Lf = BiofilmSolver(p) # Run solver

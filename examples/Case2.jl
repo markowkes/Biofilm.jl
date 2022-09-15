@@ -20,7 +20,7 @@ p = param(
     outPeriod=0.5,  # Time between outputs [days]
 
     # Simulation
-    Title="Multiple Independent S Case",
+    Title="Multiple Independent Substrate Case",
     SNames=["Substrate 1","Substrate 2"],
     XNames=["Bug"],
     makePlots=true,
