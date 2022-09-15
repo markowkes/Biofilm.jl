@@ -17,7 +17,7 @@ p = param(
 
     # Time
     tFinal=30,   # Simulation time [days]
-    outPeriod=0.5,  # Time between outputs [days]
+    outPeriod=5,  # Time between outputs [days]
 
     # Simulation
     Title="Multiple Independent Substrate Case",
