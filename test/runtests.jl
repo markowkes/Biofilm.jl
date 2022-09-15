@@ -35,6 +35,6 @@ end
     println("\n Running Case 5\n ==============")
     include("../examples/Case5_Phototroph.jl")
     println("Checking result")
-    @test testValue( X[end],98.269,0.1) &&
-          testValue( S[end],   8.6,0.1)
+    @test testValue( X[end],0.498658,0.1) &&
+          testValue( S[end],     8.6,0.1)
 end

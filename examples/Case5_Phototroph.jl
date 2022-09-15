@@ -1,10 +1,10 @@
 using Biofilm 
 
 # Constants used for growthrates of particulate(s)
-mumax = 4;
+mumax = 0.4;
 
 # Define light as a function of time and depth within biofilm
-diss=1000;  # Dissipation rate into biofilm [1/m]
+diss=2000;  # Dissipation rate into biofilm [1/m]
 smoothHeaviside(t,t0)=tanh.(100*(t.-t0).-0.5)
 # Light :         turns on at t=0.25             turns off at t=0.75
 intensity(t) = smoothHeaviside(mod(t,1),0.25)-smoothHeaviside(mod(t,1),0.75)
@@ -26,7 +26,7 @@ p = param(
     Sin=[(t) -> 8.6],
 
     # Time
-    tFinal=15,   # Simulation time [days]
+    tFinal=45,   # Simulation time [days]
     outPeriod=1,  # Time between outputs [days]
 
     # Simulation
@@ -38,7 +38,7 @@ p = param(
     # Tank Geometry
     V=0.01,        # Volume of tank [m³]
     A=1,          # Surface area of biofilm [m²]
-    Q=1,          # Flowrate through tank [m³/s]
+    Q=10,          # Flowrate through tank [m³/s]
     Xo=[1.0],# Tank particulate initial condition(s)
     So=[8.6],    # Tank substrate initial condition(s)
     LL=2.0e-4,    # Boundary layer thickness [m]
@@ -50,7 +50,7 @@ p = param(
     Lfo=5.0E-6,    # Biofilm initial thickness [m]
 
     # Substance Constants
-    Yxs=[0.0],     # Biomass yield coeffficient on substrate
+    Yxs=[0.52],     # Biomass yield coeffficient on substrate
     Daq=[1.51e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5],    # Substrate diffusion through biofilm     
     rho=[2.5e5],     # Particulate densities
