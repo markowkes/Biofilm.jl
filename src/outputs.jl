@@ -80,6 +80,7 @@ function outputs(t,X,S,Pb,Sb,Lf,p)
         #plot_titlevspan=0.5,
         left_margin=10mm, 
         bottom_margin=10mm,
+        foreground_color_legend = nothing,
     )
     display(myplt)
     return

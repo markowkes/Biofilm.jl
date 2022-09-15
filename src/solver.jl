@@ -39,7 +39,6 @@ function BiofilmSolver(p::param)
     # Compute solver step size 
     # greatest common divisor of output and discontinutity periods
     solverStep=gcd(outPeriod,discontinuityPeriod)
-    println("SolverStep = ",solverStep)
     
     # Output times 
     outTimes = range(start=0.0,step=solverStep,stop=tFinal)
