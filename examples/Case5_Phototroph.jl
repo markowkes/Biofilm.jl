@@ -21,6 +21,7 @@ light(t,z,Lf) = intensity(t)*dissipation(z,Lf)
 p = param(
     # Growthrates for each particulate (constants defined above!)
     mu=[(S, X, Lf, t, z, p) -> mumax*light(t,z,Lf)/I],
+    discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
 
     # Source of particulates (constants defined above)
     src=[(S, X, p) -> 0.0],
@@ -30,7 +31,7 @@ p = param(
 
     # Time
     tFinal=15,   # Simulation time [days]
-    outPeriod=0.25,  # Time between outputs [days]
+    outPeriod=1,  # Time between outputs [days]
 
     # Simulation
     Title="Phototroph Case",

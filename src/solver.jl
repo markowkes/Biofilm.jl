@@ -12,7 +12,7 @@ function BiofilmSolver(p::param)
     checkParameters(p)
 
     # Unpack parameters
-    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,tol,tFinal,outPeriod = p
+    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
 
     # Compute ranges of dependent variables in sol array
     # sol=[X,S,Pb,S,Lf]
@@ -35,9 +35,14 @@ function BiofilmSolver(p::param)
 
     # Prepare ODE Solver 
     prob = ODEProblem(biofilmRHS!,sol0,(0.0,p.tFinal),[p,r])
+
+    # Compute solver step size 
+    # greatest common divisor of output and discontinutity periods
+    solverStep=gcd(outPeriod,discontinuityPeriod)
+    println("SolverStep = ",solverStep)
     
     # Output times 
-    outTimes = range(start=0.0,step=outPeriod,stop=tFinal)
+    outTimes = range(start=0.0,step=solverStep,stop=tFinal)
     affect!(integrator) = outputs(integrator)
     cb = PresetTimeCallback(outTimes,affect!)
     

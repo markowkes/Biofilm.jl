@@ -7,6 +7,7 @@ using Parameters
     outPeriod       # Output period [days] 
     tol = 1e-4      # Tolerance
     makePlots = true   # Make plots during simulation 
+    discontinuityPeriod = Inf # Period between discontinuites 
 
     # Names
     Title            # Description of case (used on plots)

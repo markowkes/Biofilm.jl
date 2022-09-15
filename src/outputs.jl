@@ -13,14 +13,20 @@ function outputs(integrator)
     p=integrator.p[1]
     r=integrator.p[2]
 
-    # Convert solution to dependent variables
-    t,X,S,Pb,Sb,Lf=unpack_solution(sol,p,r)
+    # Perform plots on output period 
+    modt=mod(sol.t[end],p.outPeriod)
+    if modt≈0.0 || modt≈p.outPeriod
 
-    println("Time = ",integrator.sol.t[end])   
+        # Convert solution to dependent variables
+        t,X,S,Pb,Sb,Lf=unpack_solution(sol,p,r)
 
-    # Plot results
-    if p.makePlots 
-        outputs(t,X,S,Pb,Sb,Lf,p)
+        println("Time = ",sol.t[end])   
+
+        # Plot results
+        if p.makePlots 
+            outputs(t,X,S,Pb,Sb,Lf,p)
+        end
+
     end
 end 
 

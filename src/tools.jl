@@ -81,3 +81,21 @@ function unpack_solution(sol,p,r)
     
     return t,X,S,Pb,Sb,Lf
 end
+
+# Return greatest common divisor of floats
+function Base.gcd(a::Float64,b::Float64)
+
+    # Check order of numbers
+    a < b && return gcd(b, a)
+
+    # Check for Inf 
+    a ≈ Inf && return b
+    
+    # base case
+    if abs(b) < eps(Float64)
+        return a
+    else
+        return (gcd(b, a - floor(a / b) * b))
+    
+    end
+end
