@@ -8,6 +8,8 @@ using UnPack
 
 function BiofilmSolver(p::param)
 
+    println("Starting Solver ...")
+
     # Check parameters passed to solver 
     checkParameters(p)
 
