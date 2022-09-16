@@ -84,7 +84,7 @@ end
 Take solution from biofilm solver and outputs variabes and a plot of biofilm variables.
 
 """
-function analyzeBiofilm(sol,p,t ;makePlot::Bool=false)
+function analyzeBiofilm(sol,p,t; makePlot=false)
 
     @unpack Nx,Ns,Nz,XNames,SNames,Title = p
 
