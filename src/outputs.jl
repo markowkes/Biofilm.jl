@@ -22,8 +22,11 @@ function outputs(integrator)
         # Convert solution to dependent variables
         t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
 
-        #println("Time = ",sol.t[end])   
-        printBiofilmSolution(t[end],X[end],S[end],Pb[end,:],Sb[end,:],Lf[end],p)
+        # Print solution to REPL
+        if mod(sol.t[end],p.outPeriod*10)≈0.0 || mod(sol.t[end],p.outPeriod*10)≈p.outPeriod*10
+            printBiofilmTitles(p)
+        end
+        printBiofilmValues(t[end],X[:,end],S[:,end],Pb,Sb,Lf[end],p)
 
         # Make biofilm grid
         z=range(0.0,Lf[end],Nz+1)

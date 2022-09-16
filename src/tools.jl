@@ -84,18 +84,21 @@ end
 Take solution from biofilm solver and outputs variabes and a plot of biofilm variables.
 
 """
-function analyzeBiofilm(sol,p::param,t;makePlot::Bool=false)
+function analyzeBiofilm(sol::SciMLBase.ODESolution,p::param,t ;makePlot::Bool=false)
 
     @unpack Nx,Ns,Nz,XNames,SNames,Title = p
 
     println("Analyzing ",Title)
+
+    # Print titles to REPL
+    printBiofilmTitles(p)
     
     for tn in t
         # Unpack solution 
         X,S,Pb,Sb,Lf=unpack_solution(sol,p,tn)
 
-        # Print to REPL
-        printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
+        # Print values to REPL
+        printBiofilmValues(tn,X,S,Pb,Sb,Lf,p)
 
         # Make plot of biofilm variables 
         if makePlot
@@ -111,33 +114,34 @@ function analyzeBiofilm(sol,p::param,t;makePlot::Bool=false)
     return nothing
 end
 
-"""
-    printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
+function printBiofilmTitles(p)
+    @unpack XNames,SNames = p
+    # Build output string
+    str=@sprintf(" %10s |"," Time  ")
+    map( (x) -> str*=@sprintf(" %10.10s |",x),XNames)
+    map( (x) -> str*=@sprintf(" %10.10s |",x),SNames)
+    map( (x) -> str*=@sprintf("   min,max(%10.10s) |",x),XNames)
+    map( (x) -> str*=@sprintf("   min,max(%10.10s) |",x),SNames)
+    str*=@sprintf(" %10s"," Lf [μm] ")
+    # Print string
+    println(str)
+    return
+end
 
-Print biofilm variables at time t to REPL
-
-"""
-function printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
-    # Unpack params
-    @unpack Nx,Ns,XNames,SNames,Title = p
-
-    # Print solution values at this time
-    printstyled("                     t = ",t,"                     \n",
-    bold=true,underline=true)
-    printstyled("Tank:\n",bold=true)
-    for i in 1:Nx 
-        println(@sprintf(" %20s           = %10f [g/m³]",XNames[i],X[i]))
+function printBiofilmValues(t,X,S,Pb,Sb,Lf,p)
+    @unpack Nx,Ns = p
+    # Build output string
+    str=@sprintf(" %10f |",t)
+    map( (x)   -> str*=@sprintf(" %10f |",x),X)
+    map( (x)   -> str*=@sprintf(" %10f |",x),S)
+    for i in 1:Nx
+        map( (x,y) -> str*=@sprintf(" %10f,%10f |",x,y),minimum(Pb[i,:]),maximum(Pb[i,:]))
     end
     for i in 1:Ns
-        println(@sprintf(" %20s           = %10f [g/m³]",SNames[i],S[i]))
+        map( (x,y) -> str*=@sprintf(" %10f,%10f |",x,y),minimum(Sb[i,:]),maximum(Sb[i,:]))
     end
-    printstyled("Biofilm:\n",bold=true)
-    for i in 1:Nx 
-        println(@sprintf(" %20s (min,max) = %10f,%10f [g/m³]",XNames[i],minimum(Pb[i,:]),maximum(Pb[i,:])))
-    end
-    for i in 1:Ns
-        println(@sprintf(" %20s (min,max) = %10f,%10f [g/m³]",SNames[i],minimum(Sb[i,:]),maximum(Sb[i,:])))
-    end
-    println(@sprintf(" %20s           = %10f [μm]","Lf",1e6*Lf[1]))
-    return nothing 
+    map( (x)   -> str*=@sprintf(" %10f",x),1e6*Lf)
+    # Print string
+    println(str)
+    return
 end

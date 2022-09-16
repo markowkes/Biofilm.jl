@@ -54,4 +54,6 @@ t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 makePlots(t,zm,X,S,Pb,Sb,Lf,p) # Plot final results
 
 # Example of looking at results at a given time
-analyzeBiofilm(sol,p,0.26)
+println("\n==== Simulation done ====")
+println("Example of how to postprocess solution and get values at certain times")
+analyzeBiofilm(sol,p,[0.26,0.51])
