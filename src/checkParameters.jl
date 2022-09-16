@@ -29,7 +29,7 @@ function checkParameters(p)
     for i in 1:Nx
         try mu[i](So,Xo,Lfo,0.0,range(0,Lfo,length=Nz),p)
         catch
-            paramError("mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
+            paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
             The inputs to each function should be (S,X,Lf,t,z,p) \n
                 For example, if there are two particulates you might use:
                     mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 

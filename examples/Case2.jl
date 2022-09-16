@@ -50,5 +50,5 @@ p = param(
     tol=1e-2,
 )
 
-sol,t,X,S,Pb,Sb,Lf = BiofilmSolver(p) # Run solver
-outputs(t,X,S,Pb,Sb,Lf,p) # Plot final results
+t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
+makePlots(t,zm,X,S,Pb,Sb,Lf,p) # Plot final results

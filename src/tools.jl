@@ -1,72 +1,7 @@
-# Fluxes of substrate due to diffusion: F=De*dSb/dz
-function computeFluxS(S,Sb,p,g)
-    @unpack Ns,Nz,De,Daq,LL = p
-    @unpack dz = g
-    fluxS = zeros(Ns,Nz+1); # Fluxes on faces of cells
-    for i in 2:Nz  # Interior faces
-        fluxS[:,i]= De[:].*(Sb[:,i]-Sb[:,i-1])/dz;
-    end
-    # Bottom boundary - no flux condition -> nothing to do
-    # Top boundary - flux matching between biofilm and boundary layer 
-    S_top= ( (Daq*(dz/2).*S+De*LL.*Sb[:,Nz])
-            ./ (Daq*(dz/2)+De*LL) ) 
-    fluxS[:,Nz+1] .= De.*(S_top-Sb[:,Nz])/(dz/2)
-    return fluxS
-end
-
-# Growthrate for each particulate in biofilm
-function computeMu_biofilm(Sb,Xb,Lf,t,p,g)
-    @unpack Nx,Nz,mu = p 
-    @unpack zm = g
-    μb=zeros(Nx,Nz)
-    for j in 1:Nx
-        μb[j,:]=mu[j](Sb,Xb,Lf,t,zm,p)
-    end
-    return μb
-end
-
-# Growthrate for each particulate in tank
-function computeMu_tank(S,X,Lf,t,p,g)
-    @unpack Nx,Nz,mu = p 
-    @unpack z = g
-    μt=zeros(Nx)
-    for j in 1:Nx
-        μt[j]=mu[j](S,X,Lf,t,z[end],p)[1]
-    end
-    return μt
-end
-
-# Velocity due to growth in biofilm
-function computeVel(μb,Pb,p,g)
-    @unpack Nz,Ptot = p
-    @unpack dz = g
-    # Velocities on faces of cells
-    V=zeros(Nz+1) 
-    # Start with zero velocity at wall -> integrate through the biofilm
-    for i in 1:Nz
-        # Add growth of particulates in this cell to velocity
-        V[i+1]=V[i] + sum(μb[:,i].*Pb[:,i]*dz/Ptot);
-    end
-    return V
-end
-
-# Fluxes of particulate due to advection: F=V*phi;
-function computeFluxP(Pb,V,Vdet,p)
-    @unpack Nx,Nz = p
-    # Fluxes
-    fluxP = zeros(Nx,Nz+1) # Fluxes on faces of cells
-    for i in 2:Nz  # Interior faces
-        fluxP[:,i]= V[i]*(Pb[:,i-1]+Pb[:,i])/2 # V*phi_face
-    end
-    # Bottom boundary - no flux condition -> nothing to do
-    # Top boundary - use phi in top cell
-    fluxP[:,Nz+1] = V[Nz+1]*(Pb[:,Nz]) #- Vdet*Pb(:,end);
-    return fluxP
-end
-
 # Convert solution (1D vec) into more meaningful dependent variables
+# ## This method is optimized for plotting ##
 # t,X,S,Lf = f(t), Pb,Sb = f(z)
-function unpack_solution(sol,p,r)
+function unpack_solutionForPlot(sol,p,r)
     @unpack Nx,Ns,Nz=p
     t=sol.t
     X=sol[r.X,:]
@@ -98,4 +33,111 @@ function Base.gcd(a::Float64,b::Float64)
         return (gcd(b, a - floor(a / b) * b))
     
     end
+end
+
+"""
+    unpack_solution(sol,p,t)
+
+Convert `sol` into named dependent variables at the givien time t.
+
+# Example
+```julia-repl 
+julia> X_here,S_here,Pb_here,Sb_here,Lf_here=unpack_solution(sol,p,3)
+```
+"""
+function unpack_solution(sol,p,t)
+    @unpack Nx,Ns,Nz=p
+
+    # Check t is a single time 
+    length(t) > 1 && error("unpack_solution can only work with one time!")
+
+    # Get solution at requested time 
+    s=sol(t)
+
+    # Compute ranges of dependent variables in sol array
+    # sol=[X,S,Pb,S,Lf]
+    nVar=0; 
+    N=Nx;    rX =nVar+1:nVar+N; nVar+=N # X =u[rX]
+    N=Ns;    rS =nVar+1:nVar+N; nVar+=N # S =u[rS]
+    N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
+    N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
+    N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
+
+    # Unpack solution
+    X=s[rX]
+    S=s[rS]
+    Pb=s[rPb]
+    Sb=s[rSb]
+    Lf=s[rLf]
+
+    # Reshape biofilm variables
+    Pb=reshape(Pb,Nx,Nz)
+    Sb=reshape(Sb,Ns,Nz)
+    
+    return X,S,Pb,Sb,Lf
+end
+
+"""
+    analyzeBiofilm(sol,p,t)
+    analyzeBiofilm(sol,p,t,makePlot=true)
+
+Take solution from biofilm solver and outputs variabes and a plot of biofilm variables.
+
+"""
+function analyzeBiofilm(sol,p::param,t;makePlot::Bool=false)
+
+    @unpack Nx,Ns,Nz,XNames,SNames,Title = p
+
+    println("Analyzing ",Title)
+    
+    for tn in t
+        # Unpack solution 
+        X,S,Pb,Sb,Lf=unpack_solution(sol,p,tn)
+
+        # Print to REPL
+        printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
+
+        # Make plot of biofilm variables 
+        if makePlot
+            # Biofilm grid
+            z=range(0.0,Lf[end],Nz+1)
+            zm=0.5*(z[1:Nz]+z[2:Nz+1])
+
+            # Plot solution in biofilm at this time 
+            makeBiofilmPlots(tn,zm,Pb,Sb,p)
+        end
+    end
+
+    return nothing
+end
+
+"""
+    printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
+
+Print biofilm variables at time t to REPL
+
+"""
+function printBiofilmSolution(t,X,S,Pb,Sb,Lf,p)
+    # Unpack params
+    @unpack Nx,Ns,XNames,SNames,Title = p
+
+    # Print solution values at this time
+    printstyled("                     t = ",t,"                     \n",
+    bold=true,underline=true)
+    printstyled("Tank:\n",bold=true)
+    for i in 1:Nx 
+        println(@sprintf(" %20s           = %10f [g/m³]",XNames[i],X[i]))
+    end
+    for i in 1:Ns
+        println(@sprintf(" %20s           = %10f [g/m³]",SNames[i],S[i]))
+    end
+    printstyled("Biofilm:\n",bold=true)
+    for i in 1:Nx 
+        println(@sprintf(" %20s (min,max) = %10f,%10f [g/m³]",XNames[i],minimum(Pb[i,:]),maximum(Pb[i,:])))
+    end
+    for i in 1:Ns
+        println(@sprintf(" %20s (min,max) = %10f,%10f [g/m³]",SNames[i],minimum(Sb[i,:]),maximum(Sb[i,:])))
+    end
+    println(@sprintf(" %20s           = %10f [μm]","Lf",1e6*Lf[1]))
+    return nothing 
 end

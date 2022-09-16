@@ -58,8 +58,11 @@ function BiofilmSolver(p::param)
         )
 
     # Convert solution to dependent variables
-    t,X,S,Pb,Sb,Lf=unpack_solution(sol,p,r)
+    t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
 
-    return sol,t,X,S,Pb,Sb,Lf   
-    #return sol
+    # Final biofilm grid
+    z=range(0.0,Lf[end],Nz+1)
+    zm=0.5*(z[1:Nz]+z[2:Nz+1])
+
+    return t,zm,X,S,Pb,Sb,Lf,sol
 end
