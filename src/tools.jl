@@ -117,12 +117,12 @@ end
 function printBiofilmTitles(p)
     @unpack XNames,SNames = p
     # Build output string
-    str=@sprintf(" %10s |"," Time  ")
-    map( (x) -> str*=@sprintf(" %10.10s |",x),XNames)
-    map( (x) -> str*=@sprintf(" %10.10s |",x),SNames)
-    map( (x) -> str*=@sprintf("   min,max(%10.10s) |",x),XNames)
-    map( (x) -> str*=@sprintf("   min,max(%10.10s) |",x),SNames)
-    str*=@sprintf(" %10s"," Lf [μm] ")
+    str=@sprintf(" %8s |"," Time  ")
+    map( (x) -> str*=@sprintf(" %8.8s |",x),XNames)
+    map( (x) -> str*=@sprintf(" %8.8s |",x),SNames)
+    map( (x) -> str*=@sprintf(" min,max(%8.8s) |",x),XNames)
+    map( (x) -> str*=@sprintf(" min,max(%8.8s) |",x),SNames)
+    str*=@sprintf(" %8s"," Lf [μm] ")
     # Print string
     println(str)
     return
@@ -131,16 +131,16 @@ end
 function printBiofilmValues(t,X,S,Pb,Sb,Lf,p)
     @unpack Nx,Ns = p
     # Build output string
-    str=@sprintf(" %10f |",t)
-    map( (x)   -> str*=@sprintf(" %10f |",x),X)
-    map( (x)   -> str*=@sprintf(" %10f |",x),S)
+    str=@sprintf(" %8.3g |",t)
+    map( (x)   -> str*=@sprintf(" %8.3g |",x),X)
+    map( (x)   -> str*=@sprintf(" %8.3g |",x),S)
     for i in 1:Nx
-        map( (x,y) -> str*=@sprintf(" %10f,%10f |",x,y),minimum(Pb[i,:]),maximum(Pb[i,:]))
+        map( (x,y) -> str*=@sprintf(" %8.3g,%8.3g |",x,y),minimum(Pb[i,:]),maximum(Pb[i,:]))
     end
     for i in 1:Ns
-        map( (x,y) -> str*=@sprintf(" %10f,%10f |",x,y),minimum(Sb[i,:]),maximum(Sb[i,:]))
+        map( (x,y) -> str*=@sprintf(" %8.3g,%8.3g |",x,y),minimum(Sb[i,:]),maximum(Sb[i,:]))
     end
-    map( (x)   -> str*=@sprintf(" %10f",x),1e6*Lf)
+    map( (x)   -> str*=@sprintf(" %8.3g",x),1e6*Lf)
     # Print string
     println(str)
     return
