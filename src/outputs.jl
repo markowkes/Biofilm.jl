@@ -12,20 +12,22 @@ function outputs(integrator)
     sol=integrator.sol 
     p=integrator.p[1]
     r=integrator.p[2]
-    @unpack Nz = p
+    @unpack Nz,outPeriod,plotPeriod= p
 
     # Perform plots on output period 
-    modt=mod(sol.t[end],p.outPeriod)
-    if modt≈0.0 || modt≈p.outPeriod
+    modt=mod(sol.t[end],outPeriod)
+    if modt≈0.0 || modt≈outPeriod
 
 
         # Convert solution to dependent variables
         t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
 
-        # Print solution to REPL
-        if mod(sol.t[end],p.outPeriod*10)≈0.0 || mod(sol.t[end],p.outPeriod*10)≈p.outPeriod*10
+        # Print titles to REPL every 10 outPeriod
+        if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
             printBiofilmTitles(p)
         end
+
+        # Print values to REPL every 1 outPeriod
         printBiofilmValues(t[end],X[:,end],S[:,end],Pb,Sb,Lf[end],p)
 
         # Make biofilm grid
@@ -33,7 +35,7 @@ function outputs(integrator)
         zm=0.5*(z[1:Nz]+z[2:Nz+1])
 
         # Plot results
-        if p.makePlots 
+        if p.makePlots && (mod(sol.t[end],plotPeriod)≈0.0 || mod(sol.t[end],plotPeriod)≈plotPeriod)
             makePlots(t,zm,X,S,Pb,Sb,Lf,p)
         end
 

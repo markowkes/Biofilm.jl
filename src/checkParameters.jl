@@ -9,7 +9,7 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,src,Sin,tFinal,outPeriod,Yxs = p
+    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,src,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
 
     # Check provided initial conditions 
     Nx == length(Xo)  || paramError("Number of Xo initial conditions should be Nx=", Nx)
@@ -71,4 +71,8 @@ function checkParameters(p)
 
     # Replace any zero Yxs values wtih Inf to avoid division by zero
     Yxs[Yxs.==0.0].=Inf
+
+    # Make sure plotPeriod is a multiple of outPeriod
+    rem(plotPeriod,outPeriod) ≈ 0.0 || paramError("plotPeriod should be a multiple of outPerid.")
+    
 end

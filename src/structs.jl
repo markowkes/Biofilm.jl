@@ -6,6 +6,7 @@ using Parameters
     tFinal          # Simulation time [days]
     outPeriod       # Output period [days] 
     tol = 1e-4      # Tolerance
+    plotPeriod = outPeriod # Plots period [days]
     makePlots = true   # Make plots during simulation 
     discontinuityPeriod = Inf # Period between discontinuites 
 
