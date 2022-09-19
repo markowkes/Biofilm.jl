@@ -54,12 +54,10 @@ end
 function computeFluxP(Pb,V,Vdet,p)
     @unpack Nx,Nz = p
     # Fluxes
-    fluxP = zeros(Nx,Nz+1) # Fluxes on faces of cells
-    for i in 2:Nz  # Interior faces
-        fluxP[:,i]= V[i]*(Pb[:,i-1]+Pb[:,i])/2 # V*phi_face
-    end
     # Bottom boundary - no flux condition -> nothing to do
-    # Top boundary - use phi in top cell
-    fluxP[:,Nz+1] = V[Nz+1]*(Pb[:,Nz]) #- Vdet*Pb(:,end);
+    fluxP = zeros(Nx,Nz+1) # Fluxes on faces of cells
+    for i in 2:Nz+1  # Interior and top faces
+        fluxP[:,i]= V[i]*Pb[:,i-1] # V*phi_face (upwinded)
+    end
     return fluxP
 end
