@@ -62,23 +62,23 @@ function makePlots(t,zm,X,S,Pb,Sb,Lf,p)
     # Make plots
     p1=plot(t,X',label=Xs,ylim=pad_ylim(X))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Biomass~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Tank~Biomass~Concentration~} [g/m^3]")
 
     p2=plot(t,S',label=Ss,ylim=pad_ylim(S))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Substrate~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Tank~Substrate~Concentration~} [g/m^3]")
 
     p3=plot(t,Lf'*1e6,legend=false,ylim=pad_ylim(Lf*1e6))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Thickness~} [μm]")
+    yaxis!(L"\textrm{Biofilm~Thickness~} [μm]")
 
     p4=plot(zm,Pb',label=Xs,ylim=pad_ylim(Pb))
     xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Particulate~Volume~Fraction~[-]}")
+    yaxis!(L"\textrm{Biofilm~Particulate~Volume~Fraction~[-]}")
     
     p5=plot(zm,Sb',label=Ss,ylim=pad_ylim(Sb))
     xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Substrate~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Biofilm~Substrate~Concentration~} [g/m^3]")
 
     # Put plots together
     myplt=plot(p1,p2,p3,p4,p5,
