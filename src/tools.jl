@@ -131,7 +131,7 @@ end
 function printBiofilmValues(t,X,S,Pb,Sb,Lf,p)
     @unpack Nx,Ns = p
     # Build output string
-    str=@sprintf(" %8.3g |",t)
+    str=@sprintf(" %8.3f |",t)
     map( (x)   -> str*=@sprintf(" %8.3g |",x),X)
     map( (x)   -> str*=@sprintf(" %8.3g |",x),S)
     for i in 1:Nx
