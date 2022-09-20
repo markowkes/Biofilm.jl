@@ -1,4 +1,4 @@
-## Postprocessing
+# Postprocessing
 ```@docs
 analyzeBiofilm
 ```
