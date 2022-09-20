@@ -38,8 +38,8 @@ p = param(
 
     # Time
     tFinal=500,   # Simulation time [days]
-    outPeriod=0.25,  # Time between outputs [days]
-    plotPeriod=5,    # Time between plots [days] (make multiple of outPeriod!)
+    outPeriod=1,  # Time between outputs [days]
+    plotPeriod=10,    # Time between plots [days] (make multiple of outPeriod!)
 
     # Simulation
     Title="Ramsing et al. 1993 Test Case",
