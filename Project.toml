@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [deps]
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 Measures = "442fdcdd-2543-5da2-b0f3-8c86c306513e"
