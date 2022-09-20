@@ -29,8 +29,8 @@ function BiofilmSolver(p::param)
     r = ranges(rX,rS,rPb,rSb,rLf)
 
     # Prepare biofilm initial conditions
-    Pbo_grid = vec(Pbo'.*ones(Nz,Nx))
-    Sbo_grid = vec(Sbo'.*ones(Nz,Ns))
+    Pbo_grid = vec(Pbo.*ones(Nx,Nz))
+    Sbo_grid = vec(Sbo.*ones(Ns,Nz))
     
     # Package initial conditions as one continuous vector
     sol0=vcat(Xo,So,Pbo_grid,Sbo_grid,Lfo)
