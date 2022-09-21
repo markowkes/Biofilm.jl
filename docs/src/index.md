@@ -9,10 +9,14 @@ Pages = ["index.md"]
 ## Download & Install Julia
 
 1. Download Julia from [julialang.org](https://julialang.org/downloads/)
-2. Install Julia following the provided directions
+2. Install Julia following the provided directions on the help pages
 3. Launch Julia and you should see a terminal like the following (version number may be different)
 ![Julia REPL](images/juliaREPL.png)
 4. If you see the terminal, you have successfully installed Julia!
+
+!!! tip
+
+    Try running a simple code like `julia> 5+5` to see that you can use Julia
 
 ## Download Biofilm.jl
 
