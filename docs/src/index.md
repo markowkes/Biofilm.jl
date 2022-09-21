@@ -18,26 +18,17 @@ Pages = ["index.md"]
 
     Try running a simple code like `julia> 5+5` to see that you can use Julia
 
-## Download Biofilm.jl
+## Add the Biofilm.jl package
 
-- Download the Biofilm.jl package using either of the methods below
-    1. [Direct download of current version](https://github.com/markowkes/Biofilm.jl/archive/refs/heads/main.zip) - use this if you do not have experience with Git.
-        - Unzip the package in a location you can find later
-    2. [Git repository](https://github.com/markowkes/Biofilm.jl) - access repository including package updates
-        - Clone repository into a location you can find later
-!!! tip
+- Run the following command in the Julia window
 
-    Put the Biofilm.jl package in an easy to remember location such as `user/Biofilm`
+  ```
+  julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
+  ```
+  Note that `julia>` is the Julia prompt and is not part of the command.  This will download Biofilm.jl and all the dependencies
+
 
 ## Run Biofilm.jl
-  - Start Julia 
-  
-  - Change directory to the location you have Biofilm.jl stored using the `cd("PATH")` command.  For example 
-
-    ```
-    julia> cd("user/Biofilm")
-    ```
-    Note that `julia>` is the Julia prompt and is not part of the command. 
 
   - Run one of the examples located in the examples directory.  For example, Case 1 can be run using 
 
