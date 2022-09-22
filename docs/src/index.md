@@ -18,25 +18,45 @@ Pages = ["index.md"]
 
     Try running a simple code like `julia> 5+5` to see that you can use Julia
 
+
 ## Add the Biofilm.jl package
 
 - Run the following command in the Julia window
 
   ```
-  julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
+  using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
   ```
-  Note that `julia>` is the Julia prompt and is not part of the command.  This will download Biofilm.jl and all the dependencies
+  
+!!! note
+
+    This will download Biofilm.jl and all the dependencies and can take several minutes to finish
+
+!!! tip
+
+    If this command hangs on TriangularSolve, try using Julia 1.7.3
 
 
 ## Run Biofilm.jl
 
-  - Run one of the examples located in the examples directory.  For example, Case 1 can be run using 
+1. Download ![Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) and save to your Downloads folder (or other location of your choice)
 
-    ```
-    julia> include("examples/Case1.jl")
-    ```
+2. Run the case by running the following within Julia on **Windows**
+
+   ```
+   using Biofilm   
+
+   include("Downloads\\Case1.jl.txt")  
+   ```
+
+   or within Julia on on **Mac/Linux**
+
+   ```
+   using Biofilm   
+
+   include("Downloads/Case1.jl")  
+   ```
     
 !!! note
 
-    The first time you run Biofilm.jl it will require time to download and compile dependencies.  Subsequent runs should occur much faster. 
+    The first time you run Biofilm.jl it will require time to compile. Subsequent runs should occur **much** faster. 
 
