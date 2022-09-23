@@ -9,12 +9,11 @@ p = param(
     # Growthrates for each particulate (constants defined above!)
     mu=[(S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
         (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], # SRB
-    #discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
 
     # Source of particulates (constants defined above)
-    src=[(S, X, p) -> 0.0,
-         (S, X, p) -> 0.0,
-         (S, X, p) -> 0.0],
+    src=[(S, X, t, p) -> 0.0,
+         (S, X, t, p) -> 0.0,
+         (S, X, t, p) -> 0.0],
 
     # Substrate inflow (can be function of time)
     Sin=[(t) -> 8.6

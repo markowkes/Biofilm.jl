@@ -10,7 +10,7 @@ p = param(
     mu=[(S, X, Lf, t, z, p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:])],
 
     # Source of particulates
-    src=[(S, X, p) -> 0.0],
+    src=[(S, X, t, p) -> 0.0],
 
     # Substrate inflow (can be function of time)
     Sin=[(t) -> 25, (t) -> 25],

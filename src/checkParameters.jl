@@ -38,14 +38,15 @@ function checkParameters(p)
     end
 
     # Source
+    t=0.0
     for i in 1:Nx
-        try src[i](So,Xo,p)
+        try src[i](So,Xo,t,p)
         catch
             paramError("src should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (S,X,p) \n
                 For example, if there are two particulates you might use:
-                    src=[(S, X, p) -> -b*X[1,:],
-                         (S, X, p) ->  b*X[1,:]],")
+                    src=[(S, X, t, p) -> -b*X[1,:],
+                         (S, X, t, p) ->  b*X[1,:]],")
         end
     end
 

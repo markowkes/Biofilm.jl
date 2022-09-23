@@ -20,7 +20,7 @@ p = param(
     discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
 
     # Source of particulates (constants defined above)
-    src=[(S, X, p) -> 0.0],
+    src=[(S, X, t, p) -> 0.0],
 
     # Substrate inflow (can be function of time)
     Sin=[(t) -> 8.6],

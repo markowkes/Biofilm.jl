@@ -22,7 +22,7 @@ p = param(
     Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.0E4],        # Particulate densities
     Kdet=20000.0,       # Particulates detachment coefficient
-    src=[(S,X,p) -> 0.0],     # Source of particulates
+    src=[(S,X,t,p) -> 0.0],     # Source of particulates
     # Growthrates for each particulate (constants defined above!)
     mu=[(S,X,Lf,t,z,p) -> (mumax * S) ./ (KM .+ S)],
 
