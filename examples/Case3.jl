@@ -27,7 +27,7 @@ p = param(
     # Simulation
     Title="Multiple Particulate Case",
     SNames=["Substrate"],
-    XNames=["Bug 1","Bug 2"],
+    XNames=["Living Bug","Dead Bug"],
     makePlots=true,
 
     # Tank Geometry
