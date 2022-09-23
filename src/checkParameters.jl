@@ -27,7 +27,14 @@ function checkParameters(p)
 
     # Growthrate - check that can call it correctly
     for i in 1:Nx
-        try mu[i](So,Xo,Lfo,0.0,range(0,Lfo,length=Nz),p)
+        S=rand(Ns,Nz)
+        X=rand(Nx,Nz)
+        try mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p)
+            size(mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p),1) == Nz &&
+            size(mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p),2) == 1  ||
+            paramError("Error calling mu[",i,"].  mu returns an array of size ",muSize," it should return an array of size (1,",Nz,").
+            Check to make sure substrates are indexed correctly, e.g., S[1,:].")
+            
         catch
             paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
             The inputs to each function should be (S,X,Lf,t,z,p) \n
