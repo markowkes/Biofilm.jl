@@ -1,0 +1,79 @@
+# Theory
+
+Biofilm.jl simulates a one-dimensional biofilm within a stirred tank reactor.  The dependent variables include the 
+- tank particulates (biomass) concentration(s) ``X``,
+- tank substrate concentrations ``S``,
+- biofilm particulate (biomass) volume fractions ``P_b``,
+- biofilm substrate concentrations ``S_b``, and
+- biofilm thickness ``L_f``. 
+
+## Tank Equations
+### Particulates
+The governing equation describing the particulate concentrations in the tank environment is
+```math
+\frac{d X_j}{dt} = \mu_j(\mathbf{S}) X_j - \frac{Q X_j}{V} + \frac{v_\mathrm{det} A X_{b,j}(L_f)}{V} + \mathrm{src}_j
+```
+for ``j=1,\dots,N_x``, where ``t`` is time, ``\mu_j(\mathrm{S})`` is the growthrate of the ``j^\mathrm{th}`` particulate, ``Q`` is the flowrate, ``V`` is the volume, ``v_\mathrm{det}=K_\mathrm{det} L_f^2`` is the detachment velocity, ``A`` is the area, ``X_{b,j}(L_f)`` is the ``j^\mathrm{th}`` particulate concentration at the top of the biofilm, and ``\mathrm{src}_j`` is the source term for the ``j^\mathrm{th}`` particulate. 
+
+The terms on the right-hand-side (RHS) are 
+1) the growth of the particulate in the tank, 
+2) transport due to flow out of the tank, 
+3) transfer of particulates from the biofilm to the tank due to detachment, and
+4) source term.
+
+### Substrates
+The governing equation describing the substrate concentrations in the tank environment is
+```math
+\frac{d S_k}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}) X_j}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_k}{V} + \frac{A B_{\mathrm{flux},k}}{V}
+```
+for ``k=1,\dots,N_s``, where ``B_{\mathrm{flux},k}`` is the flux of substrates from the biofilm into the tank. 
+
+The terms on the right-hand-side (RHS) are 
+1) consumption of substrates due to the growth of the particulate in the tank, 
+2) transport due to flow into the tank, 
+3) transport due to flow out of the tank, and
+4) transfer of substrates into the biofilm due to diffusion.
+   
+## Biofilm Equations
+### Particulates
+The governing equations describing the biofilm environment are
+```math
+\frac{d P_{b,j,i}}{dt} = 
+\mu_j(\mathbf{S}_{b,i}) P_{b,j,i} 
+- \frac{d v_i P_{b,j,i}}{dz} 
++ \frac{\mathrm{src}_j}{\rho_j}
+```
+for ``j=1,\dots,N_x`` and ``i=1,\dots,N_z``. Where ``P_{b,j,i}`` is the ``j^\mathrm{th}`` particulate at the ``i^\mathrm{th}`` grid point within the biofilm. 
+
+The terms on the right-hand-side (RHS) are 
+1) the growth of the particulate in the biofilm, 
+2) transport through the biofilm due to the growth velocity ``v_i``, and 
+3) source term.
+
+The growth velocity ``v_i`` is the rate of flow through the biofilm due to growth deeper within the biofilm and is defined with
+```math
+v_i=\frac{1}{\sum_{j=1}^{N_x}{P_{b,j}}} \sum_{j=1}^{N_x} \int_{z=0}^{z_i}{\mu_j(\mathbf{S}_{b,i}) P_{b,j,i} }
+```
+   
+### Substrates
+```math
+\frac{d S_{b,k,i}}{dt} = D_{e,k}\frac{d^2 S_{b,k,i}}{dz^2} - \sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}_{b,i}) X_{b,j,i}}{Y_{j,k}}
+```
+for ``k=1,\dots,N_s`` and ``i=1,\dots,N_z``.
+
+The terms on the right-hand-side (RHS) are 
+1) diffusion of substrates in the biofilm and
+2) consumption of substrates due to the growth of the particulate in the biofilm. 
+
+The diffusion term with a second derivative w.r.t. ``z`` requires boundary conditions at the top and bottom of the biofilm.  A zero-flux (zero first-derivative) condition is used at the bottom of the biofilm.  At the top of the biofilm the diffusion through the boundary layer is match with the diffusion into the biofilm, i.e.,
+```math
+D_{aq,k}\frac{d^2 S_{k}}{dz^2} = D_{e,k}\frac{d^2 S_{b,k,N_z}}{dz^2} 
+```
+for ``k=1,\dots,Ns``, where ``D_e`` is the diffusion coefficient in the biofilm and ``D_\mathrm{aq}`` is the diffusion coefficient in the boundary layer. 
+
+### Biofilm Thickness
+The thickness of the biofilm ``L_f`` is described by 
+```math
+\frac{d L_f}{dt} = v_{Nz} - v_\mathrm{det}
+```
+where the first term on the RHS is the growth velocity at the top of the biofilm (see Biofilm Particulates) and the second term is the detachment velocity modeled with ``v_\mathrm{det}=K_\mathrm{det} L_f^2``
