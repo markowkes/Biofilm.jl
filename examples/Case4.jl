@@ -47,7 +47,7 @@ p = param(
 
     # Substance Constants
     Yxs=[0.5 0.0
-         0.0 0.278],     # Biomass yield coeffficient on substrate
+         0.0 0.278],     # Biomass yield coefficient on substrate
     Daq=[4.0e-5,6.0e-5],    # Substrate diffusion through boundary layer
     De =[1.0e-5,1.5e-5],    # Substrate diffusion through biofilm     
     rho=[3.0e5,3.0e5],     # Particulate densities

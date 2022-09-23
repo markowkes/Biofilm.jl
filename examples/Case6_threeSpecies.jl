@@ -63,7 +63,7 @@ p = param(
     Lfo=5.0E-6,    # Biofilm initial thickness [m]
 
     # Substance Constants
-    # Biomass yield coeffficient on substrate
+    # Biomass yield coefficient on substrate
     #     oxygen  sulfate  Hy. sulfide
     Yxs=[ -0.52    0.0      0.0        # Phototropho produces oxygen
            0.58    0.0      0.09       # SOB uses oxygen and sulfide

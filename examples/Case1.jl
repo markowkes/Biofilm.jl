@@ -33,7 +33,7 @@ p = param(
     Sin=[(t) -> 100],   # Substrate inflow (can be function of time)
     So=[10.0],          # Tank substrate concentraion initial condition(s)
     Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
-    Yxs=[2.646],        # Biomass yield coeffficient on substrate
+    Yxs=[2.646],        # Biomass yield coefficient on substrate
     Daq=[4.0E-5],       # Substrate diffusion through boundary layer
     De=[6.9E-5],        # Substrate diffusion through biofilm     
     
@@ -51,6 +51,7 @@ p = param(
     Nz=50,          # Number of grid points in biofilm
     Lfo=1.0E-5,     # Biofilm initial thickness [m]
 
+    LL=1.00E-7,   # Boundary layer thickness [m]
 )
 
 t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver

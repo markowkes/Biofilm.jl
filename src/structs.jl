@@ -34,7 +34,7 @@ using Parameters
     Lfo   # Biofilm thickness
     
     # Substrate parameters
-    Yxs   # Biomass yield coeffficient on substrate
+    Yxs   # Biomass yield coefficient on substrate
     Daq   # Substrate diffusion through boundary layer
     De    # Substrate diffusion through biofilm     
     rho   # Particulate densities
