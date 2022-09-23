@@ -36,16 +36,18 @@ Pages = ["index.md"]
     If this command hangs on TriangularSolve, try using Julia 1.7.3
 
 
-## Run Biofilm.jl
+## Run Biofilm.jl 
 
-1. Download ![Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) and save to your Downloads folder (or other location of your choice)
+Try running the examples.
+
+1. Download ![Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing *Save Link As*. Save the file to your Downloads folder (or other location of your choice)
 
 2. Run the case by running the following within Julia on **Windows**
 
    ```
    using Biofilm   
 
-   include("Downloads\\Case1.jl.txt")  
+   include("Downloads\\Case1.jl")  
    ```
 
    or within Julia on on **Mac/Linux**
