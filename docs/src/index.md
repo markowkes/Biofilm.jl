@@ -61,9 +61,3 @@ Try running the examples.
 !!! note
 
     The first time you run Biofilm.jl it will require time to compile. Subsequent runs should occur **much** faster. 
-
-## Modify the Case
-
-Different biofilms can be modeled by modify the Case1.jl file.  This is a text file and can be opened and edited using Notepad (Windows), textEdit (Mac), or similar. 
-
-

@@ -43,14 +43,12 @@ p = param(
     V=0.1,        # Volume of tank [m³]
     A=1,          # Surface area of biofilm [m²]
     Q=1,          # Flowrate through tank [m³/s]
-    LL=1.00E-7,   # Boundary layer thickness [m]
 
     # ------------------ #
     # Biofilm Parameters #
     # ------------------ #
     Nz=50,          # Number of grid points in biofilm
     Lfo=1.0E-5,     # Biofilm initial thickness [m]
-
     LL=1.00E-7,   # Boundary layer thickness [m]
 )
 
