@@ -40,7 +40,7 @@ Pages = ["index.md"]
 
 Try running the examples.
 
-1. Download ![Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing *Save Link As*. Save the file to your Downloads folder (or other location of your choice)
+1. Download [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing *Save Link As*. Save the file to your Downloads folder (or other location of your choice)
 
 2. Run the case by running the following within Julia on **Windows**
 
@@ -61,4 +61,9 @@ Try running the examples.
 !!! note
 
     The first time you run Biofilm.jl it will require time to compile. Subsequent runs should occur **much** faster. 
+
+## Modify the Case
+
+Different biofilms can be modeled by modify the Case1.jl file.  This is a text file and can be opened and edited using Notepad (Windows), textEdit (Mac), or similar. 
+
 
