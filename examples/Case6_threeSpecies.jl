@@ -78,7 +78,7 @@ p = param(
 )
 
 t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,zm,X,S,Pb,Sb,Lf,p) # Plot final results
+makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results
 
 # Post processing
 # Call movieBiofilm() to make a movie of the biofilm particulates and substrates

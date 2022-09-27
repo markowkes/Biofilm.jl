@@ -11,8 +11,8 @@ p = param(
     # --------------------- #
     Title="Multiple Independent Substrate Case",
     tFinal=1,       # Simulation time [days]
-    tol=1e-2,       # Tolerance
-    outPeriod=0.1,  # Time between outputs [days]
+    tol=1e-2,        # Tolerance
+    outPeriod=0.1,   # Time between outputs [days]
 
     # ---------------------- #
     # Particulate Parameters #
@@ -53,4 +53,4 @@ p = param(
 )
 
 t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,zm,X,S,Pb,Sb,Lf,p) # Plot final results
+makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results

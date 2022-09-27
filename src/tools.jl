@@ -100,14 +100,9 @@ function analyzeBiofilm(sol,p,t; makePlot=false)
         # Print values to REPL
         printBiofilmValues(tn,X,S,Pb,Sb,Lf,p)
 
-        # Make plot of biofilm variables 
+        # Make plot of biofilm variables at this time
         if makePlot
-            # Biofilm grid
-            z=range(0.0,Lf[end],Nz+1)
-            zm=0.5*(z[1:Nz]+z[2:Nz+1])
-
-            # Plot solution in biofilm at this time 
-            makeBiofilmPlots(tn,zm,Pb,Sb,p)
+            makeBiofilmPlots(tn,Pb,Sb,Lf,p)
         end
     end
 
