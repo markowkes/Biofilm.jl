@@ -4,11 +4,10 @@ makedocs(
     sitename="Biofilm Documentation",
     pages=[
         "Home" => "index.md",
-        "Theory" => "theory.md",
         "Case Parameters" => "parameters.md",
         "Examples" => "examples.md",
-        "Postprocessing" => "postprocessing.md"
-        #"Reference" => "reference.md",
+        "Postprocessing" => "postprocessing.md",
+        "Solver Theory" => "theory.md",
         ]
     )
 

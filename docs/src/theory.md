@@ -76,4 +76,4 @@ The thickness of the biofilm ``L_f`` is described by
 ```math
 \frac{d L_f}{dt} = v_{Nz} - v_\mathrm{det}
 ```
-where the first term on the RHS is the growth velocity at the top of the biofilm (see Biofilm Particulates) and the second term is the detachment velocity modeled with ``v_\mathrm{det}=K_\mathrm{det} L_f^2``
+where the first term on the RHS is the growth velocity at the top of the biofilm (see [Biofilm Particulates](#Particulates-2)) and the second term is the detachment velocity modeled with ``v_\mathrm{det}=K_\mathrm{det} L_f^2``

@@ -39,3 +39,8 @@ This is a simple example of how multiple substrates can be simulated.  Substrate
 ## Case 3 - Live/Dead Bugs 
 
 This example has living bugs that use the substrate to grow.  The bugs die and the concentration of dead bugs is also computed. The source term, **src**, is used to transfer living bugs to dead bugs.
+```math
+\mathrm{src}_{X_1} = \mathrm{src}_\mathrm{living} = -b X_1\\
+\mathrm{src}_{X_2} = \mathrm{src}_\mathrm{dead} = b X_1
+```
+where `b=0.1` is a constant.  The first source term reduces living bugs and the second adds these to the dead bugs. 
