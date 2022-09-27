@@ -18,13 +18,13 @@ end
     println("\n Running Case 2\n ==============")
     include("../examples/Case2.jl")
     println("Checking result")
-    @test testValue( S[:,end],[2.772,25.0],0.1) &&
-          testValue(Lf[end],0.00010747,1e-4)
+    @test testValue( S[:,end],[2.981401389120606,24.99999970508142],0.1) &&
+          testValue(Lf[end],2.998065034446994e-5,1e-4)
 
     println("\n Running Case 3\n ==============")
     include("../examples/Case3.jl")
     println("Checking result")
-    @test testValue(Pb[:,1],[0.0068849,0.0743802],1e-3)
+    @test testValue(Pb[:,1],[0.00632,0.0737],1e-3)
 
     println("\n Running Case 4\n ==============")
     include("../examples/Case4.jl")
@@ -35,6 +35,6 @@ end
     println("\n Running Case 5\n ==============")
     include("../examples/Case5_Phototroph.jl")
     println("Checking result")
-    @test testValue( X[end],0.498658,0.1) &&
-          testValue( S[end],     8.6,0.1)
+    @test testValue( X[end],0.230656800294912,0.1) &&
+          testValue( S[end],9.561670776072377,0.1)
 end
