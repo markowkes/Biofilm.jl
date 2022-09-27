@@ -1,18 +1,17 @@
 using Biofilm 
 
 # Constants used for growthrates of particulate(s)
-KmB1 = 0.200; KmB3 = 11;  KmC2 = 20;  KI = 1;
+KmB1 = 0.200; KmB3 = 11;  KmC2 = 20;  KI = 0.5;
 mumaxA = 0.4;  mumaxB = 0.672;  mumaxC = 1.46;
 
 ## Define light as a function of time and depth within biofilm
+smoothHeaviside(t,t0)=0.5*tanh.(100*(t.-t0).-0.5).+0.5
 
-smoothHeaviside(t,t0)=tanh.(100*(t.-t0).-0.5)
-
-# Light :         turns on at t=0.25             turns off at t=0.75
-intensity(t) = smoothHeaviside(mod(t,1),0.25)-smoothHeaviside(mod(t,1),0.75)
+# Light :              turns off at t=0.25             turns on at t=0.75
+intensity(t) = 1.0 - (smoothHeaviside(mod(t,1),0.25)-smoothHeaviside(mod(t,1),0.75))
 
 # Dissipation of light into biofilm (1 at top with a rate of decrease of diss)
-diss=2000;  # Dissipation rate into biofilm [1/m]
+diss=1500;  # Dissipation rate into biofilm [1/m]
 dissipation(z,Lf) = max.(0.0,1.0.-(Lf.-z)*diss)
 
 # Light at a given location 
@@ -39,7 +38,7 @@ p = param(
     # Time
     tFinal=500,   # Simulation time [days]
     outPeriod=1,  # Time between outputs [days]
-    plotPeriod=5,    # Time between plots [days] (make multiple of outPeriod!)
+    plotPeriod=10,    # Time between plots [days] (make multiple of outPeriod!)
 
     # Simulation
     Title="Ramsing et al. 1993 Test Case",
@@ -66,12 +65,12 @@ p = param(
     # Biomass yield coefficient on substrate
     #     oxygen  sulfate  Hy. sulfide
     Yxs=[ -0.52    0.0      0.0        # Phototropho produces oxygen
-           0.58    0.0      0.09       # SOB uses oxygen and sulfide
+           0.058   0.0      0.09       # SOB uses oxygen and sulfide
            0.00    0.584   -1.645],    # SRB uses sulfate and produces sulfide
     Daq=[1.51e-4,8e-5,1.21e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5,4e-5,6.04e-5],     # Substrate diffusion through biofilm     
     rho=[2.5e5,2.5e5,2.5e5],     # Particulate densities
-    Kdet=100.0,     # Particulates detachment coefficient
+    Kdet=50.0,     # Particulates detachment coefficient
 
     # Tolerance
     tol=1e-4,
@@ -85,7 +84,7 @@ makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results
 using Plots
 function movieBiofilm()
     
-    times=1:50 ### Adjust the times as needed ####
+    times=1:1:300 ### Adjust the times as needed ####
 
     # Make animation
     anim = @animate for t in times 
@@ -93,8 +92,8 @@ function movieBiofilm()
     end
 
     # View annimation 
-    gif(anim) # Make a gif
-    #gif(anim,"anim.mp4")  # Make a .mp4
+    #gif(anim) # Make a gif
+    gif(anim,"anim.mp4")  # Make a .mp4
 
 end
 #movieBiofilm()

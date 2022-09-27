@@ -5,9 +5,9 @@ mumax = 0.4;
 
 # Define light as a function of time and depth within biofilm
 diss=2000;  # Dissipation rate into biofilm [1/m]
-smoothHeaviside(t,t0)=tanh.(100*(t.-t0).-0.5)
-# Light :         turns on at t=0.25             turns off at t=0.75
-intensity(t) = smoothHeaviside(mod(t,1),0.25)-smoothHeaviside(mod(t,1),0.75)
+smoothHeaviside(t,t0)=0.5*tanh.(100*(t.-t0).-0.5).+0.5
+# Light :              turns off at t=0.25             turns on at t=0.75
+intensity(t) = 1.0 - (smoothHeaviside(mod(t,1),0.25)-smoothHeaviside(mod(t,1),0.75))
 # Dissipation of light into biofilm (1 at top with a rate of decrease of diss)
 dissipation(z,Lf) = max.(0.0,1.0.-(Lf.-z)*diss)
 light(t,z,Lf) = intensity(t)*dissipation(z,Lf)
@@ -27,7 +27,7 @@ p = param(
 
     # Time
     tFinal=45,   # Simulation time [days]
-    outPeriod=1,  # Time between outputs [days]
+    outPeriod=5,  # Time between outputs [days]
 
     # Simulation
     Title="Phototroph Case",
