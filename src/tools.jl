@@ -140,3 +140,27 @@ function printBiofilmValues(t,X,S,Pb,Sb,Lf,p)
     println(str)
     return
 end
+
+"""
+    movieBiofilm(sol,p,times)
+    movieBiofilm(sol,p,times,format)
+
+Make a movie of the biofilm particulate volume fraction, substrate concentration, and particulate growthrates at the specified times.
+
+Optional format parameter specifies file format and can take on values of "gif" (default) or "mp4"
+"""
+function movieBiofilm(sol,p,times,format="gif")
+    # Make animation
+    anim = @animate for t in times 
+        analyzeBiofilm(sol,p,t,makePlot=true)
+    end
+
+    # View annimation 
+    if format == "gif"
+        gif(anim) # Make a gif
+    elseif format == "mp4"
+        gif(anim,"anim.mp4")  # Make a .mp4
+    else
+        error("movieBiofilm() - unknown format type ",format)
+    end
+end

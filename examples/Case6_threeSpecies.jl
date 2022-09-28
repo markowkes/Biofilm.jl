@@ -80,22 +80,3 @@ p = param(
 
 t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results
-
-# Post processing
-# Call movieBiofilm() to make a movie of the biofilm particulates and substrates
-using Plots
-function movieBiofilm()
-    
-    times=1:1:300 ### Adjust the times as needed ####
-
-    # Make animation
-    anim = @animate for t in times 
-        analyzeBiofilm(sol,p,t,makePlot=true)
-    end
-
-    # View annimation 
-    #gif(anim) # Make a gif
-    gif(anim,"anim.mp4")  # Make a .mp4
-
-end
-#movieBiofilm()

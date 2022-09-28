@@ -1,6 +1,6 @@
 module Biofilm
 
-export param, BiofilmSolver, makePlots, analyzeBiofilm
+export param, BiofilmSolver, makePlots, analyzeBiofilm, movieBiofilm
 
 include("outputs.jl")
 include("structs.jl")
