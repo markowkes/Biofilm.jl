@@ -52,7 +52,7 @@ p = param(
     Sin=[(t) -> 8.6    # Substrate inflow (can be function of time)
          (t) -> 48.0
          (t) -> 0.0],
-    So=[8.6,48.0,0.0],  # Tank substrate concentraion initial condition(s)
+    So=[8.6,48.0,0.0],  # Tank substrate concentration initial condition(s)
     Sbo=[8.6,48.0,0.0], # Biofilm substrates concentration initial condition(s)
     # Biomass yield coefficient on substrate
     #     oxygen  sulfate  Hy. sulfide

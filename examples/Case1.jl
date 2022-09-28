@@ -18,7 +18,7 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["Bug"],     # Particulate names
-    Xo=[10.0],          # Tank particulate concentraion initial condition(s)
+    Xo=[10.0],          # Tank particulate concentration initial condition(s)
     Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.0E4],        # Particulate densities
     Kdet=20000.0,       # Particulates detachment coefficient
@@ -31,7 +31,7 @@ p = param(
     # -------------------- #
     SNames=["Oxygen"],  # Substrate names
     Sin=[(t) -> 100],   # Substrate inflow (can be function of time)
-    So=[10.0],          # Tank substrate concentraion initial condition(s)
+    So=[10.0],          # Tank substrate concentration initial condition(s)
     Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
     Yxs=[2.646],        # Biomass yield coefficient on substrate
     Daq=[4.0E-5],       # Substrate diffusion through boundary layer

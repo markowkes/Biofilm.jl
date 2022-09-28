@@ -21,7 +21,7 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["Living Bug","Dead Bug"], # Particulate names
-    Xo=[10.0,0.0],  # Tank particulate concentraion initial condition(s)
+    Xo=[10.0,0.0],  # Tank particulate concentration initial condition(s)
     Pbo=[0.08,0.0], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=1980.0, # Particulates detachment coefficient
@@ -35,7 +35,7 @@ p = param(
     # -------------------- #
     SNames=["Substrate"], # Substrate names
     Sin=[(t) -> 25],    # Substrate inflow (can be function of time)
-    So=[25.0],          # Tank substrate concentraion initial condition(s)
+    So=[25.0],          # Tank substrate concentration initial condition(s)
     Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
     Yxs=[0.378, 0],     # Biomass yield coefficient on substrate
     Daq=[1.38e-4],      # Substrate diffusion through boundary layer

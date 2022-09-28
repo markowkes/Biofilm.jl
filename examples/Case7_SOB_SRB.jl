@@ -19,8 +19,8 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["SOB - Sulfide-Oxidizer","SRB - Sulfate-Reducer"], # Particulate names
-    Xo=[1.0e-6,1.0e-6],  # Tank particulate concentraion initial condition(s)
     Pbo=[0.05,0.15], # Biofilm particulates volume fraction initial condition(s) 
+    Xo=[1.0e-6,1.0e-6],  # Tank particulate concentration initial condition(s)
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=30.0, # Particulates detachment coefficient
     src=[(S, X, t, p) -> 0.0, # Source of particulates
@@ -36,7 +36,7 @@ p = param(
     Sin=[(t) -> 8.6     # Substrate inflow (can be function of time)
          (t) -> 48.0
          (t) -> 0.0],
-    So=[8.6,48.0,0.0],   # Tank substrate concentraion initial condition(s)
+    So=[8.6,48.0,0.0],   # Tank substrate concentration initial condition(s)
     Sbo=[8.6,48.0,1e-5], # Biofilm substrates concentration initial condition(s)
     # Biomass yield coefficient on substrate
     #     oxygen  sulfate  Hy. sulfide
