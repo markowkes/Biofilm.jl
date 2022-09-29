@@ -143,24 +143,38 @@ end
 
 """
     movieBiofilm(sol,p,times)
-    movieBiofilm(sol,p,times,format)
+    movieBiofilm(sol,p,times,filename="anim.gif", fps=20)
 
 Make a movie of the biofilm particulate volume fraction, substrate concentration, and particulate growthrates at the specified times.
 
-Optional format parameter specifies file format and can take on values of "gif" (default) or "mp4"
+Optional arguments 
+- filename: name and type of output, i.e., "biofilm.mp4", "biofilm.gif"
+- framerate
+
+Examples:
+
+Create movie with t=0,1,...,10
+```julia-repl
+julia> movieBiofilm(sol,p,0:1:10)
+```
+Create movie with specified filename and framerate
+```julia-repl
+julia> movieBiofilm(sol,p,0:1:10,filename="biofilm.gif",fps=10)
+```
 """
-function movieBiofilm(sol,p,times,format="gif")
+function movieBiofilm(sol,p,times; filename="anim.gif", fps=20)
+
+    # Check times
+    minimum(times) >= minimum(sol.t) || 
+        error("Minimum time must be >= to ",minimum(sol.t))
+    maximum(times) <= maximum(sol.t) || 
+        error("Maximum time must be >= to ",maximum(sol.t))
+
     # Make animation
     anim = @animate for t in times 
         analyzeBiofilm(sol,p,t,makePlot=true)
     end
 
-    # View annimation 
-    if format == "gif"
-        gif(anim) # Make a gif
-    elseif format == "mp4"
-        gif(anim,"anim.mp4")  # Make a .mp4
-    else
-        error("movieBiofilm() - unknown format type ",format)
-    end
+    # Save annimation 
+    gif(anim,filename,fps=fps)
 end
