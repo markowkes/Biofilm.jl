@@ -1,3 +1,7 @@
+```@contents
+Pages = ["postprocessing.md"]
+```
+---
 # Postprocessing
 When a simulation completes the solver outputs solution data that can be postprocessed to see additional values and/or plots. 
 
