@@ -28,8 +28,8 @@ Julia is a programming languages and you can use it in many ways.  One popular w
 
 - Run the following command in the Julia REPL within VS Code.
 
-  ```
-  using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
+  ```julia-repl
+  julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
   ```
 This will download Biofilm.jl and all the dependencies and can take several minutes to finish.
 
