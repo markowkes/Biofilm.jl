@@ -1,4 +1,4 @@
-name = "Biofilm"
+name = "Biofilm.jl"
 uuid = "210d8ceb-62d9-4e79-bbbd-4c6870635f0a"
 authors = ["Mark Owkes <mark.owkes@montana.edu> and contributors"]
 version = "0.1.0"
@@ -26,7 +26,7 @@ DifferentialEquations = "7"
 Documenter = "0.27"
 ProgressMeter = "1"
 TerminalLoggers = "0.1"
-julia = "1"
+julia = "1.6"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
