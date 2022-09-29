@@ -17,15 +17,15 @@ TerminalLoggers = "5d786b92-1e48-4d6f-9151-6b4477ca9bed"
 UnPack = "3a884ed6-31ef-47d7-9d2a-63182c4928ed"
 
 [compat]
-Parameters = "0.12"
-UnPack = "1"
-LaTeXStrings = "1"
-Measures = "0.3"
-Plots = "1"
 DifferentialEquations = "7"
 Documenter = "0.27"
+LaTeXStrings = "1"
+Measures = "0.3"
+Parameters = "0.12"
+Plots = "1"
 ProgressMeter = "1"
 TerminalLoggers = "0.1"
+UnPack = "1"
 julia = "1.7"
 
 [extras]
