@@ -1,4 +1,4 @@
-name = "Biofilm.jl"
+name = "Biofilm"
 uuid = "210d8ceb-62d9-4e79-bbbd-4c6870635f0a"
 authors = ["Mark Owkes <mark.owkes@montana.edu> and contributors"]
 version = "0.1.0"
