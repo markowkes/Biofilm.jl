@@ -1,3 +1,5 @@
+using Biofilm
+
 # Constants used for growthrates of particulate(s)
 mumax = 20;
 KM = 3;
