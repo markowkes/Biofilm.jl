@@ -19,4 +19,4 @@ jobs:
       - name: PWD
         run: pwd
       - name: JuliaBugReport
-        run: julia --bug-report=rr test/Case1.jl
+        run: JULIA_RR_RECORD_ARGS=-n julia --bug-report=rr test/Case1.jl
