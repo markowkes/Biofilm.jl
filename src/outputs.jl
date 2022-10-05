@@ -72,12 +72,13 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
     yaxis!(L"\textrm{Tank~Substrate~Concentration~} [g/m^3]")
 
     # Biofilm thickness
-    p3=plot(t,Lf'*1e6,legend=false,ylim=pad_ylim(Lf*1e6))
+    p3=plot(t,Lf'*1e6,label="Thickness",ylim=pad_ylim(Lf*1e6))
     xaxis!(L"\textrm{Time~[days]}")
     yaxis!(L"\textrm{Biofilm~Thickness~} [μm]")
 
     # Biofilm particulate volume fractioin 
     p4=plot(zm,Pb',label=Xs,ylim=pad_ylim(Pb))
+    p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Particulate~Volume~Fraction~[-]}")
     
@@ -105,6 +106,7 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
         left_margin=10mm, 
         bottom_margin=10mm,
         foreground_color_legend = nothing,
+        legend = :outertop,
     )
     display(myplt)
     return
