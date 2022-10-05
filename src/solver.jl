@@ -48,6 +48,7 @@ function BiofilmSolver(p::param)
     cb = PresetTimeCallback(outTimes,affect!)
     
     # Run solver
+    #GC.enable(false)
     sol=solve(prob,
         reltol=tol,
         abstol=tol,
@@ -56,6 +57,7 @@ function BiofilmSolver(p::param)
         progress_steps = 100,
         alg_hints = [:stiff],
         )
+    #GC.enable(true)
 
     # Convert solution to dependent variables
     t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
