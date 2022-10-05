@@ -78,7 +78,7 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
 
     # Biofilm particulate volume fractioin 
     p4=plot(zm,Pb',label=Xs,ylim=pad_ylim(Pb))
-    p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
+    #p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Particulate~Volume~Fraction~[-]}")
     
