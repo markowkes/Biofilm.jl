@@ -29,7 +29,7 @@ function biofilmRHS!(dsol,sol,p_r,t)
     fluxS = computeFluxS(S,Sb,p,g)              # Flux of substrate in biofilm
     μb    = computeMu_biofilm(Sb,Xb,Lf,t,p,g)   # Growthrates in biofilm
     μt    = computeMu_tank(S,X,Lf,t,p,g)        # Growthrates in tank
-    V     = computeVel(μb,Pb,p,g)               # Velocity of particulates
+    V     = computeVel(μb,Sb,Pb,t,p,g)          # Velocity of particulates
     Vdet  = Kdet*Lf^2                           # Detachment velocity
     fluxP = computeFluxP(Pb,V,Vdet,p)           # Flux of particulates in biofilm
 

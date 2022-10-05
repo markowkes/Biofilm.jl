@@ -37,16 +37,22 @@ function computeMu_tank(S,X,Lf,t,p,g)
 end
 
 # Velocity due to growth in biofilm
-function computeVel(μb,Pb,p,g)
-    @unpack Nz,Ptot = p
+function computeVel(μb,Sb,Pb,t,p,g)
+    @unpack Nx,Nz,Ptot,src,rho = p
     @unpack dz = g
     # Velocities on faces of cells
     V=zeros(Nz+1) 
     # Start with zero velocity at wall -> integrate through the biofilm
     for i in 1:Nz
-        # Add growth of particulates in this cell to velocity
-        V[i+1]=V[i] + sum(μb[:,i].*Pb[:,i]*dz/Ptot);
+        V[i+1]=V[i]
+        for j in 1:Nx
+            # Add growth of particulates in this cell to velocity
+            V[i+1] += μb[j,i].*Pb[j,i]*dz/Ptot
+            # Add source of particulates in this cell to velocity
+            V[i+1] += src[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]/rho[j]*dz/Ptot
+        end
     end
+    
     return V
 end
 
@@ -57,7 +63,7 @@ function computeFluxP(Pb,V,Vdet,p)
     # Bottom boundary - no flux condition -> nothing to do
     fluxP = zeros(Nx,Nz+1) # Fluxes on faces of cells
     for i in 2:Nz+1  # Interior and top faces
-        fluxP[:,i]= V[i]*Pb[:,i-1] # V*phi_face (upwinded)
-    end
+            fluxP[:,i]= V[i]*Pb[:,i-1] # V*phi_face (upwinded)
+        end
     return fluxP
 end

@@ -52,8 +52,9 @@ The terms on the right-hand-side (RHS) are
 
 The growth velocity ``v_i`` is the rate of flow through the biofilm due to growth deeper within the biofilm and is defined with
 ```math
-v_i=\frac{1}{\sum_{j=1}^{N_x}{P_{b,j}}} \sum_{j=1}^{N_x} \int_{z=0}^{z_i}{\mu_j(\mathbf{S}_{b,i}) P_{b,j,i} }
+v_i=  \int_{z=0}^{z_i}{\sum_{j=1}^{N_x} \frac{1}{P_\mathrm{tot}}\left(\mu_j(\mathbf{S}_{b,i}) P_{b,j,i} + \frac{\mathrm{src}_j}{\rho_j}\right) ~dz}
 ```
+where ``P_\mathrm{tot}=\sum_{j=1}^{N_x}{P_{b,j}}``
    
 ### Substrates
 ```math
