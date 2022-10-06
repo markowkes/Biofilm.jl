@@ -14,7 +14,8 @@ p = param(
     tol=1e-4,       # Tolerance
     outPeriod=10,   # Time between outputs [days]
     plotPeriod=20,  # Time between plots [days] (make multiple of outPeriod!)
-
+    #optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
+    
     # ---------------------- #
     # Particulate Parameters #
     # ---------------------- #
@@ -24,7 +25,7 @@ p = param(
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=50.0, # Particulates detachment coefficient
     src=[(S, X, t, p) -> 0.0, # Source of particulates
-         (S, X, t, p) -> 0.0],
+         (S, X, t, p) -> -10*S[1,:]], # dies near oxygen
     # Growthrates for each particulate (constants defined above!)
     mu=[(S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
         (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], # SRB

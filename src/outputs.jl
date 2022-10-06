@@ -49,7 +49,7 @@ end
 
 # Make plots
 function makePlots(t,X,S,Pb,Sb,Lf,p)
-    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho = p 
+    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,src,optionalPlot = p 
 
     # Adjust names to work with legends
     Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
@@ -87,15 +87,33 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Substrate~Concentration~} [g/m^3]")
 
-    # Particulate growthrates vs depth
-    Xb=similar(Pb)
-    for j=1:Nx
-        Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
+    # Optional 6th plot
+    if optionalPlot == "growthrate"
+        # Particulate growthrates vs depth
+        Xb=similar(Pb)
+        for j=1:Nx
+            Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
+        end
+        μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
+        p6=plot(zm,μb',label=Xs,ylim=pad_ylim(μb))
+        xaxis!(L"\textrm{Thickness~} [\mu m]")
+        yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
+
+    elseif optionalPlot == "source"
+
+        # Particulate source term vs depth
+        srcs=similar(Pb)
+        for i=1:Nz
+            for j=1:Nx
+                srcs[j,i]=src[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]
+            end
+        end
+        p6=plot(zm,srcs',label=Xs)
+        xaxis!(L"\textrm{Thickness~} [\mu m]")
+        yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot s]")
+    else
+        p6=[]
     end
-    μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
-    p6=plot(zm,μb',label=Xs,ylim=pad_ylim(μb))
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
 
     # Put plots together
     myplt=plot(p1,p2,p3,p4,p5,p6,

@@ -16,7 +16,8 @@ p = param(
     tFinal=100,     # Simulation time [days]
     tol=1e-4,       # Tolerance
     outPeriod=5,    # Time between outputs [days]
-
+    optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
+    
     # ---------------------- #
     # Particulate Parameters #
     # ---------------------- #

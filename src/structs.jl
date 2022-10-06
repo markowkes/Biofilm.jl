@@ -9,6 +9,7 @@ using Parameters
     plotPeriod = outPeriod # Plots period [days]
     makePlots = true   # Make plots during simulation 
     discontinuityPeriod = Inf # Period between discontinuites 
+    optionalPlot = "growthrate" # What to put in 6th plot
 
     # Names
     Title            # Description of case (used on plots)
