@@ -27,6 +27,7 @@ p = param(
     tol=1e-4,       # Tolerance
     outPeriod=5,    # Time between outputs [days]
     plotPeriod=10,    # Time between plots [days] (make multiple of outPeriod!)
+    #optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
 
     # ---------------------- #
     # Particulate Parameters #
