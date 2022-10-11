@@ -6,7 +6,7 @@ using UnPack
 using Printf
 
 # Called during ODE solve to see solution progress
-function outputs(integrator)
+@timeit to function outputs(integrator)
 
     # Unpack integrator
     sol=integrator.sol 
@@ -48,7 +48,7 @@ function pad_ylim(A)
 end 
 
 # Make plots
-function makePlots(t,X,S,Pb,Sb,Lf,p)
+@timeit to function makePlots(t,X,S,Pb,Sb,Lf,p)
     @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,src,optionalPlot = p 
 
     # Adjust names to work with legends

@@ -1,5 +1,9 @@
 module Biofilm
 
+using TimerOutputs
+const to = TimerOutput()
+const timer = true
+
 export param, BiofilmSolver, makePlots, analyzeBiofilm, movieBiofilm
 
 include("outputs.jl")

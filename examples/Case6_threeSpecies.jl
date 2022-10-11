@@ -23,7 +23,7 @@ p = param(
     # Simulation Parameters #
     # --------------------- #
     Title="Ramsing et al. 1993 Test Case",
-    tFinal=500,     # Simulation time [days]
+    tFinal=200,     # Simulation time [days]
     tol=1e-4,       # Tolerance
     outPeriod=5,    # Time between outputs [days]
     plotPeriod=10,    # Time between plots [days] (make multiple of outPeriod!)

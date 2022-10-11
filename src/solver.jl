@@ -10,6 +10,13 @@ function BiofilmSolver(p::param)
 
     println("Starting Solver ...")
 
+    # Setup timer
+    if timer
+        reset_timer!(to)
+    else
+        disable_timer!(to)
+    end
+
     # Check parameters passed to solver 
     checkParameters(p)
 
@@ -49,7 +56,7 @@ function BiofilmSolver(p::param)
     
     # Run solver
     #GC.enable(false)
-    sol=solve(prob,
+    @timeit to "solve()" sol=solve(prob,
         reltol=tol,
         abstol=tol,
         callback=cb,
@@ -65,6 +72,8 @@ function BiofilmSolver(p::param)
     # Final biofilm grid
     z=range(0.0,Lf[end],Nz+1)
     zm=0.5*(z[1:Nz]+z[2:Nz+1])
+
+    show(to)
 
     return t,zm,X,S,Pb,Sb,Lf,sol
 end

@@ -51,6 +51,7 @@ using Parameters
     Ptot = sum(Pbo) # Total particulate volume fraction
     Nx = length(Xo)   # Number of particulates
     Ns = length(So)   # Number of substrates
+    
 end
 
 @with_kw struct ranges
