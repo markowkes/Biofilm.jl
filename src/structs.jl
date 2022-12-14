@@ -3,68 +3,68 @@ using Parameters
 # Define parameter structure with defalut values
 @with_kw struct param 
     # Simulation
-    tFinal          # Simulation time [days]
-    outPeriod       # Output period [days] 
-    tol = 1e-4      # Tolerance
-    plotPeriod = outPeriod # Plots period [days]
-    makePlots = true   # Make plots during simulation 
-    discontinuityPeriod = Inf # Period between discontinuites 
-    optionalPlot = "growthrate" # What to put in 6th plot
+    tFinal :: Float64         # Simulation time [days]
+    outPeriod :: Float64       # Output period [days] 
+    tol :: Float64 = 1e-4      # Tolerance
+    plotPeriod :: Float64 = outPeriod # Plots period [days]
+    makePlots :: Bool = true   # Make plots during simulation 
+    discontinuityPeriod :: Float64 = Inf # Period between discontinuites 
+    optionalPlot :: String = "growthrate" # What to put in 6th plot
 
     # Names
-    Title            # Description of case (used on plots)
-    SNames  # Substrate names (used on plots)
-    XNames  # Particulate names (used on plots)
+    Title :: String            # Description of case (used on plots)
+    SNames :: Vector{String}   # Substrate names (used on plots)
+    XNames :: Vector{String}   # Particulate names (used on plots)
 
     # Grid
-    Nz               # Number of grid points
+    Nz :: Int64               # Number of grid points
     
     # Geometry
-    V              # Volume of tank
-    A              # Surface area of biofilm
-    LL             # Boundary layer thickness
+    V :: Float64              # Volume of tank
+    A :: Float64              # Surface area of biofilm
+    LL :: Float64             # Boundary layer thickness
     
     # Flow
-    Q              # Flowrate through tank
+    Q :: Float64              # Flowrate through tank
     
     # Initial conditions
-    Xo    # Tank particulate concentrations
-    So    # Tank substrate concentrations
-    Pbo   # Biofilm particulate volume fractions
-    Sbo   # Biofilm substrate concentrations
-    Lfo   # Biofilm thickness
+    Xo :: Vector{Float64}    # Tank particulate concentrations
+    So :: Vector{Float64}    # Tank substrate concentrations
+    Pbo :: Vector{Float64}   # Biofilm particulate volume fractions
+    Sbo :: Vector{Float64}   # Biofilm substrate concentrations
+    Lfo :: Float64  # Biofilm thickness
     
     # Substrate parameters
-    Yxs   # Biomass yield coefficient on substrate
-    Daq   # Substrate diffusion through boundary layer
-    De    # Substrate diffusion through biofilm     
-    rho   # Particulate densities
-    Kdet  # Particulate detachment coefficient
-    Sin   # Inflow substrate concentration 
+    Yxs :: Array{Float64}  # Biomass yield coefficient on substrate
+    Daq :: Vector{Float64}  # Substrate diffusion through boundary layer
+    De  :: Vector{Float64}    # Substrate diffusion through biofilm     
+    rho :: Vector{Float64}  # Particulate densities
+    Kdet :: Float64 # Particulate detachment coefficient
+    Sin :: Vector{Function}  # Inflow substrate concentration 
 
-    
     # Particulates
-    mu   # Array of growthrate expressions
-    src  # Array of particulate source expressions
+    mu :: Vector{Function}  # Array of growthrate expressions
+    src :: Vector{Function}  # Array of particulate source expressions
     
     # Computed quantites
-    Ptot = sum(Pbo) # Total particulate volume fraction
-    Nx = length(Xo)   # Number of particulates
-    Ns = length(So)   # Number of substrates
+    Ptot :: Float64 = sum(Pbo) # Total particulate volume fraction
+    Nx :: Int64 = length(Xo)   # Number of particulates
+    Ns :: Int64 = length(So)   # Number of substrates
+    
 end
 
 @with_kw struct ranges
     # Ranges - used for spliting dependent variables in ODE solver
-    X 
-    S 
-    Pb
-    Sb
-    Lf
+    X  :: UnitRange{Int64}
+    S  :: UnitRange{Int64} 
+    Pb :: UnitRange{Int64}
+    Sb :: UnitRange{Int64}
+    Lf :: UnitRange{Int64}
 end
 
 @with_kw struct biofilmGrid
     # Grid
-    z 
-    zm
-    dz
+    z  :: Vector{Float64}
+    zm :: Vector{Float64}
+    dz :: Float64
 end
