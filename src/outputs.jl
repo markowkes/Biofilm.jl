@@ -49,7 +49,7 @@ end
 
 # Make plots
 function makePlots(t,X,S,Pb,Sb,Lf,p)
-    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,src,optionalPlot = p 
+    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,srcX,optionalPlot = p 
 
     # Adjust names to work with legends
     Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
@@ -105,7 +105,7 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
         srcs=similar(Pb)
         for i=1:Nz
             for j=1:Nx
-                srcs[j,i]=src[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]
+                srcs[j,i]=srcX[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]
             end
         end
         p6=plot(zm,srcs',label=Xs)

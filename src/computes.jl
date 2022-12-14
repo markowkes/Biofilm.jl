@@ -38,7 +38,7 @@ end
 
 # Velocity due to growth in biofilm
 function computeVel(μb,Sb,Pb,t,p,g)
-    @unpack Nx,Nz,Ptot,src,rho = p
+    @unpack Nx,Nz,Ptot,srcX,rho = p
     @unpack dz = g
     # Velocities on faces of cells
     V=zeros(Nz+1) 
@@ -49,7 +49,7 @@ function computeVel(μb,Sb,Pb,t,p,g)
             # Add growth of particulates in this cell to velocity
             V[i+1] += μb[j,i].*Pb[j,i]*dz/Ptot
             # Add source of particulates in this cell to velocity
-            V[i+1] += src[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]/rho[j]*dz/Ptot
+            V[i+1] += srcX[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]/rho[j]*dz/Ptot
         end
     end
     

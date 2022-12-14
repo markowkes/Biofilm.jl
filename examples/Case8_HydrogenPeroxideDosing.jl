@@ -4,7 +4,9 @@ using Biofilm
 Km = 5; # g/m³
 mumax = 9.6; # 1/days
 k_dis = 0.5; #m³/g/d
-k_B  = 0.0; #m³/g/d ??? Just removes cells?
+k_b  = 10.0; #m³/g/d
+
+smoothHeaviside(t,t0)=0.5*tanh.(10*(t.-t0).-0.5).+0.5
 
 # Define a structure to hold all the parameters
 p = param(
@@ -13,10 +15,11 @@ p = param(
     # --------------------- #
     Title="Hydrogen Peroxide Dosing",
     tFinal=10,     # Simulation time [days]
-    tol=1e-4,       # Tolerance
+    tol=1e-8,       # Tolerance
     outPeriod=1,    # Time between outputs [days]
     plotPeriod=1,    # Time between plots [days] (make multiple of outPeriod!)
     #optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
+    discontinuityPeriod=2.5,  # Let solver know when discontinuities (changes in light) occur
 
     # ---------------------- #
     # Particulate Parameters #
@@ -26,10 +29,10 @@ p = param(
     Pbo=[0.08,0.0], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=1e4, # Particulates detachment coefficient
-    src=[(S, X, t, p) -> -k_dis*X[1,:].*S[2,:] - k_B*X[1,:].*S[2,:], 
-         (S, X, t, p) -> +k_dis*X[1,:].*S[2,:] - k_B*X[1,:].*S[2,:]],
+    srcX=[(S, X, t, p) -> -k_dis*X[1,:].*S[2,:], 
+          (S, X, t, p) -> +k_dis*X[1,:].*S[2,:]],
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 
+    mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (Km .+ S[1,:]), 
         (S,X,Lf,t,z,p) -> zeros(size(S[1,:])) ],
     
     # -------------------- #
@@ -37,15 +40,17 @@ p = param(
     # -------------------- #
     SNames=["Glucose","Hydrogen Peroxide"], # Substrate names
     Sin=[(t) -> 100,    # Substrate inflow (can be function of time)
-         (t) -> 0.0],
-    So=[0.0,1.0],  # Tank substrate concentration initial condition(s)
+         (t) -> 500*smoothHeaviside(t,2.5)],
+    So=[100.0,0.0],  # Tank substrate concentration initial condition(s)
     Sbo=[0.0,0.0], # Biofilm substrates concentration initial condition(s)
     # Biomass yield coefficient on substrate
     #     Glucose   H. Per.
     Yxs=[ 0.26       0.0        # Live use glucose
           0.00       0.0   ],   # Dead doesn't use/produce anything
-    Daq=[5.2e-5, 5.2e-5],    # Substrate diffusion through boundary layer
-    De =[1.3e-5, 1.3e-5],     # Substrate diffusion through biofilm     
+    Daq=[5.2e-5, 1.09e-4],    # Substrate diffusion through boundary layer
+    De =[1.3e-5, 6.52e-5],     # Substrate diffusion through biofilm     
+    srcS=[(S, X, t, p) -> 0.0,  
+          (S, X, t, p) -> -k_b*X[1,:].*S[2,:].-k_b*X[2,:].*S[2,:] ],
            
     # --------------- #
     # Tank Parameters #
@@ -57,8 +62,8 @@ p = param(
     # ------------------ #
     # Biofilm Parameters #
     # ------------------ #
-    Nz=20,          # Number of grid points in biofilm
-    Lfo=5.0e-6,     # Biofilm initial thickness [m]
+    Nz=50,          # Number of grid points in biofilm
+    Lfo=50.0e-6,     # Biofilm initial thickness [m]
     LL=1.0e-5,      # Boundary layer thickness [m]
 )
 

@@ -9,7 +9,7 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,src,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
+    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
 
     # Check provided initial conditions 
     Nx == length(Xo)  || paramError("Number of Xo initial conditions should be Nx=", Nx)
@@ -47,13 +47,24 @@ function checkParameters(p)
     # Source
     t=0.0
     for i in 1:Nx
-        try src[i](So,Xo,t,p)
+        try srcX[i](So,Xo,t,p)
         catch
-            paramError("src should be an array of Nx=",Nx," functions providing the source of each particulate. 
+            paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (S,X,p) \n
                 For example, if there are two particulates you might use:
-                    src=[(S, X, t, p) -> -b*X[1,:],
+                    srcX=[(S, X, t, p) -> -b*X[1,:],
                          (S, X, t, p) ->  b*X[1,:]],")
+        end
+    end
+
+    for i in 1:Ns
+        try srcS[i](So,Xo,t,p)
+        catch
+            paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
+            The inputs to each function should be (S,X,p) \n
+                For example, if there are two particulates you might use:
+                    srcS=[(S, X, t, p) -> -b*X[1,:],
+                          (S, X, t, p) ->  b*X[1,:]],")
         end
     end
 

@@ -41,10 +41,11 @@ using Parameters
     rho :: Vector{Float64}  # Particulate densities
     Kdet :: Float64 # Particulate detachment coefficient
     Sin :: Vector{Function}  # Inflow substrate concentration 
+    srcS :: Vector{Function}  # Array of particulate source expressions
 
     # Particulates
     mu :: Vector{Function}  # Array of growthrate expressions
-    src :: Vector{Function}  # Array of particulate source expressions
+    srcX :: Vector{Function}  # Array of particulate source expressions
     
     # Computed quantites
     Ptot :: Float64 = sum(Pbo) # Total particulate volume fraction
