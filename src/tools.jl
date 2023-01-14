@@ -35,6 +35,38 @@ function Base.gcd(a::Float64,b::Float64)
     end
 end
 
+""" 
+    MeanBiofilmVarsWithTime(sol,p)
+
+Get mean (throughout biofilm) of S̄b[Ns,Nt] and X̄b[Ns,Nt] as function of time
+Inputs: sol at end of simulaton and parameters p
+
+# Example
+```julia-repl 
+julia> Sb_t,Pb_t=MeanBiofilmVarsWithTime(sol,p)
+
+```
+"""
+function MeanBiofilmVarsWithTime(sol,p)
+    @unpack Nx,Ns,Nz=p
+    times = sol.t; Nt=length(times)
+    Sb_t=zeros(Ns,Nt)
+    Pb_t=zeros(Nx,Nt)
+    for i in eachindex(times)
+        t=times[i]
+        X,S,Pb,Sb,Lf = unpack_solution(sol,p,t)
+        for k=1:Nz
+            for j=1:Ns 
+                Sb_t[j,i] += Sb[j,k]/Nz
+            end
+            for j=1:Nx 
+                Pb_t[j,i] += Pb[j,k]/Nz
+            end
+        end
+    end
+    return Sb_t,Pb_t
+end
+
 """
     unpack_solution(sol,p,t)
 
