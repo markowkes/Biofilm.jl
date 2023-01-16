@@ -35,12 +35,13 @@ function checkParameters(p)
             paramError("Error calling mu[",i,"].  mu returns an array of size ",muSize," it should return an array of size (1,",Nz,").
             Check to make sure substrates are indexed correctly, e.g., S[1,:].")
             
-        catch
+        catch e e
             paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
             The inputs to each function should be (S,X,Lf,t,z,p) \n
                 For example, if there are two particulates you might use:
                     mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 
                         (S,X,Lf,t,z,p) -> mumax * S[2,:] ./ KM ],")
+            println(e)
         end
     end
 
@@ -48,43 +49,47 @@ function checkParameters(p)
     t=0.0
     for i in 1:Nx
         try srcX[i](So,Xo,t,p)
-        catch
+        catch e
             paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (S,X,p) \n
                 For example, if there are two particulates you might use:
                     srcX=[(S, X, t, p) -> -b*X[1,:],
                          (S, X, t, p) ->  b*X[1,:]],")
+            println(e)
         end
     end
 
     for i in 1:Ns
         try srcS[i](So,Xo,t,p)
-        catch
+        catch e
             paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
             The inputs to each function should be (S,X,p) \n
                 For example, if there are two particulates you might use:
                     srcS=[(S, X, t, p) -> -b*X[1,:],
                           (S, X, t, p) ->  b*X[1,:]],")
+            println(e)    
         end
     end
 
     # Sin
     for i in 1:Ns
         try Sin[i](0.0)
-        catch
+        catch e
             paramError("Sin should be an array of Ns=",Ns," functions providing the inflow substrate concentrations. 
             The inputs to each function should be (t) \n
                 For example, if there are two particulates you might use:
                     Sin=[(t) -> 25,
                          (t) -> 50],")
+            println(e)
         end
     end
 
     # Yxs
     for i in 1:Nx
         try Yxs[i,1:Ns]
-        catch
+        catch e
             paramError("The size of Yxs is ",size(Yxs),". It should be (",Nx,",",Ns,")")
+            println(e)
         end
     end
 
