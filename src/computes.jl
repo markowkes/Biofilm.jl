@@ -63,7 +63,7 @@ function computeFluxP(Pb,V,Vdet,p)
     # Bottom boundary - no flux condition -> nothing to do
     fluxP = zeros(Nx,Nz+1) # Fluxes on faces of cells
     for i in 2:Nz+1  # Interior and top faces
-            fluxP[:,i]= V[i]*Pb[:,i-1] # V*phi_face (upwinded)
-        end
+        fluxP[:,i]= V[i]*Pb[:,i-1] # V*phi_face (upwinded)
+    end
     return fluxP
 end
