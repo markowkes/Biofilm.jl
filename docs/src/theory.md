@@ -13,7 +13,7 @@ The governing equation describing the particulate concentrations in the tank env
 ```math
 \frac{d X_j}{dt} = \mu_j(\mathbf{S}) X_j - \frac{Q X_j}{V} + \frac{v_\mathrm{det} A X_{b,j}(L_f)}{V} + \mathrm{src}_{X,j}
 ```
-for ``j=1,\dots,N_x``, where ``t`` is time, ``\mu_j(\mathrm{S})`` is the growthrate of the ``j^\mathrm{th}`` particulate, ``Q`` is the flowrate, ``V`` is the volume, ``v_\mathrm{det}=K_\mathrm{det} L_f^2`` is the detachment velocity, ``A`` is the area, ``X_{b,j}(L_f)`` is the ``j^\mathrm{th}`` particulate concentration at the top of the biofilm, and ``\mathrm{src}_{X,j}`` is the source term for the ``j^\mathrm{th}`` particulate. 
+for ``j=1,\dots,N_x``, where ``t`` is time, ``\mu_j(\mathbf{S})`` is the growthrate of the ``j^\mathrm{th}`` particulate, ``Q`` is the flowrate, ``V`` is the volume, ``v_\mathrm{det}=K_\mathrm{det} L_f^2`` is the detachment velocity, ``A`` is the area, ``X_{b,j}(L_f)`` is the ``j^\mathrm{th}`` particulate concentration at the top of the biofilm, and ``\mathrm{src}_{X,j}`` is the source term for the ``j^\mathrm{th}`` particulate. 
 
 The terms on the right-hand-side (RHS) are 
 1) the growth of the particulate in the tank, 
