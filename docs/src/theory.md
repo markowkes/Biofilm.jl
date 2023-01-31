@@ -24,9 +24,9 @@ The terms on the right-hand-side (RHS) are
 ### Substrates
 The governing equation describing the substrate concentrations in the tank environment is
 ```math
-\frac{d S_k}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}) X_j}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_k}{V} + \frac{A B_{\mathrm{flux},k}}{V} + \mathrm{src}_{S,k}
+\frac{d S_k}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}) X_j}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_k}{V} + \frac{A S_{\mathrm{flux},k}}{V} + \mathrm{src}_{S,k}
 ```
-for ``k=1,\dots,N_s``, where ``B_{\mathrm{flux},k}`` is the flux of substrates from the biofilm into the tank, and ``\mathrm{src}_{S,k}`` is the source term for the ``k^\mathrm{th}`` substrate. 
+for ``k=1,\dots,N_s``, where ``S_{\mathrm{flux},k}`` is the flux of substrates from the biofilm into the tank, and ``\mathrm{src}_{S,k}`` is the source term for the ``k^\mathrm{th}`` substrate. 
 
 The terms on the right-hand-side (RHS) are 
 1) consumption of substrates due to the growth of the particulate in the tank, 
