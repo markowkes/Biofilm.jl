@@ -9,11 +9,11 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
 
     # Check provided initial conditions 
-    Nx == length(Xo)  || paramError("Number of Xo initial conditions should be Nx=", Nx)
-    Ns == length(So)  || paramError("Number of So initial conditions should be Ns=", Ns)
+    Nx == length(Xto) || paramError("Number of Xto initial conditions should be Nx=", Nx)
+    Ns == length(Sto) || paramError("Number of Sto initial conditions should be Ns=", Ns)
     Nx == length(Pbo) || paramError("Number of Pbo initial conditions should be Nx=", Nx)
     Ns == length(Sbo) || paramError("Number of Sbo initial conditions should be Ns=", Ns)
 
@@ -48,7 +48,7 @@ function checkParameters(p)
     # Source
     t=0.0
     for i in 1:Nx
-        try srcX[i](So,Xo,t,p)
+        try srcX[i](Sto,Xto,t,p)
         catch e
             paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (S,X,p) \n
@@ -60,7 +60,7 @@ function checkParameters(p)
     end
 
     for i in 1:Ns
-        try srcS[i](So,Xo,t,p)
+        try srcS[i](Sto,Xto,t,p)
         catch e
             paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
             The inputs to each function should be (S,X,p) \n

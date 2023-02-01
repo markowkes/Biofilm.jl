@@ -28,11 +28,11 @@ using Parameters
     Q :: Float64              # Flowrate through tank
     
     # Initial conditions
-    Xo :: Vector{Float64}    # Tank particulate concentrations
-    So :: Vector{Float64}    # Tank substrate concentrations
-    Pbo :: Vector{Float64}   # Biofilm particulate volume fractions
-    Sbo :: Vector{Float64}   # Biofilm substrate concentrations
-    Lfo :: Float64  # Biofilm thickness
+    Xto :: Vector{Float64}    # Tank particulate concentrations
+    Sto :: Vector{Float64}    # Tank substrate concentrations
+    Pbo :: Vector{Float64}    # Biofilm particulate volume fractions
+    Sbo :: Vector{Float64}    # Biofilm substrate concentrations
+    Lfo :: Float64            # Biofilm thickness
     
     # Substrate parameters
     Yxs :: Array{Float64}  # Biomass yield coefficient on substrate
@@ -49,15 +49,15 @@ using Parameters
     
     # Computed quantites
     Ptot :: Float64 = sum(Pbo) # Total particulate volume fraction
-    Nx :: Int64 = length(Xo)   # Number of particulates
-    Ns :: Int64 = length(So)   # Number of substrates
+    Nx :: Int64 = length(Xto)   # Number of particulates
+    Ns :: Int64 = length(Sto)   # Number of substrates
     
 end
 
 @with_kw struct ranges
     # Ranges - used for spliting dependent variables in ODE solver
-    X  :: UnitRange{Int64}
-    S  :: UnitRange{Int64} 
+    Xt :: UnitRange{Int64}
+    St :: UnitRange{Int64} 
     Pb :: UnitRange{Int64}
     Sb :: UnitRange{Int64}
     Lf :: UnitRange{Int64}

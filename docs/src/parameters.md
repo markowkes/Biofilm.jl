@@ -13,7 +13,7 @@ The Case file defines a param struct with the following fields
 
 ### Particulate Parameters
 - **XNames** - Names of the particulates used in plots and other outputs
-- **Xo** - Initial condition of particulate concentration(s) in tank environment [g/m``^3``]
+- **Xto** - Initial condition of particulate concentration(s) in tank environment [g/m``^3``]
 - **Pbo** - Initial condition of particulate volume fraction(s) in biofilm [-]
 - **rho** - Particulate densities [g/m``^3``]
 - **Kdet** - Particulate detachment coefficient [1/(m days)]

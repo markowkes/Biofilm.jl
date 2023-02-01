@@ -11,9 +11,9 @@ Biofilm.jl simulates a one-dimensional biofilm within a stirred tank reactor.  T
 ### Particulates
 The governing equation describing the particulate concentrations in the tank environment is
 ```math
-\frac{d X_j}{dt} = \mu_j(\mathbf{S}) X_j - \frac{Q X_j}{V} + \frac{v_\mathrm{det} A X_{b,j}(L_f)}{V} + \mathrm{src}_{X,j}
+\frac{d X_{t,j}}{dt} = \mu_j(\mathbf{S}_t) X_{t,j} - \frac{Q X_{t,j}}{V} + \frac{v_\mathrm{det} A X_{b,j}(L_f)}{V} + \mathrm{src}_{X,j}
 ```
-for ``j=1,\dots,N_x``, where ``t`` is time, ``\mu_j(\mathbf{S})`` is the growthrate of the ``j^\mathrm{th}`` particulate, ``Q`` is the flowrate, ``V`` is the volume, ``v_\mathrm{det}=K_\mathrm{det} L_f^2`` is the detachment velocity, ``A`` is the area, ``X_{b,j}(L_f)`` is the ``j^\mathrm{th}`` particulate concentration at the top of the biofilm, and ``\mathrm{src}_{X,j}`` is the source term for the ``j^\mathrm{th}`` particulate. 
+for ``j=1,\dots,N_x``, where ``t`` is time, ``\mu_j(\mathbf{S}_t)`` is the growthrate of the ``j^\mathrm{th}`` particulate, ``Q`` is the flowrate, ``V`` is the volume of the tank, ``v_\mathrm{det}=K_\mathrm{det} L_f^2`` is the detachment velocity, ``A`` is the area of the biofilm, ``X_{b,j}(L_f)`` is the ``j^\mathrm{th}`` particulate concentration at the top of the biofilm, and ``\mathrm{src}_{X,j}`` is the source term for the ``j^\mathrm{th}`` particulate. 
 
 The terms on the right-hand-side (RHS) are 
 1) the growth of the particulate in the tank, 
@@ -24,7 +24,7 @@ The terms on the right-hand-side (RHS) are
 ### Substrates
 The governing equation describing the substrate concentrations in the tank environment is
 ```math
-\frac{d S_k}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}) X_j}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_k}{V} + \frac{A S_{\mathrm{flux},k}}{V} + \mathrm{src}_{S,k}
+\frac{d S_{t,k}}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}_t) X_{t,j}}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_{t,k}}{V} + \frac{A S_{\mathrm{flux},k}}{V} + \mathrm{src}_{S,k}
 ```
 for ``k=1,\dots,N_s``, where ``S_{\mathrm{flux},k}`` is the flux of substrates from the biofilm into the tank, and ``\mathrm{src}_{S,k}`` is the source term for the ``k^\mathrm{th}`` substrate. 
 

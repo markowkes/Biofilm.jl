@@ -4,8 +4,8 @@
 function unpack_solutionForPlot(sol,p,r)
     @unpack Nx,Ns,Nz=p
     t=sol.t
-    X=sol[r.X,:]
-    S=sol[r.S,:]
+    Xt=sol[r.Xt,:]
+    St=sol[r.St,:]
     Pb=sol[r.Pb,end]
     Sb=sol[r.Sb,end]
     Lf=sol[r.Lf,:]
@@ -14,7 +14,7 @@ function unpack_solutionForPlot(sol,p,r)
     Pb=reshape(Pb,Nx,Nz)
     Sb=reshape(Sb,Ns,Nz)
     
-    return t,X,S,Pb,Sb,Lf
+    return t,Xt,St,Pb,Sb,Lf
 end
 
 # Return greatest common divisor of floats
@@ -54,7 +54,7 @@ function MeanBiofilmVarsWithTime(sol,p)
     Pb_t=zeros(Nx,Nt)
     for i in eachindex(times)
         t=times[i]
-        X,S,Pb,Sb,Lf = unpack_solution(sol,p,t)
+        Xt,St,Pb,Sb,Lf = unpack_solution(sol,p,t)
         for k=1:Nz
             for j=1:Ns 
                 Sb_t[j,i] += Sb[j,k]/Nz
@@ -89,15 +89,15 @@ function unpack_solution(sol,p,t)
     # Compute ranges of dependent variables in sol array
     # sol=[X,S,Pb,S,Lf]
     nVar=0; 
-    N=Nx;    rX =nVar+1:nVar+N; nVar+=N # X =u[rX]
-    N=Ns;    rS =nVar+1:nVar+N; nVar+=N # S =u[rS]
+    N=Nx;    rXt=nVar+1:nVar+N; nVar+=N # X =u[rXt]
+    N=Ns;    rSt=nVar+1:nVar+N; nVar+=N # S =u[rSt]
     N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
     N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
     N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
 
     # Unpack solution
-    X=s[rX]
-    S=s[rS]
+    Xt=s[rXt]
+    St=s[rSt]
     Pb=s[rPb]
     Sb=s[rSb]
     Lf=s[rLf]
@@ -127,10 +127,10 @@ function analyzeBiofilm(sol,p,t; makePlot=false)
     
     for tn in t
         # Unpack solution 
-        X,S,Pb,Sb,Lf=unpack_solution(sol,p,tn)
+        Xt,St,Pb,Sb,Lf=unpack_solution(sol,p,tn)
 
         # Print values to REPL
-        printBiofilmValues(tn,X,S,Pb,Sb,Lf,p)
+        printBiofilmValues(tn,Xt,St,Pb,Sb,Lf,p)
 
         # Make plot of biofilm variables at this time
         if makePlot
@@ -155,12 +155,12 @@ function printBiofilmTitles(p)
     return
 end
 
-function printBiofilmValues(t,X,S,Pb,Sb,Lf,p)
+function printBiofilmValues(t,Xt,St,Pb,Sb,Lf,p)
     @unpack Nx,Ns = p
     # Build output string
     str=@sprintf(" %8.3f |",t)
-    map( (x)   -> str*=@sprintf(" %8.3g |",x),X)
-    map( (x)   -> str*=@sprintf(" %8.3g |",x),S)
+    map( (x)   -> str*=@sprintf(" %8.3g |",x),Xt)
+    map( (x)   -> str*=@sprintf(" %8.3g |",x),St)
     for i in 1:Nx
         map( (x,y) -> str*=@sprintf(" %8.3g,%8.3g |",x,y),minimum(Pb[i,:]),maximum(Pb[i,:]))
     end

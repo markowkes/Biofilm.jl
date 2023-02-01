@@ -18,7 +18,7 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["Bug"],     # Particulate names
-    Xo=[10.0],          # Tank particulate concentration initial condition(s)
+    Xto=[10.0],         # Tank particulate concentration initial condition(s)
     Pbo=[0.2],          # Biofilm particulates volume fraction initial condition(s) 
     rho=[1.0e5],        # Particulate densities
     Kdet=1900.0,        # Particulates detachment coefficient
@@ -31,7 +31,7 @@ p = param(
     # -------------------- #
     SNames=["Substrate 1","Substrate 2"],  # Substrate names
     Sin=[(t) -> 25, (t) -> 25], # Substrate inflow (can be function of time)
-    So=[25.0,25.0],         # Tank substrate concentration initial condition(s)
+    Sto=[25.0,25.0],        # Tank substrate concentration initial condition(s)
     Sbo=[0.0,0.0],          # Biofilm substrates concentration initial condition(s)
     Yxs=[0.5 0.0],          # Biomass yield coefficient on substrate
     Daq=[4.0e-5, 6.0e-5],   # Substrate diffusion through boundary layer
@@ -53,5 +53,5 @@ p = param(
     LL=1.0e-4,      # Boundary layer thickness [m]
 )
 
-t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results
+t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
+makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results

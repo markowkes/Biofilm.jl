@@ -33,7 +33,7 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["Phototroph","SOB - Sulfide-Oxidizer","SRB - Sulfate-Reducer"], # Particulate names
-    Xo=[1.0,1.0,1.0], # Tank particulate concentration initial condition(s)
+    Xto=[1.0,1.0,1.0], # Tank particulate concentration initial condition(s)
     Pbo=[0.2/3,0.2/3,0.2/3], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5,2.5e5], # Particulate densities
     Kdet=50.0, # Particulates detachment coefficient
@@ -53,7 +53,7 @@ p = param(
     Sin=[(t) -> 8.6    # Substrate inflow (can be function of time)
          (t) -> 48.0
          (t) -> 0.0],
-    So=[8.6,48.0,0.0],  # Tank substrate concentration initial condition(s)
+    Sto=[8.6,48.0,0.0], # Tank substrate concentration initial condition(s)
     Sbo=[8.6,48.0,0.0], # Biofilm substrates concentration initial condition(s)
     # Biomass yield coefficient on substrate
     #     oxygen  sulfate  Hy. sulfide
@@ -82,5 +82,5 @@ p = param(
     LL=2.0e-4,      # Boundary layer thickness [m]
 )
 
-t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,X,S,Pb,Sb,Lf,p) # Plot final results
+t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
+makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results

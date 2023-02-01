@@ -48,7 +48,7 @@ function pad_ylim(A)
 end 
 
 # Make plots
-function makePlots(t,X,S,Pb,Sb,Lf,p)
+function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,srcX,optionalPlot = p 
 
     # Adjust names to work with legends
@@ -62,12 +62,12 @@ function makePlots(t,X,S,Pb,Sb,Lf,p)
     g=biofilmGrid(z,zm,dz)
 
     # Tank particulate concentration
-    p1=plot(t,X',label=Xs,ylim=pad_ylim(X))
+    p1=plot(t,Xt',label=Xs,ylim=pad_ylim(Xt))
     xaxis!(L"\textrm{Time~[days]}")
     yaxis!(L"\textrm{Tank~Biomass~Concentration~} [g/m^3]")
 
     # Tank substrate concentration
-    p2=plot(t,S',label=Ss,ylim=pad_ylim(S))
+    p2=plot(t,St',label=Ss,ylim=pad_ylim(St))
     xaxis!(L"\textrm{Time~[days]}")
     yaxis!(L"\textrm{Tank~Substrate~Concentration~} [g/m^3]")
 

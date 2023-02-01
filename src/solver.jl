@@ -14,26 +14,26 @@ function BiofilmSolver(p::param)
     checkParameters(p)
 
     # Unpack parameters
-    @unpack Nx,Ns,Nz,Xo,So,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
 
     # Compute ranges of dependent variables in sol array
-    # sol=[X,S,Pb,S,Lf]
+    # sol=[Xt,St,Pb,S,Lf]
     nVar=0; 
-    N=Nx;    rX =nVar+1:nVar+N; nVar+=N # X =u[rX]
-    N=Ns;    rS =nVar+1:nVar+N; nVar+=N # S =u[rS]
+    N=Nx;    rXt=nVar+1:nVar+N; nVar+=N # Xt=u[rXt]
+    N=Ns;    rSt=nVar+1:nVar+N; nVar+=N # St=u[rSt]
     N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
     N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
     N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
 
     # Store ranges in struct to be used in RHS calc
-    r = ranges(rX,rS,rPb,rSb,rLf)
+    r = ranges(rXt,rSt,rPb,rSb,rLf)
 
     # Prepare biofilm initial conditions
     Pbo_grid = vec(Pbo.*ones(Nx,Nz))
     Sbo_grid = vec(Sbo.*ones(Ns,Nz))
     
     # Package initial conditions as one continuous vector
-    sol0=vcat(Xo,So,Pbo_grid,Sbo_grid,Lfo)
+    sol0=vcat(Xto,Sto,Pbo_grid,Sbo_grid,Lfo)
 
     # Prepare ODE Solver 
     prob = ODEProblem(biofilmRHS!,sol0,(0.0,p.tFinal),[p,r])
@@ -60,11 +60,11 @@ function BiofilmSolver(p::param)
     #GC.enable(true)
 
     # Convert solution to dependent variables
-    t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
+    t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
 
     # Final biofilm grid
     z=range(0.0,Lf[end],Nz+1)
     zm=0.5*(z[1:Nz]+z[2:Nz+1])
 
-    return t,zm,X,S,Pb,Sb,Lf,sol
+    return t,zm,Xt,St,Pb,Sb,Lf,sol
 end
