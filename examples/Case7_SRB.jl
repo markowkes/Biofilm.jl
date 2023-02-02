@@ -25,7 +25,7 @@ p = param(
     Kdet=50.0, # Particulates detachment coefficient
     srcX=[(St, Xt, t, p) -> 0.0], # Source of particulates
     # Growthrates for each particulate (constants defined above!)
-    mu=[(St, Xt, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], #.-0.01*S[1,:]], # SRB
+    mu=[(St, Xt, Lf, t, z, p) -> mumaxC*(St[2,:]./(KmC2.+St[2,:])).*(1.0./(1.0.+St[1,:]/KI))], #.-0.01*St[1,:]], # SRB
 
     # -------------------- #
     # Substrate Parameters #

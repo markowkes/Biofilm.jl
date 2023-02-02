@@ -42,8 +42,8 @@ p = param(
          (St, Xt, t, p) -> 0.0],
     # Growthrates for each particulate (constants defined above!)
     mu=[(St, Xt, Lf, t, z, p) -> mumaxA*light(t,z,Lf),
-        (St, Xt, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])),
-        (St, Xt, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))],
+        (St, Xt, Lf, t, z, p) -> mumaxB*(St[1,:]./(KmB1.+St[1,:])).*(St[3,:]./(KmB3.+St[3,:])),
+        (St, Xt, Lf, t, z, p) -> mumaxC*(St[2,:]./(KmC2.+St[2,:])).*(1.0./(1.0.+St[1,:]/KI))],
     discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
     
     # -------------------- #

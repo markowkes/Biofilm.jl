@@ -29,11 +29,11 @@ p = param(
     Pbo=[0.08,0.0], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=1e4, # Particulates detachment coefficient
-    srcX=[(St, Xt, t, p) -> -k_dis*X[1,:].*S[2,:], 
-          (St, Xt, t, p) -> +k_dis*X[1,:].*S[2,:]],
+    srcX=[(St, Xt, t, p) -> -k_dis*X[1,:].*St[2,:], 
+          (St, Xt, t, p) -> +k_dis*X[1,:].*St[2,:]],
     # Growthrates for each particulate (constants defined above!)
-    mu=[(St,Xt,Lf,t,z,p) -> mumax * S[1,:] ./ (Km .+ S[1,:]), 
-        (St,Xt,Lf,t,z,p) -> zeros(size(S[1,:])) ],
+    mu=[(St,Xt,Lf,t,z,p) -> mumax * St[1,:] ./ (Km .+ St[1,:]), 
+        (St,Xt,Lf,t,z,p) -> zeros(size(St[1,:])) ],
     
     # -------------------- #
     # Substrate Parameters #
@@ -50,7 +50,7 @@ p = param(
     Daq=[5.2e-5, 1.09e-4],    # Substrate diffusion through boundary layer
     De =[1.3e-5, 6.52e-5],     # Substrate diffusion through biofilm     
     srcS=[(St, Xt, t, p) -> 0.0,  
-          (St, Xt, t, p) -> -k_b*X[1,:].*S[2,:].-k_b*X[2,:].*S[2,:] ],
+          (St, Xt, t, p) -> -k_b*X[1,:].*St[2,:].-k_b*X[2,:].*St[2,:] ],
            
     # --------------- #
     # Tank Parameters #

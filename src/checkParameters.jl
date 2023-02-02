@@ -9,7 +9,7 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNameSt,XtNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
 
     # Check provided initial conditions 
     Nx == length(Xto) || paramError("Number of Xto initial conditions should be Nx=", Nx)
@@ -27,20 +27,20 @@ function checkParameters(p)
 
     # Growthrate - check that can call it correctly
     for i in 1:Nx
-        S=rand(Ns,Nz)
-        X=rand(Nx,Nz)
+        St=rand(Ns,Nz)
+        Xt=rand(Nx,Nz)
         try mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p)
             size(mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p),1) == Nz &&
             size(mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p),2) == 1  ||
             paramError("Error calling mu[",i,"].  mu returns an array of size ",muSize," it should return an array of size (1,",Nz,").
-            Check to make sure substrates are indexed correctly, e.g., S[1,:].")
+            Check to make sure substrates are indexed correctly, e.g., St[1,:].")
             
         catch e e
             paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
             The inputs to each function should be (St,Xt,Lf,t,z,p) \n
                 For example, if there are two particulates you might use:
-                    mu=[(St,Xt,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 
-                        (St,Xt,Lf,t,z,p) -> mumax * S[2,:] ./ KM ],")
+                    mu=[(St,Xt,Lf,t,z,p) -> mumax * St[1,:] ./ (KM .+ St[1,:]), 
+                        (St,Xt,Lf,t,z,p) -> mumax * St[2,:] ./ KM ],")
             println(e)
         end
     end

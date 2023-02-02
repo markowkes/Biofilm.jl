@@ -20,7 +20,7 @@ function outputs(integrator)
 
 
         # Convert solution to dependent variables
-        t,X,S,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
+        t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
 
         # Print titles to REPL every 10 outPeriod
         if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
@@ -28,11 +28,11 @@ function outputs(integrator)
         end
 
         # Print values to REPL every 1 outPeriod
-        printBiofilmValues(t[end],X[:,end],S[:,end],Pb,Sb,Lf[end],p)
+        printBiofilmValues(t[end],Xt[:,end],St[:,end],Pb,Sb,Lf[end],p)
 
         # Plot results
         if p.makePlots && (mod(sol.t[end],plotPeriod)≈0.0 || mod(sol.t[end],plotPeriod)≈plotPeriod)
-            makePlots(t,X,S,Pb,Sb,Lf,p)
+            makePlots(t,Xt,St,Pb,Sb,Lf,p)
         end
 
     end

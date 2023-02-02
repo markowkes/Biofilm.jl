@@ -25,10 +25,10 @@ p = param(
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=50.0, # Particulates detachment coefficient
     srcX=[(St, Xt, t, p) -> 0.0, # Source of particulates
-         (St, Xt, t, p) -> -10*S[1,:]], # dies near oxygen
+         (St, Xt, t, p) -> -10*St[1,:]], # dies near oxygen
     # Growthrates for each particulate (constants defined above!)
-    mu=[(St, Xt, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
-        (St, Xt, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], # SRB
+    mu=[(St, Xt, Lf, t, z, p) -> mumaxB*(St[1,:]./(KmB1.+St[1,:])).*(St[3,:]./(KmB3.+St[3,:])), # SOB
+        (St, Xt, Lf, t, z, p) -> mumaxC*(St[2,:]./(KmC2.+St[2,:])).*(1.0./(1.0.+St[1,:]/KI))], # SRB
 
     # -------------------- #
     # Substrate Parameters #
