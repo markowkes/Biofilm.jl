@@ -23,8 +23,9 @@ The Case file defines a param struct with the following fields
 
 ### Substrate Parameters
 - **SNames** - Names of the substrates used in plots and other outputs
-- **So** - Initial condition of substrate concentration(s) in tank environment [g/m``^3``]
+- **Sto** - Initial condition of substrate concentration(s) in tank environment [g/m``^3``]
 - **Sbo** - Initial condition of substrate concentrations(s) in biofilm [g/m``^3``]
+- **Sin** - Vector of functions that provide the inflow substrate concentrations [g/m``^3``].
 - **Yxs** - Array of biomass yield coefficients [g``_\mathrm{X}``/g``_\mathrm{S}``]
   ```math
   Y_{xs} = \begin{bmatrix}
