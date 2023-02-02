@@ -64,12 +64,12 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     # Tank particulate concentration
     p1=plot(t,Xt',label=Xs,ylim=pad_ylim(Xt))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Tank~Biomass~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Tank~Biomass~Conc.~} [g/m^3]")
 
     # Tank substrate concentration
     p2=plot(t,St',label=Ss,ylim=pad_ylim(St))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Tank~Substrate~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Tank~Substrate~Conc.~} [g/m^3]")
 
     # Biofilm thickness
     p3=plot(t,Lf'*1e6,label="Thickness",ylim=pad_ylim(Lf*1e6))
@@ -80,12 +80,12 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     p4=plot(1e6.*zm,Pb',label=Xs,ylim=pad_ylim(Pb))
     #p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
     xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Biofilm~Particulate~Volume~Fraction~[-]}")
+    yaxis!(L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
     
     # Biofilm substrate concentration
     p5=plot(1e6.*zm,Sb',label=Ss,ylim=pad_ylim(Sb))
     xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Biofilm~Substrate~Concentration~} [g/m^3]")
+    yaxis!(L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")
 
     # Optional 6th plot
     if optionalPlot == "growthrate"
