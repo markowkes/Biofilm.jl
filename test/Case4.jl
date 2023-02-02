@@ -51,7 +51,7 @@ p = param(
      # --------------- #
      V=0.1,        # Volume of tank [m³]
      A=1,          # Surface area of biofilm [m²]
-     Q=1,          # Flowrate through tank [m³/s]
+     Q=1,          # Flowrate through tank [m³/d]
 
      # ------------------ #
      # Biofilm Parameters #

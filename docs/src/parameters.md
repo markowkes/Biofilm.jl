@@ -41,7 +41,7 @@ The Case file defines a param struct with the following fields
 ### Tank Parameters
 - **V** - Volume of tank [m``^3``]
 - **S** - Surface area of biofilm [m``^2``]
-- **Q** - Flowrate through tank [m``^3``/s]
+- **Q** - Flowrate through tank [m``^3``/day]
 
 ### Biofilm Parameters
 - **Nz** - Number of grid points used to discretize the biofilm
