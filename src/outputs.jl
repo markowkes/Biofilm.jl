@@ -110,7 +110,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
         end
         p6=plot(1e6.*zm,srcs',label=Xs)
         xaxis!(L"\textrm{Thickness~} [\mu m]")
-        yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot s]")
+        yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
     else
         p6=[]
     end
