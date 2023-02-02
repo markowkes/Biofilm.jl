@@ -44,8 +44,8 @@ p = param(
           0.0  0.278],  
      Daq=[4.0e-5,6.0e-5], # Substrate diffusion through boundary layer
      De=[1.0e-5,1.5e-5],  # Substrate diffusion through biofilm     
-     srcS=[(S,X,t,p) -> 0.0,
-          (S,X,t,p) -> 0.0],     # Source of substrates
+     srcS=[(St,Xt,t,p) -> 0.0,
+          (St,Xt,t,p) -> 0.0],     # Source of substrates
      # --------------- #
      # Tank Parameters #
      # --------------- #

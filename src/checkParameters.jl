@@ -9,7 +9,7 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNameSt,XtNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs = p
 
     # Check provided initial conditions 
     Nx == length(Xto) || paramError("Number of Xto initial conditions should be Nx=", Nx)
@@ -29,18 +29,18 @@ function checkParameters(p)
     for i in 1:Nx
         S=rand(Ns,Nz)
         X=rand(Nx,Nz)
-        try mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p)
-            size(mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p),1) == Nz &&
-            size(mu[i](S,X,Lfo,0.0,range(0,Lfo,length=Nz),p),2) == 1  ||
+        try mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p)
+            size(mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p),1) == Nz &&
+            size(mu[i](St,Xt,Lfo,0.0,range(0,Lfo,length=Nz),p),2) == 1  ||
             paramError("Error calling mu[",i,"].  mu returns an array of size ",muSize," it should return an array of size (1,",Nz,").
             Check to make sure substrates are indexed correctly, e.g., S[1,:].")
             
         catch e e
             paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
-            The inputs to each function should be (S,X,Lf,t,z,p) \n
+            The inputs to each function should be (St,Xt,Lf,t,z,p) \n
                 For example, if there are two particulates you might use:
-                    mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 
-                        (S,X,Lf,t,z,p) -> mumax * S[2,:] ./ KM ],")
+                    mu=[(St,Xt,Lf,t,z,p) -> mumax * S[1,:] ./ (KM .+ S[1,:]), 
+                        (St,Xt,Lf,t,z,p) -> mumax * S[2,:] ./ KM ],")
             println(e)
         end
     end
@@ -51,7 +51,7 @@ function checkParameters(p)
         try srcX[i](Sto,Xto,t,p)
         catch e
             paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
-            The inputs to each function should be (S,X,p) \n
+            The inputs to each function should be (St,Xt,p) \n
                 For example, if there are two particulates you might use:
                     srcX=[(S, X, t, p) -> -b*X[1,:],
                          (S, X, t, p) ->  b*X[1,:]],")
@@ -63,7 +63,7 @@ function checkParameters(p)
         try srcS[i](Sto,Xto,t,p)
         catch e
             paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
-            The inputs to each function should be (S,X,p) \n
+            The inputs to each function should be (St,Xt,p) \n
                 For example, if there are two particulates you might use:
                     srcS=[(S, X, t, p) -> -b*X[1,:],
                           (S, X, t, p) ->  b*X[1,:]],")

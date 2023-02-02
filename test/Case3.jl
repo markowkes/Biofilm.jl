@@ -41,7 +41,7 @@ p = param(
     Yxs=[0.378, 0],     # Biomass yield coefficient on substrate
     Daq=[1.38e-4],      # Substrate diffusion through boundary layer
     De=[6.9E-5],        # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
+    srcS=[(St,Xt,t,p) -> 0.0],     # Source of substrates
     
     # --------------- #
     # Tank Parameters #

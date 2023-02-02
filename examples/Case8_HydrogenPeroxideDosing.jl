@@ -32,8 +32,8 @@ p = param(
     srcX=[(S, X, t, p) -> -k_dis*X[1,:].*S[2,:], 
           (S, X, t, p) -> +k_dis*X[1,:].*S[2,:]],
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (Km .+ S[1,:]), 
-        (S,X,Lf,t,z,p) -> zeros(size(S[1,:])) ],
+    mu=[(St,Xt,Lf,t,z,p) -> mumax * S[1,:] ./ (Km .+ S[1,:]), 
+        (St,Xt,Lf,t,z,p) -> zeros(size(S[1,:])) ],
     
     # -------------------- #
     # Substrate Parameters #

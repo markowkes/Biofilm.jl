@@ -62,9 +62,9 @@ p = param(
            0.00    0.584   -1.645],    # SRB uses sulfate and produces sulfide
     Daq=[1.51e-4,8e-5,1.21e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5,4e-5,6.04e-5],     # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0,
-          (S,X,t,p) -> 0.0,       # Source of substrates
-          (S,X,t,p) -> 0.0],
+    srcS=[(St,Xt,t,p) -> 0.0,
+          (St,Xt,t,p) -> 0.0,       # Source of substrates
+          (St,Xt,t,p) -> 0.0],
            
     
     # --------------- #
