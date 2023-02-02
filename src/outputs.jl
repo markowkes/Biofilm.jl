@@ -49,7 +49,7 @@ end
 
 # Make plots
 function makePlots(t,Xt,St,Pb,Sb,Lf,p)
-    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,srcX,optionalPlot = p 
+    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,srcX,optionalPlot,plotSize = p 
 
     # Adjust names to work with legends
     Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
@@ -118,7 +118,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     # Put plots together
     myplt=plot(p1,p2,p3,p4,p5,p6,
         layout=(2,3),
-        size=(1600,1000),
+        size=plotSize,
         plot_title=@sprintf("%s : t = %.2f",Title,t[end]),
         #plot_titlevspan=0.5,
         left_margin=10mm, 

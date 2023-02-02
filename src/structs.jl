@@ -10,6 +10,7 @@ using Parameters
     makePlots :: Bool = true   # Make plots during simulation 
     discontinuityPeriod :: Float64 = Inf # Period between discontinuites 
     optionalPlot :: String = "growthrate" # What to put in 6th plot
+    plotSize :: Tuple{Int64, Int64} = (1600,1000) # Plot size
 
     # Names
     Title :: String            # Description of case (used on plots)
