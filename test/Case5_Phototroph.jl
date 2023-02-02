@@ -32,9 +32,9 @@ p = param(
     Pbo=[0.2], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5], # Particulate densities
     Kdet=100.0, # Particulates detachment coefficient
-    srcX=[(S, X, t, p) -> 0.0], # Source of particulates
+    srcX=[(St, Xt, t, p) -> 0.0], # Source of particulates
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> mumax*light(t,z,Lf)],
+    mu=[(St, Xt, Lf, t, z, p) -> mumax*light(t,z,Lf)],
     discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
 
     # -------------------- #

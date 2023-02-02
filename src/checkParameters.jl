@@ -53,8 +53,8 @@ function checkParameters(p)
             paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (St,Xt,p) \n
                 For example, if there are two particulates you might use:
-                    srcX=[(S, X, t, p) -> -b*X[1,:],
-                         (S, X, t, p) ->  b*X[1,:]],")
+                    srcX=[(St, Xt, t, p) -> -b*X[1,:],
+                         (St, Xt, t, p) ->  b*X[1,:]],")
             println(e)
         end
     end
@@ -65,8 +65,8 @@ function checkParameters(p)
             paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
             The inputs to each function should be (St,Xt,p) \n
                 For example, if there are two particulates you might use:
-                    srcS=[(S, X, t, p) -> -b*X[1,:],
-                          (S, X, t, p) ->  b*X[1,:]],")
+                    srcS=[(St, Xt, t, p) -> -b*X[1,:],
+                          (St, Xt, t, p) ->  b*X[1,:]],")
             println(e)    
         end
     end

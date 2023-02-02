@@ -24,11 +24,11 @@ p = param(
     Pbo=[0.2/2,0.2/2], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=50.0, # Particulates detachment coefficient
-    srcX=[(S, X, t, p) -> 0.0, # Source of particulates
-         (S, X, t, p) -> -10*S[1,:]], # dies near oxygen
+    srcX=[(St, Xt, t, p) -> 0.0, # Source of particulates
+         (St, Xt, t, p) -> -10*S[1,:]], # dies near oxygen
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
-        (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], # SRB
+    mu=[(St, Xt, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
+        (St, Xt, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))], # SRB
 
     # -------------------- #
     # Substrate Parameters #
