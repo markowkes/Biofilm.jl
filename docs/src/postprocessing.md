@@ -7,11 +7,11 @@ When a simulation completes the solver outputs solution data that can be postpro
 
 ## Using the simulation outputs
 
-When a simulation is executed using `t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p)`, which is a line of code within each of the Case files solver will produce all the outputs described below
+When a simulation is executed using `t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p)`, which is a line of code within each of the Case files solver will produce all the outputs described below
 - `t` - array of the solution times
 - `zm` - array of the biofilm grid locations at the end of the simulation `t[end]`
-- `X=X(t)` - array of the particulate concentrations within the tank as a function of time
-- `S=S(t)` - array of the substrate concentrations within the tank as a function of time
+- `Xt=Xt(t)` - array of the particulate concentrations within the tank as a function of time
+- `St=St(t)` - array of the substrate concentrations within the tank as a function of time
 - `Pb=Pb(z)` - array of the particulate volume fractions within the biofilm as a function of location within biofilm at the end of the simulation
 - `Sb=Sb(z)` - array of the substrate concentrations within the biofilm as a function of location within biofilm at the end of the simulation
 - `Lf=Lf(t)` - array of the biofilm thickness as a function of time
