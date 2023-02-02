@@ -106,7 +106,7 @@ function unpack_solution(sol,p,t)
     Pb=reshape(Pb,Nx,Nz)
     Sb=reshape(Sb,Ns,Nz)
     
-    return X,S,Pb,Sb,Lf
+    return Xt,St,Pb,Sb,Lf
 end
 
 """
