@@ -77,13 +77,13 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     yaxis!(L"\textrm{Biofilm~Thickness~} [μm]")
 
     # Biofilm particulate volume fractioin 
-    p4=plot(zm,Pb',label=Xs,ylim=pad_ylim(Pb))
+    p4=plot(1e6.*zm,Pb',label=Xs,ylim=pad_ylim(Pb))
     #p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Particulate~Volume~Fraction~[-]}")
     
     # Biofilm substrate concentration
-    p5=plot(zm,Sb',label=Ss,ylim=pad_ylim(Sb))
+    p5=plot(1e6.*zm,Sb',label=Ss,ylim=pad_ylim(Sb))
     xaxis!(L"\textrm{Thickness~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Substrate~Concentration~} [g/m^3]")
 
@@ -95,7 +95,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
             Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
         end
         μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
-        p6=plot(zm,μb',label=Xs,ylim=pad_ylim(μb))
+        p6=plot(1e6.*zm,μb',label=Xs,ylim=pad_ylim(μb))
         xaxis!(L"\textrm{Thickness~} [\mu m]")
         yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
 
@@ -108,7 +108,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
                 srcs[j,i]=srcX[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]
             end
         end
-        p6=plot(zm,srcs',label=Xs)
+        p6=plot(1e6.*zm,srcs',label=Xs)
         xaxis!(L"\textrm{Thickness~} [\mu m]")
         yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot s]")
     else
