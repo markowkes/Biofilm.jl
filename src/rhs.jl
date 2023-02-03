@@ -48,8 +48,8 @@ function dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g)
     dXt=similar(Xt)
     for j in 1:Nx
         dXt[j] = ( μt[j]*Xt[j]             # Growth
-                - Q*Xt[j]/V               # Flow out
-                + Vdet*A*Xb[j,end]/V     # From biofilm
+                - Q*Xt[j]/V                # Flow out
+                + Vdet*A*Xb[j,end]/V       # From biofilm
                 + srcX[j](St,Xt,t,p)[1] )  # Source term
     end
     return dXt
@@ -60,11 +60,11 @@ function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)
     @unpack Ns,Q,Sin,srcS,V,A,Yxs = p
     dSt = zeros(Ns); 
     for k in 1:Ns                                 
-        dSt[k] = ( Q.*Sin[k](t)/V              # Flow in
-                - Q.*St[k]     /V              # Flow out
-                - A.*fluxS[k,end]/V           # Flux into biofilm
-                - sum(μt.*Xt./Yxs[:,k])        # Used by growth
-                + srcS[k](St,Xt,t,p)[1] )       # Substrate source
+        dSt[k] = ( Q.*Sin[k](t)/V          # Flow in
+                - Q.*St[k]     /V          # Flow out
+                - A.*fluxS[k,end]/V        # Flux into biofilm
+                - sum(μt.*Xt./Yxs[:,k])    # Used by growth
+                + srcS[k](St,Xt,t,p)[1] )  # Substrate source
         #if p.neutralization == true
         #    dS(k) = dS(k) - p.kB(k)*p.kdis(k)*p.rho(1)*Pb(1,end); # Neutralization
         #end
@@ -81,7 +81,7 @@ function dPbdt(t,μb,Sb,Pb,fluxPb,p,g)
     Source = zeros(Nx,Nz)
     for j in 1:Nx
         for i in 1:Nz
-            Source[j,i] = srcX[j](Sb[:,i],Pb[:,i].*rho[:],t,p)[1]/rho[j]
+            Source[j,i] = srcX[j](Sb[:,i],Pb[:,i].*rho[:],t,p)[1]/rho[j] # Source
         end
     end
     dPb  = growth - netFlux + Source;
@@ -104,7 +104,7 @@ function dSbdt(t,μb,Sb,Xb,fluxS,p,g)
     Source = zeros(Ns,Nz)
     for k in 1:Ns
         for i in 1:Nz
-            Source[k,i] = srcS[k](Sb[:,i],Xb[:,i],t,p)[1]
+            Source[k,i] = srcS[k](Sb[:,i],Xb[:,i],t,p)[1] # Source
         end
     end
     dSb = netFlux - growth + Source
@@ -115,7 +115,7 @@ end
 
 # RHS of biofilm thickness
 function dLfdt(V,Vdet)
-    Vfilm = V[end]          # Growth velocity at top of biofilm
+    Vfilm = V[end]        # Growth velocity at top of biofilm
     dLf = Vfilm - Vdet    # Surface Velocity 
     return [dLf]
 end
