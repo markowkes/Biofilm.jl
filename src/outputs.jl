@@ -56,10 +56,8 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     Ns==1 ? Ss=SNames[1] : Ss=reshape(SNames,1,length(SNames))
 
     # Compute grid
-    z=range(0.0,Lf[end],Nz+1)
-    zm=0.5*(z[1:Nz]+z[2:Nz+1])
-    dz=z[2]-z[1]
-    g=biofilmGrid(z,zm,dz)
+    g=computeGrid(Lf[end],p)
+    @unpack zm = g 
 
     # Tank particulate concentration
     p1=plot(t,Xt',label=Xs,ylim=pad_ylim(Xt))
@@ -138,11 +136,9 @@ function makeBiofilmPlots(t,Pb,Sb,Lf,p,plotSize)
     Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
     Ns==1 ? Ss=SNames[1] : Ss=reshape(SNames,1,length(SNames))
 
-    # Package grid
-    z=range(0.0,Lf[end],Nz+1)
-    zm=0.5*(z[1:Nz]+z[2:Nz+1])
-    dz=z[2]-z[1]
-    g=biofilmGrid(z,zm,dz)
+    # Create grid
+    g=computeGrid(Lf[end],p)
+    @unpack zm = g
 
     # Make plots
     p1=plot(1e6.*zm,Pb',label=Xs,ylim=pad_ylim(Pb))

@@ -20,10 +20,7 @@ function biofilmRHS!(dsol,sol,p_r,t)
     end
 
     # Update grid
-    z=range(0.0,Lf,Nz+1)
-    zm=0.5*(z[1:Nz]+z[2:Nz+1])
-    dz=z[2]-z[1]
-    g=biofilmGrid(z,zm,dz)
+    g=computeGrid(Lf,p)
 
     # Compute intermediate variables 
     fluxS = computeFluxS(St,Sb,p,g)           # Flux of substrate in biofilm

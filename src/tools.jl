@@ -1,6 +1,22 @@
-# Convert solution (1D vec) into more meaningful dependent variables
-# ## This method is optimized for plotting ##
-# t,X,S,Lf = f(t), Pb,Sb = f(z)
+"""
+    computeGrid(Lf,p)
+
+Creates a grid for biofilm of thickness Lf
+"""
+function computeGrid(Lf,p)
+    @unpack Nz = p
+    z=range(0.0,Lf,Nz+1)
+    zm=0.5*(z[1:Nz]+z[2:Nz+1])
+    dz=z[2]-z[1]
+    return biofilmGrid(z,zm,dz)
+end
+
+"""
+    t,X,S,Lf = f(t), Pb,Sb = f(z)
+Convert solution (1D vec) into more meaningful dependent variables
+## This method is optimized for plotting ##
+
+"""
 function unpack_solutionForPlot(sol,p,r)
     @unpack Nx,Ns,Nz=p
     t=sol.t
