@@ -116,29 +116,39 @@ end
 Take solution from biofilm solver and outputs variabes and a plot of biofilm variables.
 
 """
-function analyzeBiofilm(sol,p,t; makePlot=false)
+function analyzeBiofilm(sol,p,t; makePlot=false, plotSize=(1600,500))
 
     @unpack Nx,Ns,Nz,XNames,SNames,Title = p
 
     println("Analyzing ",Title)
 
+    # Preallocate arrays for output 
+    Xtout =  Array{Float64}(undef,p.Nx,length(t))
+    Stout =  Array{Float64}(undef,p.Ns,length(t))
+    Lfout = Vector{Float64}(undef,     length(t))
+
     # Print titles to REPL
     printBiofilmTitles(p)
     
-    for tn in t
+    for n in eachindex(t)
         # Unpack solution 
-        Xt,St,Pb,Sb,Lf=unpack_solution(sol,p,tn)
+        Xt,St,Pb,Sb,Lf=unpack_solution(sol,p,t[n])
+
+        # Store in output arrays
+        Xtout[:,n] .= Xt[:]
+        Stout[:,n] .= St[:]
+        Lfout[  n]  = Lf[1] 
 
         # Print values to REPL
-        printBiofilmValues(tn,Xt,St,Pb,Sb,Lf,p)
+        printBiofilmValues(t[n],Xt,St,Pb,Sb,Lf,p)
 
         # Make plot of biofilm variables at this time
         if makePlot
-            makeBiofilmPlots(tn,Pb,Sb,Lf,p)
+            makeBiofilmPlots(t[n],Pb,Sb,Lf,p,plotSize)
         end
     end
 
-    return nothing
+    return Xtout, Stout, Lfout
 end
 
 function printBiofilmTitles(p)
