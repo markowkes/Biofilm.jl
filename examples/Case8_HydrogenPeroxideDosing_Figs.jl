@@ -34,7 +34,7 @@ p = param(
     # Particulate Parameters #
     # ---------------------- #
     XNames=["Live","Dead"], # Particulate names
-    Xo=[1.0,0.0], # Tank particulate concentration initial condition(s)
+    Xto=[1.0,0.0], # Tank particulate concentration initial condition(s)
     Pbo=[0.08,0.0], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5], # Particulate densities
     Kdet=1e4, # Particulates detachment coefficient
@@ -50,7 +50,7 @@ p = param(
     SNames=["Glucose","Hydrogen Peroxide"], # Substrate names
     Sin=[(t) -> GlucoseIn,    # Substrate inflow (can be function of time)
          (t) -> dose1*smoothHeaviside(t,2.0)+dose2*smoothHeaviside(t,6.0)],
-    So=[100.0,0.0],  # Tank substrate concentration initial condition(s)
+    Sto=[100.0,0.0],  # Tank substrate concentration initial condition(s)
     Sbo=[0.0,0.0], # Biofilm substrates concentration initial condition(s)
     # Biomass yield coefficient on substrate
     #     Glucose   H. Per.
