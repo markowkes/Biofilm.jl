@@ -1,3 +1,6 @@
 /Manifest.toml
+# docs local build
 docs/build/
+# Output files
 *.pdf
+*.jld2
