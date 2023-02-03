@@ -64,7 +64,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     # Tank particulate concentration
     p1=plot(t,Xt',label=Xs,ylim=pad_ylim(Xt))
     xaxis!(L"\textrm{Time~[days]}")
-    yaxis!(L"\textrm{Tank~Biomass~Conc.~} [g/m^3]")
+    yaxis!(L"\textrm{Tank~Particulate~Conc.~} [g/m^3]")
 
     # Tank substrate concentration
     p2=plot(t,St',label=Ss,ylim=pad_ylim(St))
@@ -79,12 +79,12 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     # Biofilm particulate volume fractioin 
     p4=plot(1e6.*zm,Pb',label=Xs,ylim=pad_ylim(Pb))
     #p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
+    xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
     
     # Biofilm substrate concentration
     p5=plot(1e6.*zm,Sb',label=Ss,ylim=pad_ylim(Sb))
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
+    xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
     yaxis!(L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")
 
     # Optional 6th plot
@@ -96,7 +96,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
         end
         μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
         p6=plot(1e6.*zm,μb',label=Xs,ylim=pad_ylim(μb))
-        xaxis!(L"\textrm{Thickness~} [\mu m]")
+        xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
         yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
 
     elseif optionalPlot == "source"
@@ -109,7 +109,7 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
             end
         end
         p6=plot(1e6.*zm,srcs',label=Xs)
-        xaxis!(L"\textrm{Thickness~} [\mu m]")
+        xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
         yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
     else
         p6=[]
@@ -131,8 +131,8 @@ function makePlots(t,Xt,St,Pb,Sb,Lf,p)
 end
 
 # Make plots
-function makeBiofilmPlots(t,Pb,Sb,Lf,p)
-    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,mu,rho = p 
+function makeBiofilmPlots(t,Pb,Sb,Lf,p,plotSize)
+    @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,mu,rho,optionalPlot = p 
 
     # Adjust names to work with legends
     Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
@@ -145,34 +145,52 @@ function makeBiofilmPlots(t,Pb,Sb,Lf,p)
     g=biofilmGrid(z,zm,dz)
 
     # Make plots
-    p1=plot(zm,Pb',label=Xs,ylim=pad_ylim(Pb))
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Particulate~Volume~Fraction~[-]}")
+    p1=plot(1e6.*zm,Pb',label=Xs,ylim=pad_ylim(Pb))
+    xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
+    yaxis!(L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
     
-    p2=plot(zm,Sb',label=Ss,ylim=pad_ylim(Sb))
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Substrate~Concentration~} [g/m^3]")
+    p2=plot(1e6.*zm,Sb',label=Ss,ylim=pad_ylim(Sb))
+    xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
+    yaxis!(L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")
 
-    # Particulate growthrates vs depth
-    Xb=similar(Pb)
-    for j=1:Nx
-        Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
+    # Optional 3th plot
+    if optionalPlot == "growthrate"
+        # Particulate growthrates vs depth
+        Xb=similar(Pb)
+        for j=1:Nx
+            Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
+        end
+        μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
+        p3=plot(1e6.*zm,μb',label=Xs,ylim=pad_ylim(μb))
+        xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
+        yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
+
+    elseif optionalPlot == "source"
+
+        # Particulate source term vs depth
+        srcs=similar(Pb)
+        for i=1:Nz
+            for j=1:Nx
+                srcs[j,i]=srcX[j](Sb[:,i],Pb[:,i]*rho[j],t,p)[1]
+            end
+        end
+        p3=plot(1e6.*zm,srcs',label=Xs)
+        xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
+        yaxis!(L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
+    else
+        p3=[]
     end
-    μb    = computeMu_biofilm(Sb,Xb,Lf,t,p,g)   # Growthrates in biofilm
-    p3=plot(zm,μb',label=Xs,ylim=pad_ylim(μb))
-    xaxis!(L"\textrm{Thickness~} [\mu m]")
-    yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
-    
 
     # Put plots together
     myplt=plot(p1,p2,p3,
         layout=(1,3),
-        size=(1600,500),
+        size=plotSize,
         plot_title=@sprintf("%s : t = %.2f",Title,t[end]),
         #plot_titlevspan=0.5,
         left_margin=10mm, 
         bottom_margin=10mm,
         foreground_color_legend = nothing,
+        legend = :outertop,
     )
     display(myplt)
     return
