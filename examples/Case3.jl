@@ -61,3 +61,6 @@ p = param(
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results
+
+# Save output
+savefig("Case3.pdf")
