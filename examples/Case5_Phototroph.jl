@@ -95,32 +95,55 @@ savefig("Case5.pdf")
 ## Postprocessing Results 
 
 # Transient quantities
+rectangle(w, h, x, y) = Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
 # Times to analyze solution 
 tout = 48.0:0.01:50.0; 
 # Get solution at certain times
 Xtout,Stout,Lfout = analyzeBiofilm(sol,p,tout)
+# Function to plot when the light is on
+function plot_light()
+    plot(rectangle(0.5,1000.0,48.25,0.0), 
+        opacity=.2, 
+        fillcolor=:yellow,
+        linecolor=:yellow,
+        )
+    plot!(rectangle(0.5,1000.0,49.25,0.0), 
+        opacity=.2, 
+        fillcolor=:yellow,
+        linecolor=:yellow,
+        )
+end
 # Plot tank particulate concentration versus time 
-plot(tout,Xtout',
+plot_light()
+plot!(tout,Xtout',
+    linecolor=:blue,
     xlabel=("Time [days]"),
     ylabel=("Phototroph Conc. [g/m³]"),
     legend=false,
     size=(300,300),
+    ylims=(minimum(Xtout)-0.001,maximum(Xtout)+0.001),
     )
 savefig("Case5_Xt.pdf")
 # Plot tank substrate concentration versus time 
-plot(tout,Stout',
+plot_light()
+plot!(tout,Stout',
+    linecolor=:blue,
     xlabel=("Time [days]"),
     ylabel=("Oxygen Conc. [g/m³]"),
     legend=false,
     size=(300,300),
+    ylims=(minimum(Stout)-0.1,maximum(Stout)+0.1),
     )
 savefig("Case5_St.pdf")
 # Plot biofilm thickness versus time 
-plot(tout,1e6.*Lfout,
+plot_light()
+plot!(tout,1e6.*Lfout,
+    linecolor=:blue,
     xlabel=("Time [days]"),
     ylabel=("Biofilm Thickness [μm]"),
     legend=false,
     size=(300,300),
+    ylims=(minimum(1e6*Lfout)-2,maximum(1e6*Lfout)+2),
     )
 savefig("Case5_Lf.pdf")
 
