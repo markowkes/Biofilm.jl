@@ -6,6 +6,11 @@ global_logger(TerminalLogger())
 using DifferentialEquations
 using UnPack
 
+"""
+    BiofilmSolver(p::param)
+
+Take parameters defining a biofilm case and computes solution
+"""
 function BiofilmSolver(p::param)
 
     println("Starting Solver ...")
