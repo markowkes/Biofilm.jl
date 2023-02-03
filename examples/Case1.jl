@@ -13,6 +13,7 @@ p = param(
     tFinal=1,       # Simulation time [days]
     tol=1e-2,       # Tolerance
     outPeriod=0.1,  # Time between outputs [days]
+    plotSize=(900,600), # Plot size [pixels]
 
     # ---------------------- #
     # Particulate Parameters #
