@@ -4,3 +4,4 @@ docs/build/
 # Output files
 *.pdf
 *.jld2
+*.svg
