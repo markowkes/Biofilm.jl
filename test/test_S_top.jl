@@ -6,64 +6,78 @@
 
 using Biofilm
 
-# Constants used for growthrates of particulate(s)
-mumax = 20;
-KM = 3;
+function test_S_top()
 
-# Define a structure to hold all the parameters
-p = param(
-    # --------------------- #
-    # Simulation Parameters #
-    # --------------------- #
-    Title="Zero LL Test",
-    tFinal=1,       # Simulation time [days]
-    tol=1e-2,       # Tolerance
-    outPeriod=0.1,  # Time between outputs [days]
-    makePlots=false,
+    # Constants used for growthrates of particulate(s)
+    mumax = 20;
+    KM = 3;
 
-    # ---------------------- #
-    # Particulate Parameters #
-    # ---------------------- #
-    XNames=["Bug"],     # Particulate names
-    Xto=[10.0],          # Tank particulate concentraion initial condition(s)
-    Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
-    rho=[2.0E4],        # Particulate densities
-    Kdet=20000.0,       # Particulates detachment coefficient
-    srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
-    # Growthrates for each particulate (constants defined above!)
-    mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:])],
+    # Define a structure to hold all the parameters
+    p = param(
+        # --------------------- #
+        # Simulation Parameters #
+        # --------------------- #
+        Title="Zero LL Test",
+        tFinal=1,       # Simulation time [days]
+        tol=1e-2,       # Tolerance
+        outPeriod=0.1,  # Time between outputs [days]
+        makePlots=false,
 
-    # -------------------- #
-    # Substrate Parameters #
-    # -------------------- #
-    SNames=["Oxygen"],  # Substrate names
-    Sin=[(t) -> 100],   # Substrate inflow (can be function of time)
-    Sto=[10.0],          # Tank substrate concentraion initial condition(s)
-    Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
-    Yxs=[2.646],        # Biomass yield coefficient on substrate
-    Daq=[4.0E-5],       # Substrate diffusion through boundary layer
-    De=[6.9E-5],        # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
-    
-    # --------------- #
-    # Tank Parameters #
-    # --------------- #
-    V=0.1,        # Volume of tank [m³]
-    A=1,          # Surface area of biofilm [m²]
-    Q=1,          # Flowrate through tank [m³/d]
+        # ---------------------- #
+        # Particulate Parameters #
+        # ---------------------- #
+        XNames=["Bug"],     # Particulate names
+        Xto=[10.0],          # Tank particulate concentraion initial condition(s)
+        Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
+        rho=[2.0E4],        # Particulate densities
+        Kdet=20000.0,       # Particulates detachment coefficient
+        srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
+        # Growthrates for each particulate (constants defined above!)
+        mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:])],
 
-    # ------------------ #
-    # Biofilm Parameters #
-    # ------------------ #
-    Nz=50,          # Number of grid points in biofilm
-    Lfo=1.0E-5,     # Biofilm initial thickness [m]
-    LL=50e-6,   # Boundary layer thickness [m]
-)
+        # -------------------- #
+        # Substrate Parameters #
+        # -------------------- #
+        SNames=["Oxygen"],  # Substrate names
+        Sin=[(t) -> 100],   # Substrate inflow (can be function of time)
+        Sto=[10.0],          # Tank substrate concentraion initial condition(s)
+        Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
+        Yxs=[2.646],        # Biomass yield coefficient on substrate
+        Daq=[4.0E-5],       # Substrate diffusion through boundary layer
+        De=[6.9E-5],        # Substrate diffusion through biofilm     
+        srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
+        
+        # --------------- #
+        # Tank Parameters #
+        # --------------- #
+        V=0.1,        # Volume of tank [m³]
+        A=1,          # Surface area of biofilm [m²]
+        Q=1,          # Flowrate through tank [m³/d]
 
-# Compute S_top
-g = computeGrid(p.Lfo,p)
-S_top = Biofilm.computeS_top(p.Sto,Sb,p,g)
+        # ------------------ #
+        # Biofilm Parameters #
+        # ------------------ #
+        Nz=50,          # Number of grid points in biofilm
+        Lfo=1.0E-5,     # Biofilm initial thickness [m]
+        LL=50e-6,   # Boundary layer thickness [m]
+    )
 
-# Flux from tank/biofilm 
-Ftank = p.Daq[1]*(p.Sto[1] - S_top[1])/p.LL 
-Ffilm = p.De[1] *(S_top[1] - Sb[1,end])/(g.dz/2)
+    # Run simulation 
+    t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
+
+    # Compute S_top
+    g = computeGrid(p.Lfo,p)
+    S_top = Biofilm.computeS_top(p.Sto,Sb,p,g)
+
+    # Flux from tank/biofilm 
+    Ftank = p.Daq[1]*(p.Sto[1] - S_top[1])/p.LL 
+    Ffilm = p.De[1] *(S_top[1] - Sb[1,end])/(g.dz/2)
+
+    # Final values
+    computed1 = Ftank
+    computed2 = Ffilm
+
+    return computed1, computed2
+end
+
+computed1, computed2 = test_S_top()

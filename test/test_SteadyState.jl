@@ -4,14 +4,10 @@
 # -----------------------------------------------
 
 using Biofilm
+using Statistics
 using Printf
 
-# Loop over # grid points
-Nzs = [10,25,50,75,100]
-
-error = similar(Nzs,Float64)
-for n in eachindex(Nzs)
-
+function test_SteadyState()
     # Constants used for growthrates of particulate(s)
     mumax = 2000;
     KM = 2500;
@@ -22,7 +18,7 @@ for n in eachindex(Nzs)
         # Simulation Parameters #
         # --------------------- #
         Title="Diffusion Test",
-        tFinal=1,       # Simulation time [days]
+        tFinal=10,       # Simulation time [days]
         tol=1e-4,       # Tolerance
         outPeriod=1.0,  # Time between outputs [days]
         makePlots=false,
@@ -47,8 +43,8 @@ for n in eachindex(Nzs)
         Sto=[25.0],          # Tank substrate concentraion initial condition(s)
         Sbo=[0.0],           # Biofilm substrates concentration initial condition(s)
         Yxs=[0.5],           # Biomass yield coefficient on substrate
-        Daq=[400.0],        # Substrate diffusion through boundary layer
-        De =[100],        # Substrate diffusion through biofilm     
+        Daq=[100.0],         # Substrate diffusion through boundary layer
+        De =[100.0],         # Substrate diffusion through biofilm     
         srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
         
         # --------------- #
@@ -61,7 +57,7 @@ for n in eachindex(Nzs)
         # ------------------ #
         # Biofilm Parameters #
         # ------------------ #
-        Nz=Nzs[n],          # Number of grid points in biofilm
+        Nz=50,          # Number of grid points in biofilm
         Lfo=5.0E-6,     # Biofilm initial thickness [m]
         LL=1e-4,         # Boundary layer thickness [m]
     )
@@ -69,40 +65,24 @@ for n in eachindex(Nzs)
     t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 
     # Analytic Result
-    begin
-        St_ana=[0.0]
-        err = 1.0
-        while abs(err) > 1e-12
-            mu = p.mu[1](St_ana,Xt[:,end],Lf[end],t[end],zm,p)[1]
-            Lf = mu / p.Kdet
-            Vdet = mu * Lf 
-            x = p.Yxs[1]*(p.Sin[1](t[end]) - St_ana[1])
-            LHS = p.Q * x 
-            RHS = Vdet*p.A*Pb[1,end]*p.rho[1] + mu*x*p.V
-            err = LHS - RHS
-            St_ana[1] += 0.01*err
-        end
+    St_ana=[1.0]
+    Xb_ana = mean(Pb)*p.rho[1]
+    Res = 1.0
+    g = Biofilm.computeGrid(Lf[end],p)
+    while abs(Res) > 1e-10
+        # Note that only value of St matters due to definition of mu
+        mu_ana = p.mu[1](St_ana,Xt[:,end],Lf[end],t[end],zm,p)[1]
+        Lf_ana = mu_ana / p.Kdet
+        Xt_ana = p.Yxs[1]*p.Q/(mu_ana*p.V)*(p.Sin[1](t[end]) - St_ana[1]) - Xb_ana*Lf_ana*p.A/p.V
+        Res = mu_ana*Xt_ana - p.Q*Xt_ana/p.V + mu_ana*Lf_ana*p.A*Xb_ana/p.V 
+        St_ana[1] -= 0.001*Res
     end
-    
-    # Compare computed and analytic 
-    error[n] = abs(St[1,end] - St_ana[1])
-    @printf("Computed: %6.3f, Analytic %6.3f, Error = %6.3g \n",St[1,end],St_ana[1],error[n])
-    
+
+    # Final values
+    computed = St[1,end]
+    analytic = St_ana[1]
+
+    return computed, analytic
 end
 
-
-for n in eachindex(Nzs)
-    @printf("Nz = %4i, Error = %6.3e \n", Nzs[n], error[n])
-end
-
-# using Plots
-# plot( Nzs, error, xaxis=:log, yaxis=:log)
-# plot!(Nzs, 10.0.*Nzs.^(-2))
-
-# Compute order (slope of line in log-log space)
-using Statistics
-x=log.(Nzs);    xbar = mean(x)
-y=log.(error);  ybar = mean(y)
-order = abs(sum((x.-xbar).*(y.-ybar))/sum((x.-xbar).^2))
-
-@printf("Order = %6.3f \n",order)
+computed, analytic = test_SteadyState()

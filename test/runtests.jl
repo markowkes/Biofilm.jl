@@ -16,17 +16,22 @@ end
             println("\n Running test_zeroLL\n ==============")
             include("test_zeroLL.jl")
             println("Checking result") 
-            @test S_top[1] ≈ St[end] atol=1e-12
+            @test computed ≈ analytic atol=1e-12
 
             println("\n Running test_S_top\n ==============")
             include("test_S_top.jl")
             println("Checking result") 
-            @test Ffilm ≈ Ftank atol=1e-12
+            @test computed1 ≈ computed2 atol=1e-12
 
             println("\n Running test_Diffusion\n ==============")
             include("test_Diffusion.jl")
             println("Checking result")
             @test order > 1.5
+
+            println("\n Running test_SteadyState\n ==============")
+            include("test_SteadyState.jl")
+            println("Checking result") 
+            @test computed ≈ analytic atol=1e-2
     #     end
     # end
 
