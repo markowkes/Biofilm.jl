@@ -32,6 +32,11 @@ end
             include("test_SteadyState.jl")
             println("Checking result") 
             @test computed ≈ analytic atol=1e-2
+
+            println("\n Running test_TimeIntegration\n ==============")
+            include("test_TimeIntegration.jl")
+            println("Checking result") 
+            @test error <= 1e-2
     #     end
     # end
 
