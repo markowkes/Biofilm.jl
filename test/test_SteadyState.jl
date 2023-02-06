@@ -82,6 +82,9 @@ function test_SteadyState()
     computed = St[1,end]
     analytic = St_ana[1]
 
+    # % difference 
+    println("% difference = ",abs(computed - analytic)/analytic*100)
+
     return computed, analytic
 end
 

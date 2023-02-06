@@ -66,9 +66,10 @@ function test_TimeIntegration()
     )
 
     t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-
+    
     # Analytic Result
-    St_ana = (p.Sto[1] - p.Sin[1](t[end])).*exp.(-p.Q/p.V.*t).+p.Sin[1](t[end])
+    Sin = p.Sin[1](t[end])
+    St_ana = Sin .+ (p.Sto[1] - Sin).*exp.(-p.Q/p.V.*t)
 
     # Plots of solutions and error
     # fig = plot(t,St',label="Simulated")
@@ -79,6 +80,8 @@ function test_TimeIntegration()
     # display(fig)
 
     error = maximum(abs.(St_ana .- St'))
+
+    println("Maximum relative error = ",error/Sin)
 
     return error
 end
