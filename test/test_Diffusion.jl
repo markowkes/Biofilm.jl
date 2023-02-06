@@ -35,9 +35,9 @@ for n in eachindex(Nzs)
         Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
         rho=[2.0E4],        # Particulate densities
         Kdet=20000.0,       # Particulates detachment coefficient
-        srcX=[(St,Xt,t,p) -> 0.0],     # Source of particulates
+        srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
         # Growthrates for each particulate (constants defined above!)
-        mu=[(St,Xt,Lf,t,z,p) -> (mumax * St[1,:]) ./ (KM)],
+        mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM)],
 
         # -------------------- #
         # Substrate Parameters #
@@ -49,7 +49,7 @@ for n in eachindex(Nzs)
         Yxs=[0.5],           # Biomass yield coefficient on substrate
         Daq=[4.0E-5],        # Substrate diffusion through boundary layer
         De =[1.0E-5],        # Substrate diffusion through biofilm     
-        srcS=[(St,Xt,t,p) -> 0.0],     # Source of substrates
+        srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
         
         # --------------- #
         # Tank Parameters #
