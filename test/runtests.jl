@@ -1,8 +1,11 @@
 using Biofilm
 using Test
+using Printf
 
 function testValue(value,expected,tol)
-    return maximum(abs.(value.-expected)) <= tol 
+    error = maximum(abs.(value.-expected))
+    @printf("Result has error of = %6.4g \n",error)
+    return  error <= tol 
 end
 
 @testset "Unit Tests" begin
