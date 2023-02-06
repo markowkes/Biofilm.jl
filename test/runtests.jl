@@ -5,16 +5,34 @@ function testValue(value,expected,tol)
     return maximum(abs.(value.-expected)) <= tol 
 end
 
-@testset "Biofilm.jl" begin
+@testset "Unit Tests" begin
 
-    # Test Caes 1
+    println("\n Running test_zeroLL\n ==============")
+    include("test_zeroLL.jl")
+    println("Checking result") 
+    @test testValue(S_top[1], St[end],1e-12)
+
+    println("\n Running test_S_top\n ==============")
+    include("test_S_top.jl")
+    println("Checking result") 
+    @test testValue(Ffilm,Ftank,1e-12)
+
+    println("\n Running test_Diffusion\n ==============")
+    include("test_Diffusion.jl")
+    println("Checking result")
+    @test order > 1.5
+
+end
+
+@testset "Examples" begin
+
     println("\n Running Case 1\n ==============")
     include("Case1.jl")
     println("Checking result")
     @test testValue(Xt[end],  256.87,0.1) && 
-          testValue(St[end],    2.92,0.1) &&
-          testValue(Lf[end],0.000309,1e-4)
-
+        testValue(St[end],    2.92,0.1) &&
+        testValue(Lf[end],0.000309,1e-4)
+      
     println("\n Running Case 2\n ==============")
     include("Case2.jl")
     println("Checking result")
