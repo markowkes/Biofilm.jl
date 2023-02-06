@@ -1,6 +1,20 @@
+"""
+    computeS_top(St,Sb,p)
+
+Compute substrate concentration at top of biofilm
+using flux matching between biofilm and boundary layer
+"""
+function computeS_top(St,Sb,p,g)
+    @unpack Nz,De,Daq,LL = p
+    @unpack dz = g
+    S_top= ( (Daq*(dz/2).*St+De*LL.*Sb[:,Nz])
+            ./ (Daq*(dz/2)+De*LL) )
+    return S_top 
+end
+
 # Fluxes of substrate due to diffusion: F=De*dSb/dz
 function computeFluxS(St,Sb,p,g)
-    @unpack Ns,Nz,De,Daq,LL = p
+    @unpack Ns,Nz,De = p
     @unpack dz = g
     fluxS = zeros(Ns,Nz+1); # Fluxes on faces of cells
     for i in 2:Nz  # Interior faces
@@ -8,8 +22,7 @@ function computeFluxS(St,Sb,p,g)
     end
     # Bottom boundary - no flux condition -> nothing to do
     # Top boundary - flux matching between biofilm and boundary layer 
-    S_top= ( (Daq*(dz/2).*St+De*LL.*Sb[:,Nz])
-            ./ (Daq*(dz/2)+De*LL) ) 
+    S_top = computeS_top(St,Sb,p,g)
     fluxS[:,Nz+1] .= De.*(S_top-Sb[:,Nz])/(dz/2)
     return fluxS
 end
