@@ -32,9 +32,9 @@ p = param(
     Pbo=[0.2], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5], # Particulate densities
     Kdet=100.0, # Particulates detachment coefficient
-    srcX=[(St, Xt, t, p) -> 0.0], # Source of particulates
+    srcX=[(S, X, t, p) -> 0.0], # Source of particulates
     # Growthrates for each particulate (constants defined above!)
-    mu=[(St, Xt, Lf, t, z, p) -> mumax*light(t,z,Lf)],
+    mu=[(S, X, Lf, t, z, p) -> mumax*light(t,z,Lf)],
     discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
 
     # -------------------- #
@@ -47,7 +47,7 @@ p = param(
     Yxs=[-0.52],     # Biomass yield coefficient on substrate
     Daq=[1.51e-4],      # Substrate diffusion through boundary layer
     De=[6.8E-5],        # Substrate diffusion through biofilm   
-    srcS=[(St,Xt,t,p) -> 0.0],     # Source of substrates  
+    srcS=[(S,X,t,p) -> 0.0],     # Source of substrates  
     
     # --------------- #
     # Tank Parameters #
