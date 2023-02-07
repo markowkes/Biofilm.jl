@@ -19,6 +19,6 @@ Documentation is available at: [https://markowkes.github.io/Biofilm.jl](https://
    * Activate package with `pkg> activate .`
    * Leave package manager by typing backspace `pkg> "backspace"`
 6) Run an example
-   * `julia> include("examples/Case1.jl")`
+   * `julia> include("examples/Case1.jl")`.  Note that the first time you run this command it will take a long time since it needs to compile all of the dependent packages. 
 
 Additional installation instructions are available at [https://markowkes.github.io/Biofilm.jl/installation](https://markowkes.github.io/Biofilm.jl/installation)
