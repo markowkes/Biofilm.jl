@@ -152,3 +152,52 @@ function movieBiofilm(sol,p,times; filename="anim.gif", fps=20)
     # Save annimation 
     gif(anim,filename,fps=fps)
 end
+
+"""
+    sol2csv(sol,filename,p)
+Saves the solution of biofilm problem (sol) to a CSV file with name filename.
+"""
+function sol2csv(sol,filename,p)
+    @unpack Nx,Ns,Nz,XNames,SNames = p
+
+    # Open file 
+    open(filename, "w") do io
+        
+        # Write header 
+        ##############
+        write(io,"t,")
+        # Tank Particulates
+        for j = 1:Nx
+            write(io, XNames[j]*", ")
+        end
+        # Tank Substrates
+        for j = 1:Ns
+            write(io, SNames[j]*", ")
+        end
+        # Biofilm Particulates
+        for j = 1:Nx
+            for i=1:Nz
+                write(io, XNames[j]*"_"*string(i)*", ")
+            end
+        end
+        # Biofilm Substrates
+        for j = 1:Ns
+            for i=1:Nz
+                write(io, SNames[j]*"_"*string(i)*", ")
+            end
+        end
+        # Biofilm thickness 
+        write(io,"Lf \n")
+
+        # Write values 
+        ##############
+        for n in 1:length(sol.t)
+            write(io, string(sol.t[n])*", ")
+            for i in 1:(Nx + Ns + Nx*Nz + Ns*Nz + 1)
+                write(io,string(sol.u[n][i])*", ")
+            end
+            write(io, "\n")
+        end
+    end;
+
+end
