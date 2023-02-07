@@ -8,17 +8,14 @@ Documentation is available at: [https://markowkes.github.io/Biofilm.jl](https://
 
 1) Install Julia
    * Follow instructions at [https://julialang.org/](https://julialang.org/)
-2) Clone Biofilm.jl with git
-   * `>> git clone https://github.com/markowkes/Biofilm.jl.git Biofilm.jl`
-3) Enter Biofilm.jl directory
-   * `>> cd Biofilm.jl`
-4) Start Julia
-   * `>> julia`
-5) Activate Biofilm.jl project 
-   * Enter package manager by typing square bracket: `julia> ]` 
-   * Activate package with `pkg> activate .`
-   * Leave package manager by typing backspace `pkg> "backspace"`
-6) Run an example
-   * `julia> include("examples/Case1.jl")`.  Note that the first time you run this command it will take a long time since it needs to compile all of the dependent packages. 
+2) Add Biofilm.jl package
+   * Start Julia from the terminal using `>> julia`
+   * Add Biofilm.jl using `julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")`.  Note this will take many minutes to complete as many dependent packages will need to be downloaded and compiled.
+3) Run an example
+   * Download [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing Save Link As. Save the file to your Downloads folder (or other location of your choice)
+   * In the terminal, change the directory to the location you downloaded Case1.jl e.g., `>> cd ~/Downloads`
+   * Start Julia in that directory using `>> julia`
+   * Run the example using `julia> include("Case1.jl")`.  Note that the first time you run this command it may take a long time since it needs to compile Biofilm.jl. 
+4) Edit Case 1 or try other [examples](https://markowkes.github.io/Biofilm.jl/examples/).
 
-Additional installation instructions are available at [https://markowkes.github.io/Biofilm.jl/installation](https://markowkes.github.io/Biofilm.jl/installation)
+More detailed [installation instructions](https://markowkes.github.io/Biofilm.jl/installation) are available in the documentation.
