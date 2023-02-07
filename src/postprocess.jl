@@ -168,22 +168,22 @@ function sol2csv(sol,filename,p)
         write(io,"t,")
         # Tank Particulates
         for j = 1:Nx
-            write(io, XNames[j]*", ")
+            write(io, XNames[j]*"_t, ")
         end
         # Tank Substrates
         for j = 1:Ns
-            write(io, SNames[j]*", ")
+            write(io, SNames[j]*"_t, ")
         end
         # Biofilm Particulates
         for j = 1:Nx
             for i=1:Nz
-                write(io, XNames[j]*"_"*string(i)*", ")
+                write(io, XNames[j]*"_b_"*string(i)*", ")
             end
         end
         # Biofilm Substrates
         for j = 1:Ns
             for i=1:Nz
-                write(io, SNames[j]*"_"*string(i)*", ")
+                write(io, SNames[j]*"_b_"*string(i)*", ")
             end
         end
         # Biofilm thickness 
