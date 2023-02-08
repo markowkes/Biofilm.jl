@@ -17,7 +17,7 @@ p = param(
     # ---------------------- #
     # Particulate Parameters #
     # ---------------------- #
-    XNames=["Bug"],     # Particulate names
+    XNames=["Aerobe"],     # Particulate names
     Xto=[10.0],         # Tank particulate concentration initial condition(s)
     Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.0E4],        # Particulate densities
