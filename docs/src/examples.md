@@ -40,10 +40,4 @@ This case shows how you can simulate a species that grows in light.  The light t
 ```
 that tells the solver the discontinuities can occur every 0.25 days. 
 
-## Case 6 - Three Species
-**Download link: [Case6_threeSpecies.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case6_threeSpecies.jl)** (right-click & Save Link As)
-
-## Case 7 - SOB & SRB
-**Download link: [Case7\_SOB\_SRB.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case7_SOB_SRB.jl)** (right-click & Save Link As)
-
 
