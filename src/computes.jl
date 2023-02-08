@@ -1,5 +1,5 @@
 """
-    computeS_top(St,Sb,p)
+    computeS_top(St,Sb,p,g)
 
 Compute substrate concentration at top of biofilm
 using flux matching between biofilm and boundary layer
