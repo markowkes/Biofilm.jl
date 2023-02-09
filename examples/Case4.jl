@@ -1,63 +1,73 @@
 using Biofilm 
 
 # Constants used for growthrates of particulate(s)
-mumax = 2000;
-KM = 2500;
-
-# Source term constants
-b=0.0
-
+KmB1 = 0.200; KmB3 = 11;  KmC2 = 20;  KI = 1.0;
+mumaxA = 0.4;  mumaxB = 0.672;  mumaxC = 10.46;
+D_O_SRB = 10.0
+D_SOB = 1e-2
+D_SRB = 1e-1
 # Define a structure to hold all the parameters
 p = param(
-     # --------------------- #
-     # Simulation Parameters #
-     # --------------------- #
-     Title="Multiple Particulates and Substrates Case",
-     tFinal=5,      # Simulation time [days]
-     tol=1e-4,      # Tolerance
-     outPeriod=0.5, # Time between outputs [days]
+    # --------------------- #
+    # Simulation Parameters #
+    # --------------------- #
+    Title="SOB-SRB Test Case",
+    tFinal=100,     # Simulation time [days]
+    tol=1e-4,       # Tolerance
+    outPeriod=1,   # Time between outputs [days]
+    plotPeriod=20,  # Time between plots [days] (make multiple of outPeriod!)
+    #optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
+    plotSize=(900,600), # Plot size [pixels]
 
-     # ---------------------- #
-     # Particulate Parameters #
-     # ---------------------- #
-     XNames=["Bug 1","Bug 2"], # Particulate names
-     Xto=[10.0,10.0], # Tank particulate concentration initial condition(s)
-     Pbo=[0.2,0.2], # Biofilm particulates volume fraction initial condition(s) 
-     rho=[3e5,3e5], # Particulate densities
-     Kdet=1900.0, # Particulates detachment coefficient
-     srcX=[(S, X, t, p) -> -b*X[1,:], # Source of particulates
-           (S, X, t, p) ->  b*X[1,:]],
-     # Growthrates for each particulate (constants defined above!)
-     mu=[(S, X, Lf, t, z, p) -> mumax * S[1,:] ./ KM 
-         (S, X, Lf, t, z, p) -> mumax * S[2,:] ./ KM ],
+    
+    # ---------------------- #
+    # Particulate Parameters #
+    # ---------------------- #
+    XNames=["SOB - Sulfide-Oxidizer","SRB - Sulfate-Reducer","Dead Bacteria"], # Particulate names
+    Xto=[1.0e-6,1.0e-6,0.0],  # Tank particulate concentration initial condition(s)
+    Pbo=[0.2/2,0.2/2,0.0], # Biofilm particulates volume fraction initial condition(s) 
+    rho=[2.5e5,2.5e5,2.5e5], # Particulate densities
+    Kdet=500.0, # Particulates detachment coefficient
+    srcX=[(S, X, t, p) -> - D_SOB*X[1,:]                                 ,  # SOB - slowly dies
+          (S, X, t, p) ->                - D_SRB*X[2,:] - D_O_SRB*S[1,:] ,  # SRB dies near oxygen and slowly dies
+          (S, X, t, p) -> + D_SRB*X[2,:] + D_SOB*X[1,:] + D_O_SRB*S[1,:] ], # Dead bacteria (opposite of above) 
+    # Growthrates for each particulate (constants defined above!)
+    mu=[(S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
+        (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI)) , # SRB
+        (S, X, Lf, t, z, p) -> 0.0*S[1,:] ] , # Dead
 
-     # -------------------- #
-     # Substrate Parameters #
-     # -------------------- #
-     SNames=["Substrate 1", "Substrate 2"], # Substrate names
-     Sin=[(t) -> 25,     # Substrate inflow (can be function of time)
-          (t) -> 25],
-     Sto=[25.0,25.0],    # Tank substrate concentration initial condition(s)
-     Sbo=[25.0,25.0],    # Biofilm substrates concentration initial condition(s)
-     Yxs=[0.5  0.0       # Biomass yield coefficient on substrate
-          0.0  0.278],  
-     Daq=[4.0e-5,6.0e-5], # Substrate diffusion through boundary layer
-     De=[1.0e-5,1.5e-5],  # Substrate diffusion through biofilm     
-     srcS=[(S,X,t,p) -> 0.0,
-           (S,X,t,p) -> 0.0],     # Source of substrates
-     # --------------- #
-     # Tank Parameters #
-     # --------------- #
-     V=0.1,        # Volume of tank [m³]
-     A=1,          # Surface area of biofilm [m²]
-     Q=1,          # Flowrate through tank [m³/d]
+    # -------------------- #
+    # Substrate Parameters #
+    # -------------------- #
+    SNames=["Oxygen","Sulfate","Hydrogen Sulfide"], # Substrate names
+    Sin=[(t) -> 8.6     # Substrate inflow (can be function of time)
+         (t) -> 48.0
+         (t) -> 0.0],
+    Sto=[8.6,48.0,0.0],   # Tank substrate concentration initial condition(s)
+    Sbo=[8.6,48.0,1e-5], # Biofilm substrates concentration initial condition(s)
+    # Biomass yield coefficient on substrate
+    #     oxygen  sulfate  Hy. sulfide
+    Yxs=[  0.058    0.0      0.09       # SOB uses oxygen and sulfide
+           0.00    0.584   -1.645       # SRB uses sulfate and produces sulfide
+           0.00     0.0      0.0 ],     # Dead not needed/used for growth
+    Daq=[1.51e-4,8e-5,1.21e-4],    # Substrate diffusion through boundary layer
+    De =[6.8e-5,4e-5,6.04e-5],     # Substrate diffusion through biofilm     
+    srcS=[(S,X,t,p) -> 0.0,
+          (S,X,t,p) -> 0.0,       # Source of substrates
+          (S,X,t,p) -> 0.0],
+    # --------------- #
+    # Tank Parameters #
+    # --------------- #
+    V=0.01,       # Volume of tank [m³]
+    A=1,          # Surface area of biofilm [m²]
+    Q=10,         # Flowrate through tank [m³/d]
 
-     # ------------------ #
-     # Biofilm Parameters #
-     # ------------------ #
-     Nz=50,          # Number of grid points in biofilm
-     Lfo=5.0e-6,     # Biofilm initial thickness [m]
-     LL=1.0e-4,      # Boundary layer thickness [m]
+    # ------------------ #
+    # Biofilm Parameters #
+    # ------------------ #
+    Nz=40,          # Number of grid points in biofilm
+    Lfo=5.0e-6,     # Biofilm initial thickness [m]
+    LL=2.0e-4,      # Boundary layer thickness [m]
 )
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
