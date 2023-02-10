@@ -28,13 +28,13 @@ p = param(
     Pbo=[0.2/2,0.2/2,0.0], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5,2.5e5], # Particulate densities
     Kdet=500.0, # Particulates detachment coefficient
-    srcX=[(S, X, t, p) -> - D_SOB*X[1,:]                                 ,  # SOB - slowly dies
-          (S, X, t, p) ->                - D_SRB*X[2,:] - D_O_SRB*S[1,:] ,  # SRB dies near oxygen and slowly dies
-          (S, X, t, p) -> + D_SRB*X[2,:] + D_SOB*X[1,:] + D_O_SRB*S[1,:] ], # Dead bacteria (opposite of above) 
+    srcX=[(S,X,Lf,t,z,p) -> - D_SOB*X[1,:]                                 ,  # SOB - slowly dies
+          (S,X,Lf,t,z,p) ->                - D_SRB*X[2,:] - D_O_SRB*S[1,:] ,  # SRB dies near oxygen and slowly dies
+          (S,X,Lf,t,z,p) -> + D_SRB*X[2,:] + D_SOB*X[1,:] + D_O_SRB*S[1,:] ], # Dead bacteria (opposite of above) 
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
-        (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI)) , # SRB
-        (S, X, Lf, t, z, p) -> 0.0*S[1,:] ] , # Dead
+    mu=[(S,X,Lf,t,z,p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])), # SOB
+        (S,X,Lf,t,z,p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI)) , # SRB
+        (S,X,Lf,t,z,p) -> 0.0*S[1,:] ] , # Dead
 
     # -------------------- #
     # Substrate Parameters #
@@ -52,9 +52,9 @@ p = param(
            0.00     0.0      0.0 ],     # Dead not needed/used for growth
     Daq=[1.51e-4,8e-5,1.21e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5,4e-5,6.04e-5],     # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0,
-          (S,X,t,p) -> 0.0,       # Source of substrates
-          (S,X,t,p) -> 0.0],
+    srcS=[(S,X,Lf,t,z,p) -> 0.0,
+          (S,X,Lf,t,z,p) -> 0.0,       # Source of substrates
+          (S,X,Lf,t,z,p) -> 0.0],
     # --------------- #
     # Tank Parameters #
     # --------------- #

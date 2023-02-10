@@ -48,25 +48,25 @@ function checkParameters(p)
     # Source
     t=0.0
     for i in 1:Nx
-        try srcX[i](Sto,Xto,t,p)
+        try srcX[i](Sto,Xto,Lfo,t,Lfo,p)
         catch e
             paramError("srcX should be an array of Nx=",Nx," functions providing the source of each particulate. 
             The inputs to each function should be (St,Xt,p) \n
                 For example, if there are two particulates you might use:
-                    srcX=[(S, X, t, p) -> -b*X[1,:],
-                         (S, X, t, p) ->  b*X[1,:]],")
+                    srcX=[(S,X,Lf,t,z,p) -> -b*X[1,:],
+                          (S,X,Lf,t,z,p) ->  b*X[1,:]],")
             println(e)
         end
     end
 
     for i in 1:Ns
-        try srcS[i](Sto,Xto,t,p)
+        try srcS[i](Sto,Xto,Lfo,t,Lfo,p)
         catch e
             paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
-            The inputs to each function should be (St,Xt,p) \n
+            The inputs to each function should be (St,Xt,t,z,p) \n
                 For example, if there are two particulates you might use:
-                    srcS=[(S, X, t, p) -> -b*X[1,:],
-                          (S, X, t, p) ->  b*X[1,:]],")
+                    srcS=[(S,X,Lf,t,z,p) -> -b*X[1,:],
+                          (S,X,Lf,t,z,p) ->  b*X[1,:]],")
             println(e)    
         end
     end

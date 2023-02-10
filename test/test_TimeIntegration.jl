@@ -34,7 +34,7 @@ function test_TimeIntegration()
         Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
         rho=[2.0E4],        # Particulate densities
         Kdet=20000.0,       # Particulates detachment coefficient
-        srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
+        srcX=[(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
         # Growthrates for each particulate (constants defined above!)
         mu=[(S,X,Lf,t,z,p) -> 0.0.*S[1,:]],
 
@@ -48,7 +48,7 @@ function test_TimeIntegration()
         Yxs=[0.5],           # Biomass yield coefficient on substrate
         Daq=[1.0E-15],        # Substrate diffusion through boundary layer
         De =[1.0E-15],        # Substrate diffusion through biofilm     
-        srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
+        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
         
         # --------------- #
         # Tank Parameters #
