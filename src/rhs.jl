@@ -26,15 +26,15 @@ function biofilmRHS!(dsol,sol,p_r,t)
     fluxS = computeFluxS(St,Sb,p,g)           # Flux of substrate in biofilm
     μb    = computeMu_biofilm(Sb,Xb,Lf,t,p,g) # Growthrates in biofilm
     μt    = computeMu_tank(St,Xt,Lf,t,p,g)    # Growthrates in tank
-    V     = computeVel(μb,Sb,Pb,t,p,g)        # Velocity of particulates
+    V     = computeVel(μb,Sb,Pb,Lf,t,p,g)        # Velocity of particulates
     Vdet  = Kdet*Lf^2                         # Detachment velocity
     fluxP = computeFluxP(Pb,V,p)              # Flux of particulates in biofilm
 
     # Compute RHS's
     dsol[r.Xt]=dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g) # Tank particulates
     dsol[r.St]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank substrates
-    dsol[r.Pb]=dPbdt(t,μb,Sb,Pb,fluxP,p,g)      # Biofilm particulates 
-    dsol[r.Sb]=dSbdt(t,μb,Sb,Xb,fluxS,p,g)      # Biofilm substrates
+    dsol[r.Pb]=dPbdt(t,μb,Sb,Pb,Lf,fluxP,p,g)      # Biofilm particulates 
+    dsol[r.Sb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm substrates
     dsol[r.Lf]=dLfdt(V,Vdet)                    # Biofilm thickness
     return nothing
 end
@@ -47,7 +47,7 @@ function dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g)
         dXt[j] = ( μt[j]*Xt[j]             # Growth
                 - Q*Xt[j]/V                # Flow out
                 + Vdet*A*Xb[j,end]/V       # From biofilm
-                + srcX[j](St,Xt,t,p)[1] )  # Source term
+                + srcX[j](St,Xt,Lf,t,Lf,p)[1] )  # Source term
     end
     return dXt
 end
@@ -61,7 +61,7 @@ function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)
                 - Q.*St[k]     /V          # Flow out
                 - A.*fluxS[k,end]/V        # Flux into biofilm
                 - sum(μt.*Xt./Yxs[:,k])    # Used by growth
-                + srcS[k](St,Xt,t,p)[1] )  # Substrate source
+                + srcS[k](St,Xt,Lf,t,Lf,p)[1] )  # Substrate source
         #if p.neutralization == true
         #    dS(k) = dS(k) - p.kB(k)*p.kdis(k)*p.rho(1)*Pb(1,end); # Neutralization
         #end
@@ -70,15 +70,15 @@ function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)
 end
 
 # RHS of biofilm particulates 
-function dPbdt(t,μb,Sb,Pb,fluxPb,p,g) 
+function dPbdt(t,μb,Sb,Pb,Lf,fluxPb,p,g) 
     @unpack Nx,Nz,srcX,rho = p
-    @unpack dz = g
+    @unpack zm,dz = g
     netFlux= (fluxPb[:,2:end]-fluxPb[:,1:end-1])/dz # Flux in/out
     growth = μb.*Pb                                 # Growth
     Source = zeros(Nx,Nz)
     for j in 1:Nx
         for i in 1:Nz
-            Source[j,i] = srcX[j](Sb[:,i],Pb[:,i].*rho[:],t,p)[1]/rho[j] # Source
+            Source[j,i] = srcX[j](Sb[:,i],Pb[:,i].*rho[:],Lf,t,zm[i],p)[1]/rho[j] # Source
         end
     end
     dPb  = growth - netFlux + Source;
@@ -88,9 +88,9 @@ function dPbdt(t,μb,Sb,Pb,fluxPb,p,g)
 end
 
 # RHS of biofilm substrates 
-function dSbdt(t,μb,Sb,Xb,fluxS,p,g)
+function dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)
     @unpack Nx,Ns,Nz,srcS,rho,Yxs = p
-    @unpack dz = g
+    @unpack zm,dz = g
     netFlux= (fluxS[:,2:end]-fluxS[:,1:end-1])/dz # Diffusion flux
     growth = zeros(Ns,Nz)
     for k in 1:Ns
@@ -101,7 +101,7 @@ function dSbdt(t,μb,Sb,Xb,fluxS,p,g)
     Source = zeros(Ns,Nz)
     for k in 1:Ns
         for i in 1:Nz
-            Source[k,i] = srcS[k](Sb[:,i],Xb[:,i],t,p)[1] # Source
+            Source[k,i] = srcS[k](Sb[:,i],Xb[:,i],Lf,t,zm[i],p)[1] # Source
         end
     end
     dSb = netFlux - growth + Source

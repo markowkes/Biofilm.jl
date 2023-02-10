@@ -31,7 +31,7 @@ function test_SteadyState()
         Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
         rho=[2.0E4],        # Particulate densities
         Kdet=1900.0,       # Particulates detachment coefficient
-        srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
+        srcX=[(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
         # Growthrates for each particulate (constants defined above!)
         mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM)],
 
@@ -45,7 +45,7 @@ function test_SteadyState()
         Yxs=[0.5],           # Biomass yield coefficient on substrate
         Daq=[100.0],         # Substrate diffusion through boundary layer
         De =[100.0],         # Substrate diffusion through biofilm     
-        srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
+        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
         
         # --------------- #
         # Tank Parameters #
