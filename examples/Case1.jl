@@ -22,7 +22,7 @@ p = param(
     Pbo=[0.08],         # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.0E4],        # Particulate densities
     Kdet=20000.0,       # Particulates detachment coefficient
-    srcX=[(S,X,t,p) -> 0.0],     # Source of particulates
+    srcX=[(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
     # Growthrates for each particulate (constants defined above!)
     mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:])],
 
@@ -36,7 +36,7 @@ p = param(
     Yxs=[2.646],        # Biomass yield coefficient on substrate
     Daq=[4.0E-5],       # Substrate diffusion through boundary layer
     De=[6.9E-5],        # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0],     # Source of substrates
+    srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
     
     # --------------- #
     # Tank Parameters #

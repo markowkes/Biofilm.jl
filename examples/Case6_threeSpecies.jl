@@ -37,13 +37,13 @@ p = param(
     Pbo=[0.2/3,0.2/3,0.2/3], # Biofilm particulates volume fraction initial condition(s) 
     rho=[2.5e5,2.5e5,2.5e5], # Particulate densities
     Kdet=50.0, # Particulates detachment coefficient
-    srcX=[(S, X, t, p) -> 0.0, # Source of particulates
-          (S, X, t, p) -> 0.0,
-          (S, X, t, p) -> 0.0],
+    srcX=[(S,X,Lf,t,z,p) -> 0.0, # Source of particulates
+          (S,X,Lf,t,z,p) -> 0.0,
+          (S,X,Lf,t,z,p) -> 0.0],
     # Growthrates for each particulate (constants defined above!)
-    mu=[(S, X, Lf, t, z, p) -> mumaxA*light(t,z,Lf),
-        (S, X, Lf, t, z, p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])),
-        (S, X, Lf, t, z, p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))],
+    mu=[(S,X,Lf,t,z,p) -> mumaxA*light(t,z,Lf),
+        (S,X,Lf,t,z,p) -> mumaxB*(S[1,:]./(KmB1.+S[1,:])).*(S[3,:]./(KmB3.+S[3,:])),
+        (S,X,Lf,t,z,p) -> mumaxC*(S[2,:]./(KmC2.+S[2,:])).*(1.0./(1.0.+S[1,:]/KI))],
     discontinuityPeriod=0.25,  # Let solver know when discontinuities (changes in light) occur
     
     # -------------------- #
@@ -62,9 +62,9 @@ p = param(
            0.00    0.584   -1.645],    # SRB uses sulfate and produces sulfide
     Daq=[1.51e-4,8e-5,1.21e-4],    # Substrate diffusion through boundary layer
     De =[6.8e-5,4e-5,6.04e-5],     # Substrate diffusion through biofilm     
-    srcS=[(S,X,t,p) -> 0.0,
-          (S,X,t,p) -> 0.0,       # Source of substrates
-          (S,X,t,p) -> 0.0],
+    srcS=[(S,X,Lf,t,z,p) -> 0.0,
+          (S,X,Lf,t,z,p) -> 0.0,       # Source of substrates
+          (S,X,Lf,t,z,p) -> 0.0],
            
     
     # --------------- #
