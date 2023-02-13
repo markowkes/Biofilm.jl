@@ -8,73 +8,77 @@ using UnPack
 using JLD2
 using DifferentialEquations
 
-# Constants used for growthrates of particulate(s)
-Km = 5; # g/m³
+# Create empty dictionary to hold parameters 
+d = createDict()
+
+smoothHeaviside(t,t0)=0.5*tanh.(10*(t.-t0).-0.5).+0.5
+
+# --------------------- #
+# Simulation Parameters #
+# --------------------- #
+addParam!(d, "Title",    "Hydrogen Peroxide Dosing")
+addParam!(d, "tFinal",  100)    # Simulation time [days]
+addParam!(d, "tol",      1e-8)  # Tolerance
+addParam!(d, "outPeriod",2.0)   # Time between outputs [days]
+addParam!(d, "plotPeriod",10)   # Time between plots [days] 
+#addParam!(d, "discontinuityPeriod",2.5) # Let solver know when discontinuities
+addParam!(d, "makePlots",false)
+
+# ---------------------- #
+# Particulate Parameters #
+# ---------------------- #
+addParam!(d, "XNames",["Live","Dead"])    # Particulate names
+addParam!(d, "Xto",   [1.0, 0.0])         # Tank particulate concentration initial condition(s)
+addParam!(d, "Pbo",   [0.08, 0.0])        # Biofilm particulates volume fraction initial condition(s) 
+addParam!(d, "rho",   [2.5e5, 2.5e5])     # Particulate densities
+addParam!(d, "Kdet",  1e4)                # Particulates detachment coefficient
+k_dis = 0.5; #m³/g/d   # Source term constant
+addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> -k_dis*X[1].*S[2], # Source of particulates
+                       (S,X,Lf,t,z,p) -> +k_dis*X[1].*S[2] ])
+# Growthrates for each particulate
 mumax = 9.6; # 1/days
-k_dis = 0.5; #m³/g/d
+KM = 5; # g/m³
+addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1]) 
+                    (S,X,Lf,t,z,p) -> 0.0 ] )
+
+# -------------------- #
+# Substrate Parameters #
+# -------------------- #
+addParam!(d, "SNames",["Glucose","Hydrogen Peroxide"])     # Substrate names
 GlucoseIn = 100; #g/m³
+dose1 = 500.0; dose2 = 0.0;
+addParam!(d, "Sin",   [
+        (t) -> GlucoseIn,        # Substrate inflow (can be function of time)
+        (t) -> dose1*smoothHeaviside(t,2.0)+dose2*smoothHeaviside(t,6.0)])
+addParam!(d, "Sto",   [100.0, 0.0])          # Tank substrate concentration initial condition(s)
+addParam!(d, "Sbo",   [  0.0, 0.0])          # Biofilm substrates concentration initial condition(s)
+# Biomass yield coefficient on substrate
+addParam!(d, "Yxs",   [#Glucose   H. Per.
+                        0.26       0.0       # Live use glucose
+                        0.00       0.0   ])  # Dead doesn't use/produce anything
+addParam!(d, "Daq",   [5.2e-5, 1.09e-4])     # Substrate diffusion through boundary layer
+addParam!(d, "De",    [1.3e-5, 6.52e-5])     # Substrate diffusion through biofilm     
+k_b  = 10.0; #m³/g/d
+addParam!(d, "srcS",  [                      # Source of substrates
+    (S,X,Lf,t,z,p) -> 0.0,  
+    (S,X,Lf,t,z,p) -> -k_bl*X[1].*S[2].-k_bd*X[2].*S[2] ])
 
-smoothHeaviside(t,t0)=0.5*tanh.(1000*(t.-t0).-0.5).+0.5
+# --------------- #
+# Tank Parameters #
+# --------------- #
+addParam!(d, "V", 0.1)        # Volume of tank [m³]
+addParam!(d, "A",   1)        # Surface area of biofilm [m²]
+addParam!(d, "Q",   1)        # Flowrate through tank [m³/d]
 
-# Define a structure to hold all the parameters
-p = param(
-    # --------------------- #
-    # Simulation Parameters #
-    # --------------------- #
-    Title="Hydrogen Peroxide Dosing",
-    tFinal=100,     # Simulation time [days]
-    tol=1e-8,       # Tolerance
-    outPeriod=2,    # Time between outputs [days]
-    plotPeriod=10,    # Time between plots [days] (make multiple of outPeriod!)
-    #optionalPlot="source", # 6th plot: "growthrate" (default) or "source"
-    #discontinuityPeriod=2.5,  # Let solver know when discontinuities (changes in light) occur
-    makePlots=false,
+# ------------------ #
+# Biofilm Parameters #
+# ------------------ #
+addParam!(d, "Nz",  50)        # Number of grid points in biofilm
+addParam!(d, "Lfo", 50.0e-6)   # Biofilm initial thickness [m]
+addParam!(d, "LL",  1.0e-5)    # Boundary layer thickness [m]
 
-    # ---------------------- #
-    # Particulate Parameters #
-    # ---------------------- #
-    XNames=["Live","Dead"], # Particulate names
-    Xto=[1.0,0.0], # Tank particulate concentration initial condition(s)
-    Pbo=[0.08,0.0], # Biofilm particulates volume fraction initial condition(s) 
-    rho=[2.5e5,2.5e5], # Particulate densities
-    Kdet=1e4, # Particulates detachment coefficient
-    srcX=[(S,X,Lf,t,z,p) -> -k_dis*X[1,:].*S[2,:], 
-          (S,X,Lf,t,z,p) -> +k_dis*X[1,:].*S[2,:]],
-    # Growthrates for each particulate (constants defined above!)
-    mu=[(S,X,Lf,t,z,p) -> mumax * S[1,:] ./ (Km .+ S[1,:]), 
-        (S,X,Lf,t,z,p) -> zeros(size(S[1,:])) ],
-    
-    # -------------------- #
-    # Substrate Parameters #
-    # -------------------- #
-    SNames=["Glucose","Hydrogen Peroxide"], # Substrate names
-    Sin=[(t) -> GlucoseIn,    # Substrate inflow (can be function of time)
-         (t) -> dose1*smoothHeaviside(t,2.0)+dose2*smoothHeaviside(t,6.0)],
-    Sto=[100.0,0.0],  # Tank substrate concentration initial condition(s)
-    Sbo=[0.0,0.0], # Biofilm substrates concentration initial condition(s)
-    # Biomass yield coefficient on substrate
-    #     Glucose   H. Per.
-    Yxs=[ 0.26       0.0        # Live use glucose
-          0.00       0.0   ],   # Dead doesn't use/produce anything
-    Daq=[5.2e-5, 1.09e-4],    # Substrate diffusion through boundary layer
-    De =[1.3e-5, 6.52e-5],     # Substrate diffusion through biofilm     
-    srcS=[(S,X,Lf,t,z,p) -> 0.0,  
-          (S,X,Lf,t,z,p) -> -k_bl*X[1,:].*S[2,:].-k_bd*X[2,:].*S[2,:] ],
-           
-    # --------------- #
-    # Tank Parameters #
-    # --------------- #
-    V=0.1,        # Volume of tank [m³]
-    A=1.0,        # Surface area of biofilm [m²]
-    Q=1.0,        # Flowrate through tank [m³/s]
-
-    # ------------------ #
-    # Biofilm Parameters #
-    # ------------------ #
-    Nz=50,          # Number of grid points in biofilm
-    Lfo=50.0e-6,     # Biofilm initial thickness [m]
-    LL=1.0e-5,      # Boundary layer thickness [m]
-)
+# Package and check parameters 
+p = packageCheckParam(d)
 
 """
 Compute the % Live averaged throughout biofilm 
@@ -368,7 +372,9 @@ begin # plot Glucose Consumption Rate vs Depth in biofilm
         @unpack Nx,Nz,mu = p 
         μb=zeros(Nx,Nz)
         for j in 1:Nx
-            C[:] = C[:] + mu[1](Sb,Xb,Lf,t,zm,p).*Xb[1,:]./p.Yxs[1,1] # Used by growth
+            for i in 1:Nz
+                C[i] = C[i] + mu[1](Sb[:,i],Xb[:,i],Lf,t,zm,p).*Xb[1,i]./p.Yxs[1,1] # Used by growth
+            end
         end
         return C
     end
