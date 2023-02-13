@@ -33,7 +33,7 @@ function test_zeroLL()
         Kdet=20000.0,       # Particulates detachment coefficient
         srcX=[(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
         # Growthrates for each particulate (constants defined above!)
-        mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM .+ S[1,:])],
+        mu=[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
 
         # -------------------- #
         # Substrate Parameters #

@@ -42,7 +42,7 @@ function test_Diffusion()
             Kdet=20000.0,       # Particulates detachment coefficient
             srcX=[(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
             # Growthrates for each particulate (constants defined above!)
-            mu=[(S,X,Lf,t,z,p) -> (mumax * S[1,:]) ./ (KM)],
+            mu=[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM)],
 
             # -------------------- #
             # Substrate Parameters #
