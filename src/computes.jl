@@ -33,7 +33,9 @@ function computeMu_biofilm(Sb,Xb,Lf,t,p,g)
     @unpack zm = g
     μb=zeros(Nx,Nz)
     for j in 1:Nx
-        μb[j,:]=mu[j](Sb,Xb,Lf,t,zm,p)
+        for i in 1:Nz
+            μb[j,i]=mu[j](Sb[:,i],Xb[:,i],Lf,t,zm[i],p)
+        end
     end
     return μb
 end
