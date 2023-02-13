@@ -40,11 +40,13 @@ Try running the examples.
 
 1. Download [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing *Save Link As*. Save the file to your Downloads folder (or other location of your choice)
 
-2. Run the case by opening the file in VS Code and clicking the play button in the top right corner.  You should see output to the REPL and a plot like this:
-   ![Case 1 Run Button](images/Case1_Run.png)
-The top row shows the biomass (particulate) and substrate concentrations and the biofilm thickness as a function of time.  The bottom row shows the particulate volume fraction and substrate concentrations as a function of position within the biofilm at the output time (t=1.0 as indicated by the title).
+2. Run the case by opening the file in VS Code and clicking the play button in the top right corner.  
+    ![Case 1 Run Button](images/Case1_Run.png)
+3. You should see output to the REPL and a plot like this:
+    ![Case 1 Run Button](images/Case1_final.png)
+The top row shows the biomass (particulate) and substrate concentrations and the biofilm thickness as a function of time.  The bottom row shows the particulate volume fraction, substrate concentration, and particulate growth rate as a function of position within the biofilm at the output time (t=1.0 as indicated by the title).
    
-3. Try editing the case file or explore other [Examples](@ref)
+1. Try editing the case file or explore other [Examples](@ref)
     
 !!! note
 
