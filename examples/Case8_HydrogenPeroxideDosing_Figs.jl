@@ -1,12 +1,11 @@
 using Biofilm 
-using DifferentialEquations
+using OrdinaryDiffEq
 using Measures
 using Plots
 using Printf
 using Statistics
 using UnPack
 using JLD2
-using DifferentialEquations
 
 # Create empty dictionary to hold parameters 
 d = createDict()
@@ -289,10 +288,21 @@ end
 # Fig 3: Concentration profiles within the biofilm. A, glucose concentration before and after biocide treatment. B, hydrogen peroxide concentration at steady state during continuous treatment.
 #########
 ## Uses results from runs in Fig. 1 ##
+# Compute concentrations at top of biofilm
+begin
+    g1 = computeGrid(Lf1[end],p)
+    g2 = computeGrid(Lf2[end],p)
+    S_top1 = Biofilm.computeS_top(S1[:,end],Sb1,p,g1)
+    S_top2 = Biofilm.computeS_top(S2[:,end],Sb2,p,g2)
+end
 begin # plot Glucose vs Depth in biofilm
     fig = plot()
-    fig = plot!(zm1.*1e6,Sb1[1,:],line=(:solid, 2, :red),label="Dosing off")
-    fig = plot!(zm2.*1e6,Sb2[1,:],line=(:dash,  2, :blue),label="Dosing on")
+    fig = plot!(vcat(zm1.*1e6,Lf1[end]*1e6),
+                vcat(Sb1[1,:],S_top1[1]),
+                line=(:solid, 2, :red),label="Dosing off")
+    fig = plot!(vcat(zm2.*1e6,Lf2[end]*1e6),
+                vcat(Sb2[1,:],S_top2[1]),
+                line=(:dash, 2, :blue),label="Dosing on")
     fig = plot!(
         xlabel = "Height in Biofilm (μm)",
         ylabel = "Glucose Concentration (g/m³)",
@@ -313,13 +323,20 @@ begin # plot Glucose vs Depth in biofilm
 end
 begin # plot Hydrogen Peroxide vs Depth in biofilm
     fig = plot()
-    fig = plot!(zm1.*1e6,Sb1[2,:],line=(:solid, 2, :red),label="Dosing off")
-    fig = plot!(zm2.*1e6,Sb2[2,:],line=(:dash,  2, :blue),label="Dosing on")
+    # fig = plot!(zm1.*1e6,Sb1[2,:],line=(:solid, 2, :red),label="Dosing off")
+    # fig = plot!(zm2.*1e6,Sb2[2,:],line=(:dash,  2, :blue),label="Dosing on")
+    fig = plot!(vcat(zm1.*1e6,Lf1[end]*1e6),
+                vcat(Sb1[2,:],S_top1[2]),
+                line=(:solid, 2, :red),label="Dosing off")
+    fig = plot!(vcat(zm2.*1e6,Lf2[end]*1e6),
+                vcat(Sb2[2,:],S_top2[2]),
+                line=(:dash, 2, :blue),label="Dosing on")
+                #zm2.*1e6,Sb2[1,:],line=(:dash,  2, :blue),label="Dosing on")
     fig = plot!(
         xlabel = "Height in Biofilm (μm)",
         ylabel = "H₂O₂ Concentration (g/m³)",
         #ylims = (0.0,200),
-        xlims = (0,maximum(zm2.*1e6)),
+        #xlims = (0,maximum(zm2.*1e6)),
         legend=:topleft,
         xguidefontsize=16,
         yguidefontsize=16,
