@@ -3,8 +3,11 @@ using Logging: global_logger
 using TerminalLoggers: TerminalLogger
 global_logger(TerminalLogger())
 
-using DifferentialEquations
+#using DifferentialEquations
+using OrdinaryDiffEq
+using Sundials
 using UnPack
+using DiffEqCallbacks
 
 """
     BiofilmSolver(p::param)
@@ -55,12 +58,14 @@ function BiofilmSolver(p::param)
     # Run solver
     #GC.enable(false)
     sol=solve(prob,
+        Sundials.CVODE_BDF(),
         reltol=tol,
         abstol=tol,
         callback=cb,
         progress = true,
         progress_steps = 100,
         alg_hints = [:stiff],
+        
         )
     #GC.enable(true)
 
