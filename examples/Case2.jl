@@ -55,7 +55,7 @@ addParam!(d, "Pbo",   [1/6])          # Biofilm particulates volume fraction ini
 addParam!(d, "rho",   [ρᵣ])           # Particulate densities
 addParam!(d, "Kdet",  σ)              # Particulates detachment coefficient
 addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of particulates
-# Growthrates for each particulate
+# Growthrate: call μ(s,p) for S = [s,p]
 addParam!(d, "mu", [(S,X,Lf,t,z,p) -> μ(S[1],S[2])])
 
 # -------------------- #
@@ -76,7 +76,7 @@ addParam!(d, "srcS",  [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
 # --------------- #
 addParam!(d, "V", 0.1)        # Volume of tank [m³]
 addParam!(d, "A",   1)        # Surface area of biofilm [m²]
-addParam!(d, "Q",   1)        # Flowrate through tank [m³/d]
+addParam!(d, "Q",   2)        # Flowrate through tank [m³/d]
 
 # ------------------ #
 # Biofilm Parameters #
