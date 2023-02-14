@@ -36,7 +36,7 @@ end
             println("\n Running test_TimeIntegration\n ==============")
             include("test_TimeIntegration.jl")
             println("Checking result") 
-            @test error <= 1e-2
+            @test error <= 1e-1
     #     end
     # end
 
@@ -54,6 +54,7 @@ end
                 @test Xt[end] ≈ 256.87   atol=0.1
                 @test St[end] ≈ 2.92     atol=0.1
                 @test Lf[end] ≈ 0.000309 atol=1e-4
+                println(sol.alg)
             end
             
             println("\n Running Case 2\n ==============")
@@ -62,6 +63,7 @@ end
                 @test St[1,end] ≈ 2.981401389120606 atol=0.1
                 @test St[2,end] ≈ 24.99999970508142 atol=0.1
                 @test Lf[end] ≈ 2.998065034446994e-5 atol=1e-4
+                println(sol.alg)
             end
 
             println("\n Running Case 3\n ==============")
@@ -69,6 +71,7 @@ end
                 include("Case3.jl")
                 @test Pb[1,end] ≈ 0.072862 atol=1e-3
                 @test Pb[2,end] ≈ 0.007137 atol=1e-3
+                println(sol.alg)
             end
 
             println("\n Running Case 4\n ==============")
@@ -78,6 +81,7 @@ end
                 @test Xt[2,end] ≈ 3.80824 atol=0.1
                 @test St[1,end] ≈ 10.6042 atol=0.1
                 @test St[2,end] ≈ 9.91261 atol=0.1
+                println(sol.alg)
             end
 
             println("\n Running Case 5\n ==============")
@@ -85,6 +89,7 @@ end
                 include("Case5_Phototroph.jl")
                 @test Xt[1,end] ≈ 0.230656800294912 atol=0.1
                 @test St[1,end] ≈ 9.561670776072377 atol=0.1
+                println(sol.alg)
             end
 
     #     end

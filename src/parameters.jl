@@ -304,7 +304,7 @@ function checkParameters(p)
         catch e
             paramError("Sin should be an array of Ns=",Ns," functions providing the inflow substrate concentrations. 
             The inputs to each function should be (t) \n
-                For example, if there are two particulates you might use:
+                For example, if there are two substrates you might use:
                     Sin=[(t) -> 25,
                          (t) -> 50],")
             println(e)

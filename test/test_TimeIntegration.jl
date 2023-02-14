@@ -22,7 +22,7 @@ function test_TimeIntegration()
         # --------------------- #
         Title="Time Integration Test",
         tFinal=1,       # Simulation time [days]
-        tol=1e-4,       # Tolerance
+        tol=1e-8,       # Tolerance
         outPeriod=1.0,  # Time between outputs [days]
         makePlots=false,
 
