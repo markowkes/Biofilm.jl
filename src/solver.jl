@@ -18,9 +18,6 @@ function BiofilmSolver(p::param)
 
     println("Starting Solver ...")
 
-    # Check parameters passed to solver 
-    checkParameters(p)
-
     # Unpack parameters
     @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
 
