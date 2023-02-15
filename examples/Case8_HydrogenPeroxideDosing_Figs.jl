@@ -57,7 +57,8 @@ addParam!(d, "Yxs",   [#Glucose   H. Per.
                         0.00       0.0   ])  # Dead doesn't use/produce anything
 addParam!(d, "Daq",   [5.2e-5, 1.09e-4])     # Substrate diffusion through boundary layer
 addParam!(d, "De",    [1.3e-5, 6.52e-5])     # Substrate diffusion through biofilm     
-k_b  = 10.0; #m³/g/d
+k_bl  = 10.0; #m³/g/d
+k_bd  = 10.0; #m³/g/d
 addParam!(d, "srcS",  [                      # Source of substrates
     (S,X,Lf,t,z,p) -> 0.0,  
     (S,X,Lf,t,z,p) -> -k_bl*X[1].*S[2].-k_bd*X[2].*S[2] ])
@@ -307,7 +308,7 @@ begin # plot Glucose vs Depth in biofilm
         xlabel = "Height in Biofilm (μm)",
         ylabel = "Glucose Concentration (g/m³)",
         #ylims = (0.0,200),
-        #xlims = (0,10),
+        xlims = (0,maximum(Lf2.*1e6)),
         legend=:topleft,
         xguidefontsize=16,
         yguidefontsize=16,
@@ -336,7 +337,7 @@ begin # plot Hydrogen Peroxide vs Depth in biofilm
         xlabel = "Height in Biofilm (μm)",
         ylabel = "H₂O₂ Concentration (g/m³)",
         #ylims = (0.0,200),
-        #xlims = (0,maximum(zm2.*1e6)),
+        xlims = (0,maximum(Lf2.*1e6)),
         legend=:topleft,
         xguidefontsize=16,
         yguidefontsize=16,
