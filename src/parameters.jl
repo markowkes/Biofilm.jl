@@ -159,7 +159,7 @@ function checkParamExists_setDef(err,d,name,default)
             # @printf("Using default value :  %-19s = %s \n",name,default)
             d[name] = default
         else
-            err = printError(err,"Parameter $name missing from dictionary!")
+            err = printError(err,"Parameter $name missing from dictionary! Add a line `addParam!( d, $name, VALUE)` to your case file.")
         end
     end
     return err
