@@ -17,10 +17,17 @@ When a simulation is executed using `t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p)`
 - `Lf=Lf(t)` - array of the biofilm thickness as a function of time
 - `sol` - entire solution from the ODE solver - contains the time history of all the variables.  This variable is difficult to parse but is used by the functions described below.
 
-The output can be analyzed using Julia commands.  For example, after running Case1.jl (see [Run Biofilm.jl](@ref)), the maximum substrate concentration could be found 
+The output can be analyzed using Julia commands.  For example, after running Case1.jl (see [Run Biofilm.jl](@ref)), the maximum substrate concentration in the tank could be found 
 ```julia-repl
-julia> maximum(S)
+julia> maximum(St)
 65.37595010026911
+```
+
+## makePlots() - Plot the final solution 
+The `makePlots(t,Xt,St,Pb,Sb,Lf,p)` function can be used to produce the standard plots of the simulation.  This is useful to make a plot of the solution at the end of the simulation, especially if plots are turned off during the simulation using the optional parameter `makePlots=false`.  
+
+```@docs
+makePlots
 ```
 
 ## analyzeBiofilm() - Query Simulation at Specified Times
@@ -79,4 +86,11 @@ Note that during the day the growth rate is zero and the oxygen concentration is
 
 ```@docs
 movieBiofilm
+```
+
+## sol2csv() - Convert solution to CSV file 
+The function `sol2csv( sol, filename, p)` takes the output of a simulation and writes the results as a CSV file which can be open in a spreadsheet program (e.g., Excel).  Each row in the file corresponds to a different output time and the column contains the time, the tank particulate and substrate concentrations, biofilm particulate volume fractions and substrate concentrations, and finally the biofilm thickness.  This function can be useful for users that prefer looking at results in a spreadsheet.
+
+```@docs
+sol2csv
 ```

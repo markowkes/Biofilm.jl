@@ -47,7 +47,12 @@ function pad_ylim(A)
     return [max(0.0,yavg-deltay),yavg+deltay]
 end 
 
-# Make plots
+"""
+    makePlots(t,Xt,St,Pb,Sb,Lf,p)
+
+Plots solution from biofilm solver using standard plot outputs.
+
+"""
 function makePlots(t,Xt,St,Pb,Sb,Lf,p)
     @unpack Nx,Ns,Nz,Title,XNames,SNames,Ptot,rho,srcX,optionalPlot,plotSize = p 
 
