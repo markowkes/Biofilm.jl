@@ -33,6 +33,23 @@ function unpack_solutionForPlot(sol,p,r)
     return t,Xt,St,Pb,Sb,Lf
 end
 
+""" 
+    computeRanges(p)
+Compute the location of dependent variables in solution vector 
+"""
+function computeRanges(p)
+    @unpack Nx,Ns,Nz = p 
+    nVar=0; 
+    N=Nx;    rXt=nVar+1:nVar+N; nVar+=N # Xt=u[rXt]
+    N=Ns;    rSt=nVar+1:nVar+N; nVar+=N # St=u[rSt]
+    N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
+    N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
+    N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
+
+    # Store ranges in struct to be used in RHS calc
+    ranges(rXt,rSt,rPb,rSb,rLf)
+end
+
 # Return greatest common divisor of floats
 function Base.gcd(a::Float64,b::Float64)
 

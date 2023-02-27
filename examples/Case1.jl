@@ -54,4 +54,4 @@ addParam!(d, "LL",  1.00E-7)  # Boundary layer thickness [m]
 p = packageCheckParam(d)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results
+biofilm_plot(sol,p) # Plot final results
