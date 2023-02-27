@@ -18,23 +18,11 @@ function BiofilmSolver(p::param)
 
     println("Starting Solver ...")
 
-    # Check parameters passed to solver 
-    checkParameters(p)
-
     # Unpack parameters
     @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
 
     # Compute ranges of dependent variables in sol array
-    # sol=[Xt,St,Pb,S,Lf]
-    nVar=0; 
-    N=Nx;    rXt=nVar+1:nVar+N; nVar+=N # Xt=u[rXt]
-    N=Ns;    rSt=nVar+1:nVar+N; nVar+=N # St=u[rSt]
-    N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
-    N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
-    N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
-
-    # Store ranges in struct to be used in RHS calc
-    r = ranges(rXt,rSt,rPb,rSb,rLf)
+    r = computeRanges(p)
 
     # Prepare biofilm initial conditions
     Pbo_grid = vec(Pbo.*ones(Nx,Nz))

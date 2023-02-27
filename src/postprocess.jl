@@ -51,20 +51,14 @@ function unpack_solution(sol,p,t)
     s=sol(t)
 
     # Compute ranges of dependent variables in sol array
-    # sol=[X,S,Pb,S,Lf]
-    nVar=0; 
-    N=Nx;    rXt=nVar+1:nVar+N; nVar+=N # X =u[rXt]
-    N=Ns;    rSt=nVar+1:nVar+N; nVar+=N # S =u[rSt]
-    N=Nx*Nz; rPb=nVar+1:nVar+N; nVar+=N # Pb=u[rPb]
-    N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
-    N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
+    r = computeRanges(p)
 
     # Unpack solution
-    Xt=s[rXt]
-    St=s[rSt]
-    Pb=s[rPb]
-    Sb=s[rSb]
-    Lf=s[rLf]
+    Xt=s[r.Xt]
+    St=s[r.St]
+    Pb=s[r.Pb]
+    Sb=s[r.Sb]
+    Lf=s[r.Lf]
 
     # Reshape biofilm variables
     Pb=reshape(Pb,Nx,Nz)
@@ -74,13 +68,13 @@ function unpack_solution(sol,p,t)
 end
 
 """
-    analyzeBiofilm(sol,p,times)
-    analyzeBiofilm(sol,p,times,makePlot=true)
+    biofilm_analyze(sol,p,times)
+    biofilm_analyze(sol,p,times,makePlot=true)
 
 Take solution from biofilm solver and outputs variabes and a plot of biofilm variables.
 
 """
-function analyzeBiofilm(sol,p,times; makePlot=false, plotSize=(1600,500))
+function biofilm_analyze(sol,p,times; makePlot=false, plotSize=(1600,500))
 
     @unpack Nx,Ns,Nz,XNames,SNames,Title = p
 
@@ -108,7 +102,8 @@ function analyzeBiofilm(sol,p,times; makePlot=false, plotSize=(1600,500))
 
         # Make plot of biofilm variables at this time
         if makePlot
-            makeBiofilmPlots(times[n],Pb,Sb,Lf,p,plotSize)
+            plt = biofilm_plot_film(sol([0,times[n]]),p)
+            display(plt)
         end
     end
 
@@ -116,8 +111,8 @@ function analyzeBiofilm(sol,p,times; makePlot=false, plotSize=(1600,500))
 end
 
 """
-    movieBiofilm(sol,p,times)
-    movieBiofilm(sol,p,times,filename="anim.gif", fps=20)
+    biofilm_movie(sol,p,times)
+    biofilm_movie(sol,p,times,filename="anim.gif", fps=20)
 
 Make a movie of the biofilm particulate volume fraction, substrate concentration, and particulate growthrates at the specified times.
 
@@ -129,14 +124,14 @@ Examples:
 
 Create movie with t=0,1,...,10
 ```julia-repl
-julia> movieBiofilm(sol,p,0:1:10)
+julia> biofilm_movie(sol,p,0:1:10)
 ```
 Create movie with specified filename and framerate
 ```julia-repl
-julia> movieBiofilm(sol,p,0:1:10,filename="biofilm.gif",fps=10)
+julia> biofilm_movie(sol,p,0:1:10,filename="biofilm.gif",fps=10)
 ```
 """
-function movieBiofilm(sol,p,times; filename="anim.gif", fps=20)
+function biofilm_movie(sol,p,times; filename="anim.gif", fps=20)
 
     # Check times
     minimum(times) >= minimum(sol.t) || 
@@ -146,7 +141,7 @@ function movieBiofilm(sol,p,times; filename="anim.gif", fps=20)
 
     # Make animation
     anim = @animate for t in times 
-        analyzeBiofilm(sol,p,t,makePlot=true)
+        biofilm_analyze(sol,p,t,makePlot=true)
     end
 
     # Save annimation 
@@ -154,10 +149,18 @@ function movieBiofilm(sol,p,times; filename="anim.gif", fps=20)
 end
 
 """
-    sol2csv(sol,filename,p)
-Saves the solution of biofilm problem (sol) to a CSV file with name filename.
+    biofilm_sol2csv(sol,p)
+    biofilm_sol2csv(sol,p; filename)
+Saves the solution of biofilm problem (sol) to a CSV file biofilm.csv 
+The filename can be changed with the optional parameter
+
+# Examples
+```julia-repl
+julia> biofilm_sol2csv(sol,p)
+julia> biofilm_sol2csv(sol,p,filename="myfile.csv")
+```
 """
-function sol2csv(sol,filename,p)
+function biofilm_sol2csv(sol,p; filename="biofilm.csv")
     @unpack Nx,Ns,Nz,XNames,SNames = p
 
     # Open file 

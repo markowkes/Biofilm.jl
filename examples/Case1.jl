@@ -11,7 +11,6 @@ addParam!(d, "Title",    "Single Substrate and Particulate Case")
 addParam!(d, "tFinal",   1.0)   # Simulation time [days]
 addParam!(d, "tol",      1e-2)  # Tolerance
 addParam!(d, "outPeriod",0.1)   # Time between outputs [days]
-addParam!(d, "plotSize",(900,600)) # Plot size [pixels]
 
 # ---------------------- #
 # Particulate Parameters #
@@ -56,7 +55,7 @@ addParam!(d, "LL",  1.00E-7)  # Boundary layer thickness [m]
 p = packageCheckParam(d)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results
+biofilm_plot(sol,p,size=(900,600))
 
 # Save output
 savefig("Case1.pdf")

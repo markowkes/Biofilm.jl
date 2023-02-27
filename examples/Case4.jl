@@ -21,7 +21,7 @@ addParam!(d, "Pbo",   [0.2/2,0.2/2,0.0])        # Biofilm particulates volume fr
 addParam!(d, "rho",   [2.5e5,2.5e5,2.5e5])      # Particulate densities
 addParam!(d, "Kdet",  500.0)                    # Particulates detachment coefficient
 # Source for each particulate
-D_O_SRB = 10.0
+D_O_SRB = 1.0
 D_SOB = 1e-2
 D_SRB = 1e-1
 addParam!(d, "srcX",  [
@@ -76,6 +76,4 @@ addParam!(d, "LL",  2.0e-4)  # Boundary layer thickness [m]
 p = packageCheckParam(d)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-
-# Save output
-savefig("Case4.pdf")
+biofilm_plot(sol,p,size=(900,600))

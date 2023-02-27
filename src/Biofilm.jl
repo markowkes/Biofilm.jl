@@ -1,7 +1,7 @@
 module Biofilm
 
 export param, BiofilmSolver, computeGrid
-export makePlots, analyzeBiofilm, movieBiofilm, MeanBiofilmVarsWithTime, sol2csv
+export biofilm_analyze, biofilm_movie, MeanBiofilmVarsWithTime, biofilm_sol2csv
 export createDict, addParam!, packageCheckParam, printDict
 
 include("outputs.jl")
