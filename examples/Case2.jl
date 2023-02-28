@@ -88,90 +88,18 @@ addParam!(d, "LL",  1.0E-4)  # Boundary layer thickness [m]
 # Package and check parameters 
 p = packageCheckParam(d)
 
-t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-
 # Run with inhibition 
 ####################
+p_max = 400
 t_in,zm_in,Xt_in,St_in,Pb_in,Sb_in,Lf_in,sol_in = BiofilmSolver(p)
-savefig("Case2.pdf")
-
-# Compute growthrates for plots
-Xb_in=similar(Pb_in)
-for j=1:p.Nx
-    Xb_in[j,:] = p.rho[j]*Pb_in[j,:]  # Compute particulate concentrations
-end
-g_in = Biofilm.computeGrid(Lf_in[end],p)
-μb_in = Biofilm.computeMu_biofilm(Sb_in,Xb_in,Lf_in[end],t_in[end],p,g_in)
+plt = biofilm_plot(sol_in,p,"Inhibition",size=(900,600), line=(:blue,[:solid :dash]))
 
 # Run without inhibition 
 ####################
 p_max  = Inf  
 t_no,zm_no,Xt_no,St_no,Pb_no,Sb_no,Lf_no,sol_no = BiofilmSolver(p)
-# Compute growthrates for plots
-Xb_no=similar(Pb_no)
-for j=1:p.Nx
-    Xb_no[j,:] = p.rho[j]*Pb_no[j,:]  # Compute particulate concentrations
-end
-g_no = Biofilm.computeGrid(Lf_no[end],p)
-μb_no = Biofilm.computeMu_biofilm(Sb_no,Xb_no,Lf_no[end],t_no[end],p,g_no)
-
-# Make comparison plots 
-# (similar to makePlots in outputs.jl)
-#############################################
-
-# Adjust names to work with legends
-p.Nx==1 ? Xs=p.XNames[1] : Xs=reshape(p.XNames,1,length(p.XNames))
-p.Ns==1 ? Ss=p.SNames[1] : Ss=reshape(p.SNames,1,length(p.SNames))
-
-# Tank particulate concentration
-p1= plot(t_in,Xt_in',label=Xs.*" : Inhibition",   line=:blue)
-p1=plot!(t_no,Xt_no',label=Xs.*" : No Inhibition",line=:red)
-xaxis!(L"\textrm{Time~[days]}")
-yaxis!(L"\textrm{Tank~Particulate~Conc.~} [g/m^3]")
-
-# Tank substrate concentration
-p2= plot(t_in,St_in',label=Ss.*" : Inhibition",   line=(:blue,[:solid :dash]))
-p2=plot!(t_no,St_no',label=Ss.*" : No Inhibition",line=( :red,[:solid :dash]))
-xaxis!(L"\textrm{Time~[days]}")
-yaxis!(L"\textrm{Tank~Substrate~Conc.~} [g/m^3]")
-
-# Biofilm thickness
-p3= plot(t_in,Lf_in'*1e6,label="Thickness : Inhibition",   line=:blue)
-p3=plot!(t_no,Lf_no'*1e6,label="Thickness : No Inhibition",line=:red)
-xaxis!(L"\textrm{Time~[days]}")
-yaxis!(L"\textrm{Biofilm~Thickness~} [μm]")
-
-# Biofilm particulate volume fractioin 
-p4= plot(1e6.*zm_in,Pb_in',label=Xs.*" : Inhibition",   line=:blue,ylim=Biofilm.pad_ylim(Pb_in'))
-p4=plot!(1e6.*zm_no,Pb_no',label=Xs.*" : No Inhibition",line=:red ,ylim=Biofilm.pad_ylim(Pb_no'))
-#p4=plot!(zm,sum(Pb,dims=1)',label="Sum")
-xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
-yaxis!(L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
-
-# Biofilm substrate concentration
-p5= plot(1e6.*zm_in,Sb_in',label=Ss.*" : Inhibition",   line=(:blue,[:solid :dash]))
-p5=plot!(1e6.*zm_no,Sb_no',label=Ss.*" : No Inhibition",line=( :red,[:solid :dash]))
-xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
-yaxis!(L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")
-
-# Particulate growthrates vs depth
-p6= plot(1e6.*zm_in,μb_in',label=Xs.*" : Inhibition",   line=(:blue))
-p6=plot!(1e6.*zm_no,μb_no',label=Xs.*" : No Inhibition",line=:red)
-xaxis!(L"\textrm{Height~in~Biofilm~} [\mu m]")
-yaxis!(L"\textrm{Particulate~Growthrates~[-]}")
-
-# Put plots together
-myplt=plot(p1,p2,p3,p4,p5,p6,
-    layout=(2,3),
-    size=p.plotSize,
-    plot_title=@sprintf("%s : t = %.2f",p.Title,t_in[end]),
-    #plot_titlevspan=0.5,
-    left_margin=10mm, 
-    bottom_margin=10mm,
-    foreground_color_legend = nothing,
-    legend = :outertop,
-)
-display(myplt)
-
-savefig("Case2_noinhibition.pdf")
+# Add to plot
+plt = biofilm_plot!(plt,sol_no,p,"No Inhibition",size=(900,600), line=(:red,[:solid :dash]))
+display(plt)
+savefig("Case2.pdf")
 
