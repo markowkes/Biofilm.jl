@@ -102,7 +102,7 @@ function biofilm_analyze(sol,p,times; makePlot=false, plotSize=(1600,500))
 
         # Make plot of biofilm variables at this time
         if makePlot
-            plt = biofilm_plot_film(sol([0,times[n]]),p)
+            plt = biofilm_plot_film(sol([0,times[n]]),p,size=plotSize)
             display(plt)
         end
     end
