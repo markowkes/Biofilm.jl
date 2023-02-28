@@ -91,18 +91,26 @@ addParam!(d, "LL",  2.0e-4)  # Boundary layer thickness [m]
 p = packageCheckParam(d)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-makePlots(t,Xt,St,Pb,Sb,Lf,p) # Plot final results
+biofilm_plot(sol,p,size=(900,600))
 savefig("Case5.pdf")
 
-## Postprocessing Results 
+# Postprocessing Results 
+# ----------------------
 
-# Transient quantities
-rectangle(w, h, x, y) = Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
+# Biofilm quantities 
+tout = 49.5 # Time when light is on
+biofilm_analyze(sol,p,tout,makePlot=true,plotSize=(900,325))
+# Could also make plot by directly calling recipe 
+# biofilm_plot_film(sol([0,tout]),p,size=(900,325))
+savefig("Case5_lighton.pdf")
+
 # Times to analyze solution 
 tout = 48.0:0.01:50.0; 
 # Get solution at certain times
-Xtout,Stout,Lfout = analyzeBiofilm(sol,p,tout)
+Xtout,Stout,Lfout = biofilm_analyze(sol,p,tout)
+
 # Function to plot when the light is on
+rectangle(w, h, x, y) = Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
 function plot_light()
     plot(rectangle(0.5,1000.0,48.25,0.0), 
         opacity=.2, 
@@ -115,6 +123,7 @@ function plot_light()
         linecolor=:yellow,
         )
 end
+
 # Plot tank particulate concentration versus time 
 plot_light()
 plot!(tout,Xtout',
@@ -126,6 +135,7 @@ plot!(tout,Xtout',
     ylims=(minimum(Xtout)-0.001,maximum(Xtout)+0.001),
     )
 savefig("Case5_Xt.pdf")
+
 # Plot tank substrate concentration versus time 
 plot_light()
 plot!(tout,Stout',
@@ -137,6 +147,7 @@ plot!(tout,Stout',
     ylims=(minimum(Stout)-0.1,maximum(Stout)+0.1),
     )
 savefig("Case5_St.pdf")
+
 # Plot biofilm thickness versus time 
 plot_light()
 plot!(tout,1e6.*Lfout,
@@ -149,7 +160,4 @@ plot!(tout,1e6.*Lfout,
     )
 savefig("Case5_Lf.pdf")
 
-# Biofilm quantities 
-tout = 49.5 # Time when light is on
-analyzeBiofilm(sol,p,tout,makePlot=true,plotSize=(900,325))
-savefig("Case5_lighton.pdf")
+
