@@ -11,7 +11,6 @@ addParam!(d, "tFinal",   100)   # Simulation time [days]
 addParam!(d, "tol",      1e-4)  # Tolerance
 addParam!(d, "outPeriod",5.0)   # Time between outputs [days]
 addParam!(d, "optionalPlot","source") # 6th plot: "growthrate" (default) or "source"
-addParam!(d, "plotSize",(900,600)) # Plot size [pixels]
 
 # ---------------------- #
 # Particulate Parameters #
@@ -59,6 +58,7 @@ addParam!(d, "LL",  1.0e-5)  # Boundary layer thickness [m]
 p = packageCheckParam(d)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
+biofilm_plot(sol,p,size=(900,600))
 
 # Save output
 savefig("Case3.pdf")
