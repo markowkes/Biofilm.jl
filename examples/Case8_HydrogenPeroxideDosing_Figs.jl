@@ -144,6 +144,7 @@ begin # plots
         )
     display(fig)
     savefig("Fig1.svg")
+    savefig("Fig1.pdf")
     using Printf 
     @printf("Final biofilm thickness = %10.3f μm\n", Lf1[end]*1e6)
     @printf("Final biofilm thickness = %10.3f μm\n", Lf2[end]*1e6)
@@ -227,6 +228,7 @@ begin # Plot Lf vs doses (add additional doses - make sure at S.S.)
         )
     display(fig)
     savefig("Fig2a.svg")
+    savefig("Fig2a.pdf")
 end
 
 begin # Plot Live vs doses (Average over biofilm)
@@ -256,6 +258,7 @@ begin # Plot Live vs doses (Average over biofilm)
     )
     display(fig)
     savefig("Fig2b.svg")
+    savefig("Fig2b.pdf")
 end
 
 begin # Compute Log Reduction 
@@ -321,6 +324,7 @@ begin # plot Glucose vs Depth in biofilm
     )
     display(fig)
     savefig("Fig3a.svg")
+    savefig("Fig3a.pdf")
 end
 begin # plot Hydrogen Peroxide vs Depth in biofilm
     fig = plot()
@@ -350,6 +354,7 @@ begin # plot Hydrogen Peroxide vs Depth in biofilm
     )
     display(fig)
     savefig("Fig3b.svg")
+    savefig("Fig3b.pdf")
 end
 
 #########
@@ -380,6 +385,7 @@ begin # plot live & dead vs Depth in biofilm
     )
     display(fig)
     savefig("Fig4a.svg")
+    savefig("Fig4a.pdf")
     
     println("Mean live volume fraction = $(meanLive(Pb2))")
     println("Mean Dead volume fraction = $(meanDead(Pb2))")
@@ -422,6 +428,7 @@ begin # plot Glucose Consumption Rate vs Depth in biofilm
     )
     display(fig)
     savefig("Fig4b.svg")
+    savefig("Fig4b.pdf")
 end
 
 #########
@@ -476,6 +483,7 @@ begin # plot Biofilm Thickness vs Time
         )
     display(fig)
     savefig("Fig5a.svg")
+    savefig("Fig5a.pdf")
 end
 begin # plot % Live vs Time (average over biofilm)
     # Get mean substrates & particulates vs time 
@@ -507,6 +515,7 @@ begin # plot % Live vs Time (average over biofilm)
         )
     display(fig)
     savefig("Fig5b.svg")
+    savefig("Fig5b.pdf")
 end
 
 #########
@@ -600,6 +609,7 @@ begin # Plot Lf vs doses
         )
     display(fig)
     savefig("Fig6a.svg")
+    savefig("Fig6a.pdf")
     for i=1:5
         @printf("%6.0f  %6.3f \n",doses[i],Lfs_nodeadneut[i][end]*1e6)
     end
@@ -627,6 +637,7 @@ begin # Plot % Live vs doses
         )
     display(fig)
     savefig("Fig6b.svg")
+    savefig("Fig6b.pdf")
 end
 
 #########
@@ -684,6 +695,7 @@ begin # Plot Lf vs GlucoseIn
         )
     display(fig)
     savefig("Fig7a.svg")
+    savefig("Fig7a.pdf")
     for i=1:20
         @printf(" %6.3f  %6.3f \n", GlucoseIns[i],Lf_g[i][end]*1e6)
     end
@@ -707,5 +719,6 @@ begin # Plot Live vs GlucoseIn (need depth averaged)
     )
     display(fig)
     savefig("Fig7b.svg")
+    savefig("Fig7b.pdf")
 end
 
