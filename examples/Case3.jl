@@ -25,7 +25,7 @@ addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> -b*X[1], # Source of particulates
                        (S,X,Lf,t,z,p) ->  b*X[1]])
 # Growthrates for each particulate
 mumax = 2; KM = 1;
-addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1]) 
+addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) / (KM + S[1]) 
                     (S,X,Lf,t,z,p) -> 0.0 ] )
 
 # -------------------- #

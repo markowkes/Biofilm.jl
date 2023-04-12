@@ -23,7 +23,7 @@ addParam!(d, "Kdet",  20000.0)       # Particulates detachment coefficient
 addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of particulates
 # Growthrates for each particulate
 mumax = 20; KM = 3;
-addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])])
+addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) / (KM + S[1])])
 
 # -------------------- #
 # Substrate Parameters #

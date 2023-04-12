@@ -32,8 +32,8 @@ addParam!(d, "srcX",  [
 KmB1 = 0.200; KmB3 = 11;  KmC2 = 20;  KI = 1.0;
 mumaxA = 0.4;  mumaxB = 0.672;  mumaxC = 10.46;
 addParam!(d, "mu", [
-    (S,X,Lf,t,z,p) -> mumaxB*(S[1]./(KmB1.+S[1])).*(S[3]./(KmB3.+S[3])),   # SOB
-    (S,X,Lf,t,z,p) -> mumaxC*(S[2]./(KmC2.+S[2])).*(1.0./(1.0.+S[1]/KI)) , # SRB
+    (S,X,Lf,t,z,p) -> mumaxB*(S[1]./(KmB1+S[1]))*(S[3]/(KmB3+S[3])),   # SOB
+    (S,X,Lf,t,z,p) -> mumaxC*(S[2]./(KmC2+S[2]))*(1.0/(1.0+S[1]/KI)) , # SRB
     (S,X,Lf,t,z,p) -> 0.0 ] )                                              # Dead
 
 # -------------------- #
