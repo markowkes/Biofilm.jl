@@ -63,11 +63,12 @@ addParam!(d, "mu", [(S,X,Lf,t,z,p) -> μ(S[1],S[2])])
 # -------------------- #
 addParam!(d, "SNames",["Glucose", "Lactate"])     # Substrate names
 addParam!(d, "Sin",   [(t) -> s⁰, (t) -> 0.0])    # Substrate inflow (can be function of time)
-addParam!(d, "Sto",   [ s⁰, 0.0])       # Tank substrate concentration initial condition(s)
-addParam!(d, "Sbo",   [0.0, 0.0])       # Biofilm substrates concentration initial condition(s)
+addParam!(d, "Sto",   [ s⁰, 0.0])      # Tank substrate concentration initial condition(s)
+addParam!(d, "Sbo",   [0.0, 0.0])      # Biofilm substrates concentration initial condition(s)
 addParam!(d, "Yxs",   [Yxs -Yxs/Yps])  # Biomass yield coefficient on substrate
-addParam!(d, "Daq",   [ Ds, Dp])        # Substrate diffusion through boundary layer
-addParam!(d, "De",    [ Ds, Dp])        # Substrate diffusion through biofilm     
+addParam!(d, "Dt",    [ Ds, Dp])       # Aquious substrate diffusion through tank fluid
+addParam!(d, "Db",    [ Ds, Dp])       # Effective substrate diffusion through biofilm
+
 addParam!(d, "srcS",  [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
                        (S,X,Lf,t,z,p) -> 0.0 ]) 
 

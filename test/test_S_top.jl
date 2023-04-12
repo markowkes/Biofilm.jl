@@ -43,8 +43,8 @@ function test_S_top()
         Sto=[10.0],          # Tank substrate concentraion initial condition(s)
         Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
         Yxs=[2.646],        # Biomass yield coefficient on substrate
-        Daq=[4.0E-5],       # Substrate diffusion through boundary layer
-        De=[6.9E-5],        # Substrate diffusion through biofilm     
+        Dt=[4.0E-5],       # Aquious substrate diffusion through tank fluid
+        Db=[6.9E-5],        # Effective substrate diffusion through biofilm
         srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
         
         # --------------- #
@@ -70,8 +70,8 @@ function test_S_top()
     S_top = Biofilm.computeS_top(p.Sto,Sb,p,g)
 
     # Flux from tank/biofilm 
-    Ftank = p.Daq[1]*(p.Sto[1] - S_top[1])/p.LL 
-    Ffilm = p.De[1] *(S_top[1] - Sb[1,end])/(g.dz/2)
+    Ftank = p.Dt[1]*(p.Sto[1] - S_top[1])/p.LL 
+    Ffilm = p.Db[1] *(S_top[1] - Sb[1,end])/(g.dz/2)
 
     # Final values
     computed1 = Ftank

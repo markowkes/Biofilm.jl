@@ -44,8 +44,8 @@ addParam!(d, "Sbo",   [  0.0, 0.0])          # Biofilm substrates concentration 
 addParam!(d, "Yxs",   [#Glucose   H. Per.
                         0.26       0.0       # Live use glucose
                         0.00       0.0   ])  # Dead doesn't use/produce anything
-addParam!(d, "Daq",   [5.2e-5, 1.09e-4])     # Substrate diffusion through boundary layer
-addParam!(d, "De",    [1.3e-5, 6.52e-5])     # Substrate diffusion through biofilm     
+addParam!(d, "Dt",    [5.2e-5, 1.09e-4])     # Aquious substrate diffusion through tank fluid
+addParam!(d, "Db",    [1.3e-5, 6.52e-5])     # Effective substrate diffusion through biofilm
 k_b  = 10.0; #m³/g/d
 addParam!(d, "srcS",  [                      # Source of substrates
     (S,X,Lf,t,z,p) -> 0.0,  

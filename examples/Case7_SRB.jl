@@ -40,8 +40,8 @@ addParam!(d, "Sbo",   [8.6,48.0,1e-5])         # Biofilm substrates concentratio
 # Biomass yield coefficient on substrate
 addParam!(d, "Yxs",   [ # oxygen  sulfate  Hy. sulfide
                           0.00    0.584   -1.645])    # SRB uses sulfate and produces sulfide
-addParam!(d, "Daq",   [1.51e-4,8e-5,1.21e-4])       # Substrate diffusion through boundary layer
-addParam!(d, "De",    [6.8e-5,4e-5,6.04e-5])       # Substrate diffusion through biofilm     
+addParam!(d, "Dt",    [1.51e-4,8e-5,1.21e-4])   # Aquious substrate diffusion through tank fluid
+addParam!(d, "Db",    [6.8e-5,4e-5,6.04e-5])    # Effective substrate diffusion through biofilm
 addParam!(d, "srcS",  [
     (S,X,Lf,t,z,p) -> 0.0,       # Source of substrates
     (S,X,Lf,t,z,p) -> 0.0,

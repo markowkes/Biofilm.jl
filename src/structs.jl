@@ -37,8 +37,8 @@ using Parameters
     
     # Substrate parameters
     Yxs :: Array{Float64}  # Biomass yield coefficient on substrate
-    Daq :: Vector{Float64}  # Substrate diffusion through boundary layer
-    De  :: Vector{Float64}    # Substrate diffusion through biofilm     
+    Dt  :: Vector{Float64}  # Aquious substrate diffusion through fluid boundary layer in tank at top of biofilm
+    Db  :: Vector{Float64}  # Effective substrate diffusion through biofilm     
     rho :: Vector{Float64}  # Particulate densities
     Kdet :: Float64 # Particulate detachment coefficient
     Sin :: Vector{Function}  # Inflow substrate concentration 

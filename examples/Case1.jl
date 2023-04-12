@@ -33,8 +33,8 @@ addParam!(d, "Sin",   [(t) -> 100])   # Substrate inflow (can be function of tim
 addParam!(d, "Sto",   [10.0])         # Tank substrate concentration initial condition(s)
 addParam!(d, "Sbo",   [0.0])          # Biofilm substrates concentration initial condition(s)
 addParam!(d, "Yxs",   [2.646])        # Biomass yield coefficient on substrate
-addParam!(d, "Daq",   [4.0E-5])       # Substrate diffusion through boundary layer
-addParam!(d, "De",    [6.9E-5])       # Substrate diffusion through biofilm     
+addParam!(d, "Dt",    [4.0E-5])       # Aquious substrate diffusion through tank fluid
+addParam!(d, "Db",    [6.9E-5])       # Effective substrate diffusion through biofilm
 addParam!(d, "srcS",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of substrates
 
 # --------------- #
