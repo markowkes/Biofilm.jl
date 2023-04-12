@@ -43,8 +43,8 @@ function test_SteadyState()
         Sto=[25.0],          # Tank substrate concentraion initial condition(s)
         Sbo=[0.0],           # Biofilm substrates concentration initial condition(s)
         Yxs=[0.5],           # Biomass yield coefficient on substrate
-        Daq=[100.0],         # Substrate diffusion through boundary layer
-        De =[100.0],         # Substrate diffusion through biofilm     
+        Dt=[100.0],         # Aquious substrate diffusion through tank fluid
+        Db=[100.0],         # Effective substrate diffusion through biofilm
         srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
         
         # --------------- #

@@ -36,8 +36,8 @@ The Case file defines a param struct with the following fields
   \end{bmatrix}
   ```
   for ``N`` substrates and ``M`` particulates.  If ``X_i`` does not depend on ``S_j``, set ``\displaystyle \frac{\Delta X_i}{\Delta S_j}=0``.
-- **Daq** - Diffusion coefficient of substrates through a boundary at the top of the biofilm.  If you do not want a boundary layer set **LL=0**, then these values will not impact the solution. [m``^2``/day]
-- **De** - Diffusion coefficient of substrates through a biofilm [m``^2``/day]
+- **Dt** - Aqueous diffusion coefficient of substrates through a boundary layer within the tank at the top of the biofilm.  If you do not want a boundary layer set **LL=0**, then these values will not impact the solution. [m``^2``/day]
+- **Db** - Effective diffusion coefficient of substrates through a biofilm [m``^2``/day]
 
 ### Tank Parameters
 - **V** - Volume of tank [m``^3``]

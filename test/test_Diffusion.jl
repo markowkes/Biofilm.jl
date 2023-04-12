@@ -52,8 +52,8 @@ function test_Diffusion()
             Sto=[25.0],          # Tank substrate concentraion initial condition(s)
             Sbo=[0.0],           # Biofilm substrates concentration initial condition(s)
             Yxs=[0.5],           # Biomass yield coefficient on substrate
-            Daq=[4.0E-5],        # Substrate diffusion through boundary layer
-            De =[1.0E-5],        # Substrate diffusion through biofilm     
+            Dt=[4.0E-5],        # Aquious substrate diffusion through tank fluid
+            Db=[1.0E-5],        # Effective substrate diffusion through biofilm
             srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
             
             # --------------- #
@@ -76,7 +76,7 @@ function test_Diffusion()
         # Analytic Result
         Xb=p.rho[1].*Pb[:,end]
         phi = sqrt(mumax.*Xb[1].*Lf[end]^2/
-                        (p.De[1]*KM*p.Yxs[1]))
+                        (p.Db[1]*KM*p.Yxs[1]))
         Sb_ana = St[end].*cosh.(phi*zm/Lf[end])/cosh(phi)
 
         error[n]=maximum(abs.(Sb_ana .- Sb'))

@@ -43,8 +43,8 @@ function test_zeroLL()
         Sto=[10.0],          # Tank substrate concentraion initial condition(s)
         Sbo=[0.0],          # Biofilm substrates concentration initial condition(s)
         Yxs=[2.646],        # Biomass yield coefficient on substrate
-        Daq=[4.0E-5],       # Substrate diffusion through boundary layer
-        De=[6.9E-5],        # Substrate diffusion through biofilm     
+        Dt=[4.0E-5],       # Aquious substrate diffusion through tank fluid
+        Db=[6.9E-5],        # Effective substrate diffusion through biofilm
         srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
         
         # --------------- #
