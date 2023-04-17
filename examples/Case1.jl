@@ -15,7 +15,7 @@ addParam!(d, "outPeriod",0.1)   # Time between outputs [days]
 # ---------------------- #
 # Particulate Parameters #
 # ---------------------- #
-addParam!(d, "XNames",["Aerobe"])    # Particulate names
+addParam!(d, "XNames",["Heterotroph"])    # Particulate names
 addParam!(d, "Xto",   [10.0])        # Tank particulate concentration initial condition(s)
 addParam!(d, "Pbo",   [0.08])        # Biofilm particulates volume fraction initial condition(s) 
 addParam!(d, "rho",   [2.0E4])       # Particulate densities
@@ -28,7 +28,7 @@ addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) / (KM + S[1])])
 # -------------------- #
 # Substrate Parameters #
 # -------------------- #
-addParam!(d, "SNames",["Oxygen"])     # Substrate names
+addParam!(d, "SNames",["Nutrient"])     # Substrate names
 addParam!(d, "Sin",   [(t) -> 100])   # Substrate inflow (can be function of time)
 addParam!(d, "Sto",   [10.0])         # Tank substrate concentration initial condition(s)
 addParam!(d, "Sbo",   [0.0])          # Biofilm substrates concentration initial condition(s)
