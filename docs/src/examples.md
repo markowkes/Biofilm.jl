@@ -8,7 +8,7 @@ Pages = ["examples.md"]
 ## Case 1 - Single Substrate and Particulate Case
  **Download link: [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl)** (right-click & Save Link As)
 
-This case is the same the case shown on the [Installation](@ref) page.  It simulates a single particulate ("Bug") and a single substrate ("Oxygen").  The particulate has a growthrate of 
+This case is the same the case shown on the [Installation](@ref) page.  It simulates a single particulate ("Heterotroph") and a single substrate ("Nutrient").  The particulate has a growthrate of 
 ```math
 \mu = \mu_\mathrm{max} \frac{S}{K_M + S}
 ```
