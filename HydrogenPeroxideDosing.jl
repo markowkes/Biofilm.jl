@@ -96,25 +96,12 @@ end
 #########
 # Run 3 cases
 begin # runs 
-    # Just run cases as sol is needed
-    # if  isfile("cases1.jld2") && 
-    #     isfile("cases2.jld2") && 
-    #     isfile("cases3.jld2")
-    #     println("Using saved files for cases1, cases2, and cases3")
-    #     JLD2.@load "cases1.jld2" t1 zm1 X1 S1 Pb1 Sb1 Lf1 sol1
-    #     JLD2.@load "cases2.jld2" t2 zm2 X2 S2 Pb2 Sb2 Lf2 sol2
-    #     JLD2.@load "cases3.jld2" t3 zm3 X3 S3 Pb3 Sb3 Lf3 sol3
-    # else
-        k_bl  = 10.0; #m³/g/d
-        k_bd  = 10.0; #m³/g/d
-        GlucoseIn = 100.0; # g/m³
-        dose1 =   0.0; dose2 =    0.0; t1,zm1,X1,S1,Pb1,Sb1,Lf1,sol1 = BiofilmSolver(p)
-        dose1 = 500.0; dose2 =    0.0; t2,zm2,X2,S2,Pb2,Sb2,Lf2,sol2 = BiofilmSolver(p)
-        dose1 = 500.0; dose2 = -500.0; t3,zm3,X3,S3,Pb3,Sb3,Lf3,sol3 = BiofilmSolver(p)
-    #     JLD2.@save "cases1.jld2" t1 zm1 X1 S1 Pb1 Sb1 Lf1 sol1
-    #     JLD2.@save "cases2.jld2" t2 zm2 X2 S2 Pb2 Sb2 Lf2 sol2
-    #     JLD2.@save "cases3.jld2" t3 zm3 X3 S3 Pb3 Sb3 Lf3 sol3
-    # end
+    k_bl  = 10.0; #m³/g/d
+    k_bd  = 10.0; #m³/g/d
+    GlucoseIn = 100.0; # g/m³
+    dose1 =   0.0; dose2 =    0.0; t1,zm1,X1,S1,Pb1,Sb1,Lf1,sol1 = BiofilmSolver(p)
+    dose1 = 500.0; dose2 =    0.0; t2,zm2,X2,S2,Pb2,Sb2,Lf2,sol2 = BiofilmSolver(p)
+    dose1 = 500.0; dose2 = -500.0; t3,zm3,X3,S3,Pb3,Sb3,Lf3,sol3 = BiofilmSolver(p)
 end
 begin # plots
     fig = plot()
@@ -125,10 +112,6 @@ begin # plots
     fig = annotate!([2],[90],"Dosing On")
     fig = quiver!([6], [130], quiver=([0], [-30]), linecolor = :black, line=(:solid, 1))
     fig = annotate!([6],[90],"Dosing Off")
-    #fig = quiver!([2], [0], quiver=([0], [40]), linecolor = :black, line=(:solid, 1))
-    # fig = annotate!([1.9],[20],text("Dosing On",:right,12))
-    # fig = quiver!([6], [40], quiver=([0], [-40]), linecolor = :black, line=(:solid, 1))
-    # fig = annotate!([5.9],[20],text("Dosing Off",:right,12))
     fig = plot!(
             xlabel = "Time (d)",
             ylabel = "Biofilm Thickness (μm)",
@@ -158,11 +141,10 @@ end
 #########
 begin # runs
     doses = 0.0:50.0:20000.0
-    #doses = 50.0:5000.0:20000.0 # testing
-    if  isfile("doses.jld2")
+    if  isfile("doses.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for doses")
         JLD2.@load "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
-    else
+    else # Run simulations and save results 
         k_bl  = 10.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
         GlucoseIn = 100.0; # g/m³
@@ -237,8 +219,6 @@ begin # Plot Live vs doses (Average over biofilm)
         linewidth = 2,  
         linecolor = :black,    
     )
-    #fig = annotate!([xdose],[15],@sprintf("%4.0f g/m³",xdose))
-    #fig = quiver!([xdose], [20], quiver=([0], [16]), linecolor = :black, line=(:solid, 1))
     fig = annotate!([14500],[5],"16,600 g/m³")
     fig = quiver!([15000], [10], quiver=([1600], [6]), linecolor = :black, line=(:solid, 1))
         
@@ -328,8 +308,6 @@ begin # plot Glucose vs Depth in biofilm
 end
 begin # plot Hydrogen Peroxide vs Depth in biofilm
     fig = plot()
-    # fig = plot!(zm1.*1e6,Sb1[2,:],line=(:solid, 2, :red),label="Dosing off")
-    # fig = plot!(zm2.*1e6,Sb2[2,:],line=(:dash,  2, :blue),label="Dosing on")
     fig = plot!(vcat(zm1.*1e6,Lf1[end]*1e6),
                 vcat(Sb1[2,:],S_top1[2]),
                 line=(:solid, 2, :red),label="Dosing off")
@@ -436,26 +414,15 @@ end
 #This is relative to base case
 #########
 begin # run
-    # Just run cases as sol is needed
-    # if  isfile("cases4.jld2") && 
-    #     isfile("cases5.jld2")
-    #     println("Using saved files for cases4, and cases5")
-    #     JLD2.@load "cases4.jld2" t4 zm4 X4 S4 Pb4 Sb4 Lf4 sol4
-    #     JLD2.@load "cases5.jld2" t5 zm5 X5 S5 Pb5 Sb5 Lf5 sol5
-    # else
-        GlucoseIn = 100.0; # g/m³
+    GlucoseIn = 100.0; # g/m³
 
-        # Turn off live neutralization (only dead)
-        dose1 = 500.0; dose2 = 0.0; k_bl=0.0; k_bd=10.0;
-        t4,zm4,X4,S4,Pb4,Sb4,Lf4,sol4 = BiofilmSolver(p)
+    # Turn off live neutralization (only dead)
+    dose1 = 500.0; dose2 = 0.0; k_bl=0.0; k_bd=10.0;
+    t4,zm4,X4,S4,Pb4,Sb4,Lf4,sol4 = BiofilmSolver(p)
 
-        # Turn off dead neutralization (only live)
-        dose1 = 500.0; dose2 = 0.0; k_bl=10.0; k_bd=0.0;
-        t5,zm5,X5,S5,Pb5,Sb5,Lf5,sol5 = BiofilmSolver(p)
-
-    #    JLD2.@save "cases4.jld2" t4 zm4 X4 S4 Pb4 Sb4 Lf4 sol4
-    #    JLD2.@save "cases5.jld2" t5 zm5 X5 S5 Pb5 Sb5 Lf5 sol5
-    # end
+    # Turn off dead neutralization (only live)
+    dose1 = 500.0; dose2 = 0.0; k_bl=10.0; k_bd=0.0;
+    t5,zm5,X5,S5,Pb5,Sb5,Lf5,sol5 = BiofilmSolver(p)
 end
 begin # plot Biofilm Thickness vs Time
     fig = plot()
@@ -494,8 +461,6 @@ begin # plot % Live vs Time (average over biofilm)
     fig = plot!(t2,Pb_t2[1,:]./(Pb_t2[1,:].+Pb_t2[2,:]).*100,line=(:solid,2, :black), label="Live & Dead Neutralization")
     fig = plot!(t4,Pb_t4[1,:]./(Pb_t4[1,:].+Pb_t4[2,:]).*100,line=(:dash, 2, :purple),label="Only Dead Neutralization")
     fig = plot!(t5,Pb_t5[1,:]./(Pb_t5[1,:].+Pb_t5[2,:]).*100,line=(:dot,  2, :green), label="Only Live Neutralization")
-    #fig = quiver!([2], [0], quiver=([0], [20]), linecolor = :black, line=(:solid, 1))
-    #fig = annotate!([1.9],[10],text("Dosing On",:right,12))
     fig = quiver!([2], [10], quiver=([0], [20]), linecolor = :black, line=(:solid, 1))
     fig = annotate!([1.9],[20],text("Dosing On",:right,12))
     fig = plot!(
@@ -523,10 +488,10 @@ end
 #### Same as Fig 2 with base-case (both live & dead , just live, just dead neutralization) ###
 #########
 begin # runs - no live neutralization
-    if  isfile("case_noliveneut.jld2")
+    if  isfile("case_noliveneut.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for case_noliveneut")
         JLD2.@load "case_noliveneut.jld2" ts_noliveneut zms_noliveneut Xs_noliveneut Ss_noliveneut Pbs_noliveneut Sbs_noliveneut Lfs_noliveneut
-    else
+    else # Run simulations and save results
         k_bl  =  0.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
         GlucoseIn = 100.0; # g/m³
@@ -554,14 +519,13 @@ begin # runs - no live neutralization
     end
 end
 begin # runs - no dead neutralization
-    if  isfile("case_nodeadneut.jld2")
+    if  isfile("case_nodeadneut.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for case_nodeadneut")
         JLD2.@load "case_nodeadneut.jld2" ts_nodeadneut zms_nodeadneut Xs_nodeadneut Ss_nodeadneut Pbs_nodeadneut Sbs_nodeadneut Lfs_nodeadneut
-    else
+    else # Run simulations and save results
         k_bl  = 10.0; #m³/g/d
         k_bd  =  0.0; #m³/g/d
         GlucoseIn = 100.0; # g/m³
-        #doses = [1.0,10.0,50.0,100.0,150.0,200.0,250.0,300.0,350.0,400.0,450.0,500.0,600.0,700.0,800.0,900.0,1000.0,2000.0,3000.0,4000.0,5000.0,6000.0,7000.0,8000.0,9000.0,10000.0,11000.0,12000.0,13000.0,14000.0,15000.0,16000.0,17000.0,18000.0,19000.0,20000.0]
         ts_nodeadneut  = Vector{Float64}[]
         zms_nodeadneut = Vector{Float64}[]
         Xs_nodeadneut  = Matrix{Float64}[]
@@ -644,7 +608,6 @@ end
 # Fig 7: Biofilm tolerance of HP depends on glucose concentration. A, steady state biofilm thickness when subjected to continuous HP treatment at various glucose concentrations. B, steady state percent live cells when subjected to continuous HP treatment at various glucose concentrations.
 #########
 begin # runs (include lower concentrations - expect thickness to drop to zero at some low enough conc.)
-    #GlucoseIns = [5,10,20,30,40,50.0,60,70,80,90,100.0,120,130,140,150.0,160,170,180,190,200.0]; # g/m³
     GlucoseIns = 0.0:1.0:200.0
     if  isfile("case_g.jld2")
         println("Using saved files for case_g")
