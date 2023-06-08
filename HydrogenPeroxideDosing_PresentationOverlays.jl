@@ -94,15 +94,18 @@ end
 #########
 # Run 3 cases
 begin # runs 
-    k_bl  = 10.0; #m³/g/d
-    k_bd  = 10.0; #m³/g/d
-    GlucoseIn = 100.0; # g/m³
-    # Run out to 2000 days for Fig. 4a 
-    # (parameter studies will only run to 100 days)
-    p2000 = @set p.tFinal = 2000
-    dose1 =   0.0; dose2 =    0.0; t1,zm1,X1,S1,Pb1,Sb1,Lf1,sol1 = BiofilmSolver(p2000)
-    dose1 = 500.0; dose2 =    0.0; t2,zm2,X2,S2,Pb2,Sb2,Lf2,sol2 = BiofilmSolver(p2000)
-    dose1 = 500.0; dose2 = -500.0; t3,zm3,X3,S3,Pb3,Sb3,Lf3,sol3 = BiofilmSolver(p2000)
+    # Run cases if needed
+    if !(@isdefined(sol1) && @isdefined(sol2) && @isdefined(sol3))
+        k_bl  = 10.0; #m³/g/d
+        k_bd  = 10.0; #m³/g/d
+        GlucoseIn = 100.0; # g/m³
+        # Run out to 2000 days for Fig. 4a 
+        # (parameter studies will only run to 100 days)
+        p2000 = @set p.tFinal = 2000
+        dose1 =   0.0; dose2 =    0.0; t1,zm1,X1,S1,Pb1,Sb1,Lf1,sol1 = BiofilmSolver(p2000)
+        dose1 = 500.0; dose2 =    0.0; t2,zm2,X2,S2,Pb2,Sb2,Lf2,sol2 = BiofilmSolver(p2000)
+        dose1 = 500.0; dose2 = -500.0; t3,zm3,X3,S3,Pb3,Sb3,Lf3,sol3 = BiofilmSolver(p2000)
+    end
 end
 begin # plots
     # Part 1
@@ -184,15 +187,17 @@ end
 #This is relative to base case
 #########
 begin # run
-    GlucoseIn = 100.0; # g/m³
+    if !(@isdefined(sol4) && @isdefined(sol5))
+        GlucoseIn = 100.0; # g/m³
 
-    # Turn off live neutralization (only dead)
-    dose1 = 500.0; dose2 = 0.0; k_bl=0.0; k_bd=10.0;
-    t4,zm4,X4,S4,Pb4,Sb4,Lf4,sol4 = BiofilmSolver(p)
+        # Turn off live neutralization (only dead)
+        dose1 = 500.0; dose2 = 0.0; k_bl=0.0; k_bd=10.0;
+        t4,zm4,X4,S4,Pb4,Sb4,Lf4,sol4 = BiofilmSolver(p)
 
-    # Turn off dead neutralization (only live)
-    dose1 = 500.0; dose2 = 0.0; k_bl=10.0; k_bd=0.0;
-    t5,zm5,X5,S5,Pb5,Sb5,Lf5,sol5 = BiofilmSolver(p)
+        # Turn off dead neutralization (only live)
+        dose1 = 500.0; dose2 = 0.0; k_bl=10.0; k_bd=0.0;
+        t5,zm5,X5,S5,Pb5,Sb5,Lf5,sol5 = BiofilmSolver(p)
+    end
 end
 begin # plot Biofilm Thickness vs Time
     #Part 1

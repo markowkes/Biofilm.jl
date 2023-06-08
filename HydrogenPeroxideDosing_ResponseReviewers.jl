@@ -1,4 +1,4 @@
-
+# Note some of these can take a while so run in parts!
 
 begin # Run HydrogenPeroxideDosing.jl 
     include("HydrogenPeroxideDosing.jl")
@@ -78,7 +78,7 @@ end
 # Reviewer 2 - Longer run times to get Fig 4 to steady-state 
 # ---------------------
 begin # Runs with varying tFinal
-    for tFinal in [] #[] #[10,100,1000,2000,5000,10000] # takes a while to run - so comment out to reproduce
+    for tFinal in [10,100,1000,2000,5000,10000] # takes a while to run
         println("Working on tFinal = $tFinal")
         k_bl  = 10.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
@@ -112,43 +112,6 @@ begin # Runs with varying tFinal
         display(fig)
         savefig("reviewer2_steadyState_$(tFinal).pdf")
     end
-end
-
-begin # Runs with tFinal = 2000 to make results for paper
-    tFinal = 2000
-    k_bl  = 10.0; #m³/g/d
-    k_bd  = 10.0; #m³/g/d
-    GlucoseIn = 100.0; # g/m³
-    p_tFinal = @set p.tFinal = tFinal
-    dose1 =   0.0; dose2 =    0.0; t1vt,zm1vt,X1vt,S1vt,Pb1vt,Sb1vt,Lf1vt,sol1vt = BiofilmSolver(p_tFinal)
-    dose1 = 500.0; dose2 =    0.0; t2vt,zm2vt,X2vt,S2vt,Pb2vt,Sb2vt,Lf2vt,sol2vt = BiofilmSolver(p_tFinal)
-
-    # Plot volume fraction
-    fig = plot()
-    fig = plot!(zm1vt.*1e6,Pb1vt[1,:],label="Live   - No Dosing",line=(:solid,2), linecolor = :red,)
-    fig = plot!(zm1vt.*1e6,Pb1vt[2,:],label="Dead - No Dosing",  line=(:dash, 2), linecolor = :red,)
-    fig = plot!(zm2vt.*1e6,Pb2vt[1,:],label="Live   - Dosing On ",line=(:solid,2), linecolor = :blue,)
-    fig = plot!(zm2vt.*1e6,Pb2vt[2,:],label="Dead - Dosing On ",  line=(:dash, 2), linecolor = :blue,)
-    fig = plot!(
-        xlabel = "Height in Biofilm (μm)",
-        ylabel = "Volume Fraction (-)",
-        #ylims = (0.0,200),
-        xlims = (0,maximum(zm2.*1e6)),
-        legend=(0.91,0.95),
-        xguidefontsize=16,
-        yguidefontsize=16,
-        xtickfontsize=14,
-        ytickfontsize=14,
-        legendfontsize=12,
-        foreground_color_legend = nothing,
-        size = (900,550),
-        margin = 10mm,
-        right_margin = 25mm,
-    )
-    display(fig)
-    savefig("Fig4a_$(tFinal)days.pdf")
-    println("Mean live volume fraction = $(meanLive(Pb2vt))")
-    println("Mean Dead volume fraction = $(meanDead(Pb2vt))")
 end
 
 # ---------------------
