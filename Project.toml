@@ -33,7 +33,7 @@ ProgressMeter = "1"
 Sundials = "4"
 TerminalLoggers = "0.1"
 UnPack = "1"
-julia = "1.7"
+julia = "1.8"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
