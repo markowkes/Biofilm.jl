@@ -183,6 +183,89 @@ end
 
 
 #########
+# Fig 2b*: Plot log reduction vs dose 
+#########
+begin # runs
+    doses = 0.0:50.0:20000.0
+    if  isfile("doses.jld2") # Check for file of saved results to reduce runtime
+        println("Using saved files for doses")
+        JLD2.@load "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+    else # Run simulations and save results 
+        k_bl  = 10.0; #m³/g/d
+        k_bd  = 10.0; #m³/g/d
+        GlucoseIn = 100.0; # g/m³
+        ts  = Vector{Float64}[]
+        zms = Vector{Float64}[]
+        Xs  = Matrix{Float64}[]
+        Ss  = Matrix{Float64}[]
+        Pbs = Matrix{Float64}[]
+        Sbs = Matrix{Float64}[]
+        Lfs = Matrix{Float64}[]
+        for i in eachindex(doses)
+            global dose1 = doses[i]
+            global dose2 = 0.0
+            println("Running solver with dose1=$dose1")
+            local t,zm,X,S,Pb,Sb,Lf,sol = BiofilmSolver(p)
+            push!( ts, t)
+            push!(zms,collect(zm))
+            push!( Xs, X)
+            push!( Ss, S)
+            push!(Pbs,Pb)
+            push!(Sbs,Sb)
+            push!(Lfs,Lf)
+        end
+        JLD2.@save "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+    end
+end
+begin # Plot Live vs doses (Average over biofilm)
+    """
+    Compute the log reduction
+    """
+    log_reduction = zeros(size(doses))
+    for n in 2:length(doses) # dose(s) to compute log reduction at
+        dose = doses[n]
+        # Find index closes to dose in doses 
+        value,index_dose  =findmin(abs.(doses.-dose))
+        value,index_nodose=findmin(abs.(doses.-0.0))
+        # Compute # live cells
+        Lf_nodose = Lfs[index_nodose][end]
+        Lf_dose   = Lfs[index_dose  ][end]
+        intVF_nodose = sum(Pbs[index_nodose][1,:])/length(Pbs[index_nodose][1,:])
+        intVF_dose   = sum(Pbs[index_dose  ][1,:])/length(Pbs[index_dose  ][1,:])
+        numlive_nodose = max(eps(),Lf_nodose*intVF_nodose)
+        numlive_dose   = max(eps(),Lf_dose  *intVF_dose  )
+        println("n=$n")
+        println("numlive_dose/nodose = $numlive_dose/$numlive_nodose")
+        log_reduction[n] = -log10(numlive_dose/numlive_nodose)
+    end
+    fig = plot()
+    fig = plot!(doses,log_reduction,
+        linewidth = 2,  
+        linecolor = :black,    
+    )
+    fig = annotate!([13000],[2.1],"16,600 g/m³")
+    fig = quiver!([15000], [1.9], quiver=([1600], [-0.97]), linecolor = :black, line=(:solid, 1))
+        
+    fig = plot!(
+        xlabel = "Dose Concentration (g/m³)",
+        ylabel = "Log Reduction",
+        ylims = (0.0,6),
+        xlims = (0,maximum(doses)),
+        xguidefontsize=16,
+        yguidefontsize=16,
+        xtickfontsize=14,
+        ytickfontsize=14,
+        legendfontsize=14,
+        legend = false,
+        size = (800,500),
+        margin = 10mm,
+    )
+    display(fig)
+    savefig("Fig2b_logReduction.pdf")
+end
+
+
+#########
 # Fig 5: Biofilm protection depends on hydrogen peroxide neutralizing activity of dead cells. A, biofilm thickness versus time with neutralization of hydrogen peroxide turned off for either live or dead cells. B, percent live cells versus time with neutralization of hydrogen peroxide turned off for either live or dead cells.
 #This is relative to base case
 #########
@@ -275,4 +358,89 @@ begin # plot Biofilm Thickness vs Time
     fig = annotate!([1.9],[40],text("Dosing On",:right,12))
     savefig("Fig5a_part3.pdf")
 
+end
+
+
+begin # plot % Live vs Time (average over biofilm)
+    # Get mean substrates & particulates vs time 
+    Sb_t2,Pb_t2=MeanBiofilmVarsWithTime(sol2,p)
+    Sb_t4,Pb_t4=MeanBiofilmVarsWithTime(sol4,p)
+    Sb_t5,Pb_t5=MeanBiofilmVarsWithTime(sol5,p)
+
+    # Part 1
+    fig = plot()
+    fig = plot!(
+            xlabel = "Time (d)",
+            ylabel = "% Live",
+            ylims = (-5.0,105.0),
+            xlims = (0,10),
+            legend=(0.55,0.25),
+            xguidefontsize=16,
+            yguidefontsize=16,
+            xtickfontsize=14,
+            ytickfontsize=14,
+            legendfontsize=12,
+            foreground_color_legend = nothing,
+            size = (800,500),
+            margin = 10mm,
+        )
+    fig = plot!(t2,Pb_t2[1,:]./(Pb_t2[1,:].+Pb_t2[2,:]).*100,line=(:solid,2, :black), label="Live & Dead Neutralization")
+    fig = quiver!([2], [10], quiver=([0], [20]), linecolor = :black, line=(:solid, 1))
+    fig = annotate!([1.9],[20],text("Dosing On",:right,12))
+    #fig = plot!(t4,Pb_t4[1,:]./(Pb_t4[1,:].+Pb_t4[2,:]).*100,line=(:dash, 2, :purple),label="Only Dead Neutralization")
+    #fig = plot!(t5,Pb_t5[1,:]./(Pb_t5[1,:].+Pb_t5[2,:]).*100,line=(:dot,  2, :green), label="Only Live Neutralization")
+    # Add blank lines for legend
+    fig = plot!(t2,-Lf2'.*1e6,line=(:white),label=" ")
+    fig = plot!(t2,-Lf2'.*1e6,line=(:white),label="  ")
+    savefig("Fig5b_part1.pdf")
+
+    # Part 1
+    fig = plot()
+    fig = plot!(
+            xlabel = "Time (d)",
+            ylabel = "% Live",
+            ylims = (-5.0,105.0),
+            xlims = (0,10),
+            legend=(0.55,0.25),
+            xguidefontsize=16,
+            yguidefontsize=16,
+            xtickfontsize=14,
+            ytickfontsize=14,
+            legendfontsize=12,
+            foreground_color_legend = nothing,
+            size = (800,500),
+            margin = 10mm,
+        )
+    fig = plot!(t2,Pb_t2[1,:]./(Pb_t2[1,:].+Pb_t2[2,:]).*100,line=(:solid,2, :black), label="Live & Dead Neutralization")
+    fig = quiver!([2], [10], quiver=([0], [20]), linecolor = :black, line=(:solid, 1))
+    fig = annotate!([1.9],[20],text("Dosing On",:right,12))
+    fig = plot!(t4,Pb_t4[1,:]./(Pb_t4[1,:].+Pb_t4[2,:]).*100,line=(:dash, 2, :purple),label="Only Dead Neutralization")
+    #fig = plot!(t5,Pb_t5[1,:]./(Pb_t5[1,:].+Pb_t5[2,:]).*100,line=(:dot,  2, :green), label="Only Live Neutralization")
+    # Add blank lines for legend
+    fig = plot!(t2,-Lf2'.*1e6,line=(:white),label="  ")
+    savefig("Fig5b_part2.pdf")
+
+    # Part 1
+    fig = plot()
+    fig = plot!(
+            xlabel = "Time (d)",
+            ylabel = "% Live",
+            ylims = (-5.0,105.0),
+            xlims = (0,10),
+            legend=(0.55,0.25),
+            xguidefontsize=16,
+            yguidefontsize=16,
+            xtickfontsize=14,
+            ytickfontsize=14,
+            legendfontsize=12,
+            foreground_color_legend = nothing,
+            size = (800,500),
+            margin = 10mm,
+        )
+    fig = plot!(t2,Pb_t2[1,:]./(Pb_t2[1,:].+Pb_t2[2,:]).*100,line=(:solid,2, :black), label="Live & Dead Neutralization")
+    fig = quiver!([2], [10], quiver=([0], [20]), linecolor = :black, line=(:solid, 1))
+    fig = annotate!([1.9],[20],text("Dosing On",:right,12))
+    fig = plot!(t4,Pb_t4[1,:]./(Pb_t4[1,:].+Pb_t4[2,:]).*100,line=(:dash, 2, :purple),label="Only Dead Neutralization")
+    fig = plot!(t5,Pb_t5[1,:]./(Pb_t5[1,:].+Pb_t5[2,:]).*100,line=(:dot,  2, :green), label="Only Live Neutralization")
+    savefig("Fig5b_part3.pdf")
 end
