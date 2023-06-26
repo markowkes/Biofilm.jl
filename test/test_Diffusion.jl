@@ -22,7 +22,7 @@ function test_Diffusion()
         KM = 2500;
 
         # Define a structure to hold all the parameters
-        p = param(
+        p = (
             # --------------------- #
             # Simulation Parameters #
             # --------------------- #
@@ -83,7 +83,7 @@ function test_Diffusion()
     end
 
     for n in eachindex(Nzs)
-        @printf("Nz = %4i, Error = %6.3e \n", Nzs[n], error[n])
+        @printf("Nz = %4i, Error = %6.3e \n",Nzs[n], error[n])
     end
 
     # plot( Nzs, error, xaxis=:log, yaxis=:log)

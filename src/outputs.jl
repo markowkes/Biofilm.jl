@@ -71,13 +71,9 @@ function processRecipeInputs(h)
             error("1st argument to biofilm_plot should be solution, e.g., biofilm_plot(sol)")
         end
 
-        # Get & check param
-        if typeof(h.args[2]) <: param
-            p = h.args[2]
-            has_p = true
-        else
-            error("2nd argument to biofilm_plot should be param.  Got: $(typeof(h.args[2]))")
-        end
+        # Get param 
+        p = h.args[2]
+        has_p = true
     else
         error("biofilm_plot requries at least two inputs, the solution and parameters e.g., biofilm_plot(sol,p)") 
     end
@@ -87,11 +83,14 @@ function processRecipeInputs(h)
         if typeof(h.args[3]) <: String
             desc = " : " * h.args[3]
         else
-            error("3nd argument to biofilm_plot should be sring.  Got: $(typeof(h.args[2]))")
+            error("3nd argument to biofilm_plot should be sring.  Got: $(typeof(h.args[3]))")
         end
     else
         desc = ""
     end
+
+    # Check paramters and add defaults 
+    p = checkInputs(p)
 
     # Unpack some parameters
     @unpack Nx,Ns,XNames, SNames = p

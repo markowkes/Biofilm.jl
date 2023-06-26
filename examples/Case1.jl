@@ -1,57 +1,54 @@
 using Biofilm 
 
-# Create empty dictionary to hold parameters 
-d = createDict()
-
-# --------------------- #
-# Simulation Parameters #
-# --------------------- #
-addParam!(d, "Title",    "Single Substrate and Particulate Case")
-addParam!(d, "tFinal",   1.0)   # Simulation time [days]
-addParam!(d, "tol",      1e-2)  # Tolerance
-addParam!(d, "outPeriod",0.1)   # Time between outputs [days]
-
-# ---------------------- #
-# Particulate Parameters #
-# ---------------------- #
-addParam!(d, "XNames",["Heterotroph"])    # Particulate names
-addParam!(d, "Xto",   [10.0])        # Tank particulate concentration initial condition(s)
-addParam!(d, "Pbo",   [0.08])        # Biofilm particulates volume fraction initial condition(s) 
-addParam!(d, "rho",   [2.0E4])       # Particulate densities
-addParam!(d, "Kdet",  20000.0)       # Particulates detachment coefficient
-addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of particulates
-# Growthrates for each particulate
+# Input parameters
 mumax = 20; KM = 3;
-addParam!(d, "mu", [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])])
+p = (
+    # --------------------- #
+    # Simulation Parameters #
+    # --------------------- #
+    Title =    "Single Substrate and Particulate Case",
+    tFinal =   1.0,   # Simulation time [days]
+    tol =      1e-2,  # Tolerance
+    outPeriod =0.1,   # Time between outputs [days]
 
-# -------------------- #
-# Substrate Parameters #
-# -------------------- #
-addParam!(d, "SNames",["Nutrient"])     # Substrate names
-addParam!(d, "Sin",   [(t) -> 100])   # Substrate inflow (can be function of time)
-addParam!(d, "Sto",   [10.0])         # Tank substrate concentration initial condition(s)
-addParam!(d, "Sbo",   [0.0])          # Biofilm substrates concentration initial condition(s)
-addParam!(d, "Yxs",   [2.646])        # Biomass yield coefficient on substrate
-addParam!(d, "Dt",    [4.0E-5])       # Aquious substrate diffusion through tank fluid
-addParam!(d, "Db",    [6.9E-5])       # Effective substrate diffusion through biofilm
-addParam!(d, "srcS",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of substrates
+    # ---------------------- #
+    # Particulate Parameters #
+    # ---------------------- #
+    XNames =["Heterotroph"],    # Particulate names
+    Xto =   [10.0],        # Tank particulate concentration initial condition(s)
+    Pbo =   [0.08],        # Biofilm particulates volume fraction initial condition(s) 
+    rho =   [2.0E4],       # Particulate densities
+    Kdet =  20000.0,       # Particulates detachment coefficient
+    srcX =  [(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
+    # Growthrates for each particulate
+    mu = [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
 
-# --------------- #
-# Tank Parameters #
-# --------------- #
-addParam!(d, "V", 0.1)        # Volume of tank [m³]
-addParam!(d, "A",   1)        # Surface area of biofilm [m²]
-addParam!(d, "Q",   1)        # Flowrate through tank [m³/d]
+    # -------------------- #
+    # Substrate Parameters #
+    # -------------------- #
+    SNames =["Nutrient"],     # Substrate names
+    Sin =   [(t) -> 100],   # Substrate inflow (can be function of time)
+    Sto =   [10.0],         # Tank substrate concentration initial condition(s)
+    Sbo =   [0.0],          # Biofilm substrates concentration initial condition(s)
+    Yxs =   [2.646],        # Biomass yield coefficient on substrate
+    Dt =    [4.0E-5],       # Aquious substrate diffusion through tank fluid
+    Db =    [6.9E-5],       # Effective substrate diffusion through biofilm
+    srcS =  [(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
 
-# ------------------ #
-# Biofilm Parameters #
-# ------------------ #
-addParam!(d, "Nz",  50)       # Number of grid points in biofilm
-addParam!(d, "Lfo", 1.0E-5)   # Biofilm initial thickness [m]
-addParam!(d, "LL",  1.00E-7)  # Boundary layer thickness [m]
+    # --------------- #
+    # Tank Parameters #
+    # --------------- #
+    V = 0.1,        # Volume of tank [m³]
+    A =   1,        # Surface area of biofilm [m²]
+    Q =   1,        # Flowrate through tank [m³/d]
 
-# Package and check parameters 
-p = packageCheckParam(d)
+    # ------------------ #
+    # Biofilm Parameters #
+    # ------------------ #
+    Nz =  50,       # Number of grid points in biofilm
+    Lfo = 1.0E-5,   # Biofilm initial thickness [m]
+    LL =  1.00E-7,  # Boundary layer thickness [m]
+)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 biofilm_plot(sol,p) # Plot final results

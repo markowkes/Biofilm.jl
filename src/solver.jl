@@ -14,9 +14,12 @@ using DiffEqCallbacks
 
 Take parameters defining a biofilm case and computes solution
 """
-function BiofilmSolver(p::param)
+function BiofilmSolver(p)
 
     println("Starting Solver ...")
+
+    # Check inputs 
+    p = checkInputs(p)
 
     # Unpack parameters
     @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p

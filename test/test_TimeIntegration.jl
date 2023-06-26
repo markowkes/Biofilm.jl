@@ -16,7 +16,7 @@ function test_TimeIntegration()
     KM = 2500;
 
     # Define a structure to hold all the parameters
-    p = param(
+    p = (
         # --------------------- #
         # Simulation Parameters #
         # --------------------- #
@@ -64,7 +64,7 @@ function test_TimeIntegration()
         Lfo=5.0E-5,     # Biofilm initial thickness [m]
         LL=0.0,         # Boundary layer thickness [m]
     )
-
+    
     t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
     
     # Analytic Result

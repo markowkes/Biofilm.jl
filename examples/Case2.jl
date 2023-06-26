@@ -30,58 +30,55 @@ function μ(s,p)
     return μ
 end
 
-# Create empty dictionary to hold parameters 
-d = createDict()
+# Tuple to hold all input parameters
+p = (
+    # --------------------- #
+    # Simulation Parameters #
+    # --------------------- #
+    Title =   "Biomass-Glucose-Lactate",
+    tFinal =  10,    # Simulation time [days]
+    tol =     1e-4,  # Tolerance
+    outPeriod = 1,   # Time between outputs [days]
 
-# --------------------- #
-# Simulation Parameters #
-# --------------------- #
-addParam!(d, "Title",    "Biomass-Glucose-Lactate")
-addParam!(d, "tFinal",   10)    # Simulation time [days]
-addParam!(d, "tol",      1e-4)  # Tolerance
-addParam!(d, "outPeriod",1)     # Time between outputs [days]
+    # ---------------------- #
+    # Particulate Parameters #
+    # ---------------------- #
+    XNames = ["Biomass"],  # Particulate names
+    Xto =  [Xt],           # Tank particulate concentration initial condition(s)
+    Pbo =  [1/6],          # Biofilm particulates volume fraction initial condition(s) 
+    rho =  [ρᵣ],           # Particulate densities
+    Kdet = σ,              # Particulates detachment coefficient
+    srcX = [(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
+    # Growthrates for each particulate
+    mu =[(S,X,Lf,t,z,p) -> μ(S[1],S[2])],
 
-# ---------------------- #
-# Particulate Parameters #
-# ---------------------- #
-addParam!(d, "XNames",["Biomass"])    # Particulate names
-addParam!(d, "Xto",   [Xt])           # Tank particulate concentration initial condition(s)
-addParam!(d, "Pbo",   [1/6])          # Biofilm particulates volume fraction initial condition(s) 
-addParam!(d, "rho",   [ρᵣ])           # Particulate densities
-addParam!(d, "Kdet",  σ)              # Particulates detachment coefficient
-addParam!(d, "srcX",  [(S,X,Lf,t,z,p) -> 0.0])     # Source of particulates
-# Growthrates for each particulate
-addParam!(d, "mu", [(S,X,Lf,t,z,p) -> μ(S[1],S[2])])
+    # -------------------- #
+    # Substrate Parameters #
+    # -------------------- #
+    SNames = ["Glucose", "Lactate"],    # Substrate names
+    Sin =  [(t) -> s⁰, (t) -> 0.0],    # Substrate inflow (can be function of time)
+    Sto =  [ s⁰, 0.0],      # Tank substrate concentration initial condition(s)
+    Sbo =  [0.0, 0.0],      # Biofilm substrates concentration initial condition(s)
+    Yxs =  [Yxs -Yxs/Yps],  # Biomass yield coefficient on substrate
+    Dt =   [ Ds, Dp],       # Aquious substrate diffusion through tank fluid
+    Db =   [ Ds, Dp],       # Effective substrate diffusion through biofilm
 
-# -------------------- #
-# Substrate Parameters #
-# -------------------- #
-addParam!(d, "SNames",["Glucose", "Lactate"])     # Substrate names
-addParam!(d, "Sin",   [(t) -> s⁰, (t) -> 0.0])    # Substrate inflow (can be function of time)
-addParam!(d, "Sto",   [ s⁰, 0.0])      # Tank substrate concentration initial condition(s)
-addParam!(d, "Sbo",   [0.0, 0.0])      # Biofilm substrates concentration initial condition(s)
-addParam!(d, "Yxs",   [Yxs -Yxs/Yps])  # Biomass yield coefficient on substrate
-addParam!(d, "Dt",    [ Ds, Dp])       # Aquious substrate diffusion through tank fluid
-addParam!(d, "Db",    [ Ds, Dp])       # Effective substrate diffusion through biofilm
+    srcS = [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
+            (S,X,Lf,t,z,p) -> 0.0 ], 
 
-addParam!(d, "srcS",  [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
-                       (S,X,Lf,t,z,p) -> 0.0 ]) 
+    # --------------- #
+    # Tank Parameters #
+    # --------------- #
+    V =0.1,        # Volume of tank [m³]
+    A =  1,        # Surface area of biofilm [m²]
+    Q =  1,        # Flowrate through tank [m³/d]
 
-# --------------- #
-# Tank Parameters #
-# --------------- #
-addParam!(d, "V", 0.1)        # Volume of tank [m³]
-addParam!(d, "A",   1)        # Surface area of biofilm [m²]
-addParam!(d, "Q",   1)        # Flowrate through tank [m³/d]
-
-# ------------------ #
-# Biofilm Parameters #
-# ------------------ #
-addParam!(d, "Nz",  50)      # Number of grid points in biofilm
-addParam!(d, "Lfo", L₀)      # Biofilm initial thickness [m]
-addParam!(d, "LL",  1.0E-4)  # Boundary layer thickness [m]
-
-# Package and check parameters 
-p = packageCheckParam(d)
+    # ------------------ #
+    # Biofilm Parameters #
+    # ------------------ #
+    Nz = 50,      # Number of grid points in biofilm
+    Lfo =L₀,      # Biofilm initial thickness [m]
+    LL = 1.0E-4,  # Boundary layer thickness [m]
+)
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver

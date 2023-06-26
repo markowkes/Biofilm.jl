@@ -13,7 +13,7 @@ function test_S_top()
     KM = 3;
 
     # Define a structure to hold all the parameters
-    p = param(
+    p = (
         # --------------------- #
         # Simulation Parameters #
         # --------------------- #
@@ -61,7 +61,7 @@ function test_S_top()
         Lfo=1.0E-5,     # Biofilm initial thickness [m]
         LL=50e-6,   # Boundary layer thickness [m]
     )
-
+    
     # Run simulation 
     t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 
