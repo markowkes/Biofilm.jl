@@ -1,14 +1,12 @@
 
-function biofilmRHS!(dsol,sol,p_r,t) 
-    # Process param and range inputs
-    p=p_r[1]
-    r=p_r[2]
+function biofilmRHS!(dsol,sol,p,t) 
 
     # Unpack structs 
     @unpack Nx,Ns,Nz,rho,Kdet,mu = p
+    @unpack rXt,rSt,rPb,rSb,rLf = p
 
     # Split sol into dependent variables
-    Xt,St,Pb,Sb,Lf=sol[r.Xt],sol[r.St],sol[r.Pb],sol[r.Sb],sol[r.Lf]
+    Xt,St,Pb,Sb,Lf=sol[rXt],sol[rSt],sol[rPb],sol[rSb],sol[rLf]
     Lf=Lf[1] # Convert length 1 vector into float
     Pb=reshape(Pb,Nx,Nz)
     Sb=reshape(Sb,Ns,Nz)
@@ -31,11 +29,11 @@ function biofilmRHS!(dsol,sol,p_r,t)
     fluxP = computeFluxP(Pb,V,p)              # Flux of particulates in biofilm
 
     # Compute RHS's
-    dsol[r.Xt]=dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g) # Tank particulates
-    dsol[r.St]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank substrates
-    dsol[r.Pb]=dPbdt(t,μb,Sb,Pb,Lf,fluxP,p,g)      # Biofilm particulates 
-    dsol[r.Sb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm substrates
-    dsol[r.Lf]=dLfdt(V,Vdet)                    # Biofilm thickness
+    dsol[rXt]=dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g) # Tank particulates
+    dsol[rSt]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank substrates
+    dsol[rPb]=dPbdt(t,μb,Sb,Pb,Lf,fluxP,p,g)      # Biofilm particulates 
+    dsol[rSb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm substrates
+    dsol[rLf]=dLfdt(V,Vdet)                    # Biofilm thickness
     return nothing
 end
 

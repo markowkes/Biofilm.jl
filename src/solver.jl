@@ -24,8 +24,8 @@ function BiofilmSolver(p)
     # Unpack parameters
     @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
 
-    # Compute ranges of dependent variables in sol array
-    r = computeRanges(p)
+    # Compute ranges of dependent variables in sol array (add to p)
+    p = computeRanges(p)
 
     # Prepare biofilm initial conditions
     Pbo_grid = vec(Pbo.*ones(Nx,Nz))
@@ -35,7 +35,7 @@ function BiofilmSolver(p)
     sol0=vcat(Xto,Sto,Pbo_grid,Sbo_grid,Lfo)
 
     # Prepare ODE Solver 
-    prob = ODEProblem(biofilmRHS!,sol0,(0.0,p.tFinal),[p,r])
+    prob = ODEProblem(biofilmRHS!,sol0,(0.0,p.tFinal),p)
 
     # Compute solver step size 
     # greatest common divisor of output and discontinutity periods
@@ -61,7 +61,7 @@ function BiofilmSolver(p)
     #GC.enable(true)
 
     # Convert solution to dependent variables
-    t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
+    t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p)
 
     # Final biofilm grid
     z=range(0.0,Lf[end],Nz+1)

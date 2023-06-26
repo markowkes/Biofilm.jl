@@ -13,8 +13,7 @@ function outputs(integrator)
 
     # Unpack integrator
     sol=integrator.sol 
-    p=integrator.p[1]
-    r=integrator.p[2]
+    p=integrator.p
     @unpack Nz,outPeriod,plotPeriod= p
 
     # Perform plots on output period 
@@ -23,7 +22,7 @@ function outputs(integrator)
 
 
         # Convert solution to dependent variables
-        t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
+        t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p)
 
         # Print titles to REPL every 10 outPeriod
         if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
@@ -100,10 +99,10 @@ function processRecipeInputs(h)
     Ns==1 ? Ss=SNames[1] : Ss=reshape(SNames,1,length(SNames))
 
     # Compute ranges of dependent variables in solution vector 
-    r = computeRanges(p)
+    p = computeRanges(p)
 
     # Extract variables from solution 
-    t,Xt,St,Pb,Sb,Lf = unpack_solutionForPlot(sol,p,r)
+    t,Xt,St,Pb,Sb,Lf = unpack_solutionForPlot(sol,p)
 
     return p,desc,Xs,Ss,t,Xt,St,Pb,Sb,Lf
 end
