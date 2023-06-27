@@ -62,10 +62,10 @@ function checkTypes_setDefs(d; verbose=false)
     d,err = checkType_setDef(err,d,Vector{Float64},      :Db                                         )
     d,err = checkType_setDef(err,d,Vector{Float64},      :rho                                        )
     d,err = checkType_setDef(err,d,Float64,              :Kdet                                       ) 
-    d,err = checkType_setDef(err,d,Vector{Function},     :Sin                                        )
-    d,err = checkType_setDef(err,d,Vector{Function},     :srcS                                       )
-    d,err = checkType_setDef(err,d,Vector{Function},     :mu                                         )
-    d,err = checkType_setDef(err,d,Vector{Function},     :srcX                                       )
+    d,err = checkType_setDef(err,d,Tuple,                :Sin                                        )
+    d,err = checkType_setDef(err,d,Tuple,                :srcS                                       )
+    d,err = checkType_setDef(err,d,Tuple,                :mu                                         )
+    d,err = checkType_setDef(err,d,Tuple,                :srcX                                       )
     d,err = checkType_setDef(err,d,Float64,              :Ptot,           default=sum(d[:Pbo])       )
     d,err = checkType_setDef(err,d,Int64,                :Nx,             default=length(d[:XNames]) )
     d,err = checkType_setDef(err,d,Int64,                :Ns,             default=length(d[:SNames]) )
@@ -87,6 +87,17 @@ function checkType_setDef(err,d,type,name; default=nothing)
     # Check type
     if myerr == false
         try
+            # Make Tuple of functions if needed 
+            # (functions in Tuple will be tested later)
+            if type == Tuple 
+                if typeof(d[name]) <: Vector 
+                    # convert to Tuple of functions
+                    @reset d[name] = Tuple(d[name])
+                elseif typeof(d[name]) <: Function
+                    @reset d[name] = (d[name], )
+                end
+            end
+            # Check type
             type(d[name])
         catch
             err = printError(err,"Parameter $name should be of type $type")
