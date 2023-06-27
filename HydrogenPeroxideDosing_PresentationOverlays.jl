@@ -187,9 +187,9 @@ end
 #########
 begin # runs
     doses = 0.0:50.0:20000.0
-    if  isfile("doses.jld2") # Check for file of saved results to reduce runtime
+    if  isfile("Data/doses.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for doses")
-        JLD2.@load "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+        JLD2.@load "Data/doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
     else # Run simulations and save results 
         k_bl  = 10.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
@@ -214,7 +214,7 @@ begin # runs
             push!(Sbs,Sb)
             push!(Lfs,Lf)
         end
-        JLD2.@save "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+        JLD2.@save "Data/doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
     end
 end
 begin # Plot Live vs doses (Average over biofilm)

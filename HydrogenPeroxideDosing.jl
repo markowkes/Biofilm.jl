@@ -145,9 +145,9 @@ end
 #########
 begin # runs
     doses = 0.0:50.0:20000.0
-    if  isfile("doses.jld2") # Check for file of saved results to reduce runtime
+    if  isfile("Data/doses.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for doses")
-        JLD2.@load "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+        JLD2.@load "Data/doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
     else # Run simulations and save results 
         k_bl  = 10.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
@@ -172,7 +172,7 @@ begin # runs
             push!(Sbs,Sb)
             push!(Lfs,Lf)
         end
-        JLD2.@save "doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
+        JLD2.@save "Data/doses.jld2" ts zms Xs Ss Pbs Sbs Lfs
     end
 end
 begin # Plot Lf vs doses (add additional doses - make sure at S.S.)
@@ -503,9 +503,9 @@ end
 #### Same as Fig 2 with base-case (both live & dead , just live, just dead neutralization) ###
 #########
 begin # runs - no live neutralization
-    if  isfile("case_noliveneut.jld2") # Check for file of saved results to reduce runtime
+    if  isfile("Data/case_noliveneut.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for case_noliveneut")
-        JLD2.@load "case_noliveneut.jld2" ts_noliveneut zms_noliveneut Xs_noliveneut Ss_noliveneut Pbs_noliveneut Sbs_noliveneut Lfs_noliveneut
+        JLD2.@load "Data/case_noliveneut.jld2" ts_noliveneut zms_noliveneut Xs_noliveneut Ss_noliveneut Pbs_noliveneut Sbs_noliveneut Lfs_noliveneut
     else # Run simulations and save results
         k_bl  =  0.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
@@ -530,13 +530,13 @@ begin # runs - no live neutralization
             push!(Sbs_noliveneut,Sb)
             push!(Lfs_noliveneut,Lf)
         end
-        JLD2.@save "case_noliveneut.jld2" ts_noliveneut zms_noliveneut Xs_noliveneut Ss_noliveneut Pbs_noliveneut Sbs_noliveneut Lfs_noliveneut
+        JLD2.@save "Data/case_noliveneut.jld2" ts_noliveneut zms_noliveneut Xs_noliveneut Ss_noliveneut Pbs_noliveneut Sbs_noliveneut Lfs_noliveneut
     end
 end
 begin # runs - no dead neutralization
-    if  isfile("case_nodeadneut.jld2") # Check for file of saved results to reduce runtime
+    if  isfile("Data/case_nodeadneut.jld2") # Check for file of saved results to reduce runtime
         println("Using saved files for case_nodeadneut")
-        JLD2.@load "case_nodeadneut.jld2" ts_nodeadneut zms_nodeadneut Xs_nodeadneut Ss_nodeadneut Pbs_nodeadneut Sbs_nodeadneut Lfs_nodeadneut
+        JLD2.@load "Data/case_nodeadneut.jld2" ts_nodeadneut zms_nodeadneut Xs_nodeadneut Ss_nodeadneut Pbs_nodeadneut Sbs_nodeadneut Lfs_nodeadneut
     else # Run simulations and save results
         k_bl  = 10.0; #m³/g/d
         k_bd  =  0.0; #m³/g/d
@@ -561,7 +561,7 @@ begin # runs - no dead neutralization
             push!(Sbs_nodeadneut,Sb)
             push!(Lfs_nodeadneut,Lf)
         end
-        JLD2.@save "case_nodeadneut.jld2" ts_nodeadneut zms_nodeadneut Xs_nodeadneut Ss_nodeadneut Pbs_nodeadneut Sbs_nodeadneut Lfs_nodeadneut
+        JLD2.@save "Data/case_nodeadneut.jld2" ts_nodeadneut zms_nodeadneut Xs_nodeadneut Ss_nodeadneut Pbs_nodeadneut Sbs_nodeadneut Lfs_nodeadneut
     end
 end
 
@@ -624,9 +624,9 @@ end
 #########
 begin # runs (include lower concentrations - expect thickness to drop to zero at some low enough conc.)
     GlucoseIns = 0.0:1.0:200.0
-    if  isfile("case_g.jld2")
+    if  isfile("Data/case_g.jld2")
         println("Using saved files for case_g")
-        JLD2.@load "case_g.jld2" t_g zm_g X_g S_g Pb_g Sb_g Lf_g
+        JLD2.@load "Data/case_g.jld2" t_g zm_g X_g S_g Pb_g Sb_g Lf_g
     else
         k_bl  = 10.0; #m³/g/d
         k_bd  = 10.0; #m³/g/d
@@ -650,7 +650,7 @@ begin # runs (include lower concentrations - expect thickness to drop to zero at
             push!(Sb_g,Sb)
             push!(Lf_g,Lf)
         end
-        JLD2.@save "case_g.jld2" t_g zm_g X_g S_g Pb_g Sb_g Lf_g
+        JLD2.@save "Data/case_g.jld2" t_g zm_g X_g S_g Pb_g Sb_g Lf_g
     end
 end
 
