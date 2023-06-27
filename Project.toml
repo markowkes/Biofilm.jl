@@ -1,7 +1,7 @@
 name = "Biofilm"
 uuid = "210d8ceb-62d9-4e79-bbbd-4c6870635f0a"
 authors = ["Mark Owkes <mark.owkes@montana.edu> and contributors"]
-version = "1.0.1"
+version = "1.0.2"
 
 [deps]
 Accessors = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"
