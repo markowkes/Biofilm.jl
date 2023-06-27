@@ -52,4 +52,3 @@ p = (
 )
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
-biofilm_plot(sol,p) # Plot final results
