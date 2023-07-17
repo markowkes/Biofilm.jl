@@ -77,3 +77,6 @@ p = (
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 biofilm_plot(sol,p,size=(900,600))
+
+# Save output
+savefig("Case4.pdf")
