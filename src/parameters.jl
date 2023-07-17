@@ -1,127 +1,74 @@
 using Printf
-import DataStructures: OrderedDict
+using Accessors
 
 """
-    addParam!(dict,name,value)
+    p = checkInputs(p)
 
-Add a parameter with name & value to the dict dictionary
-
-# Example 
-```julia-repl
-julia> addParam!(d,"tFinal",1.0)
-```
+Runs checks on inputs and sets default values 
 """
-function addParam!(d,name,value)
-
-    # Check inputs 
-    if typeof(d) != OrderedDict{Any,Any}
-        throw(ArgumentError("First argument to addParam! should be of type OrderedDict, it is currently "*string(typeof(d))))
-    end
-    if typeof(name) != String
-        throw(ArgumentError("Second argument to addParam! should be of type String, it is currently "*string(typeof(name))))
-    end
-
-    # Add parameter to dictionary 
-    d[name] = value
-
-    return nothing
+function checkInputs(p)
+        p = checkTypes_setDefs(p; verbose=false)
+        checkParameters(p)
+    return p
 end
 
-
 """
-    createDict()
+    printInputs(d)
 
-Create an empty dictionary to hold parameters
-
-# Example 
-```julia-repl
-julia> d = createDict()
-```
+Print named tuple d 
 """
-function createDict()
-    return OrderedDict()
-end
-
-
-"""
-    printDict(d::OrderedDict)
-
-Print an ordered dictionary
-"""
-function printDict(d::OrderedDict)
+function printInputs(d)
     for key in collect(keys(d))
         @printf(" %-19s => %s \n",key,(d[key]))
     end
     return nothing
  end
 
-
- """
-    packageCheckParam(d)
-
-Packange and check parameters in dictionary d, store output in struct p
-# Example
-```julia-repl 
-julia> p = packageCheckParam(d)
-```
-"""
-function packageCheckParam(d) 
-    
-    # Check parameter types & set default values 
-    checkTypes_setDefs(d)
-
-    # package parameters
-    p = packageParameters(d)
-    
-    # Run additiional checks on packaged parameters 
-    checkParameters(p)
-
-    return p
-end
  
 """
-    checkParameters(d)
+    checkTypes_setDefs(d)
 
-Checks the parameters in dictionary d for common errors
+Checks the parameters in the named tupple d for common errors
+and sets default values if not already specified. 
 """
 function checkTypes_setDefs(d; verbose=false)
 
     # Check values of each field 
     # !!! set to default if missing and default exists !!!
     err = false
-    err = checkType_setDef(err,d,Float64,              "tFinal"                                      )
-    err = checkType_setDef(err,d,Float64,              "outPeriod"                                   )
-    err = checkType_setDef(err,d,Float64,              "tol"                                         )
-    err = checkType_setDef(err,d,Float64,              "plotPeriod",         default=d["outPeriod"]  )
-    err = checkType_setDef(err,d,Bool,                 "makePlots",          default=true            )
-    err = checkType_setDef(err,d,Float64,              "discontinuityPeriod",default=Inf             )
-    err = checkType_setDef(err,d,String,               "optionalPlot",       default="growthrate"    )
-    err = checkType_setDef(err,d,Tuple{Int64, Int64},  "plotSize",           default=(1600,1000)     )
-    err = checkType_setDef(err,d,String,               "Title"                                       )
-    err = checkType_setDef(err,d,Vector{String},       "SNames"                                      )
-    err = checkType_setDef(err,d,Vector{String},       "XNames"                                      )
-    err = checkType_setDef(err,d,Int64,                "Nz"                                          )
-    err = checkType_setDef(err,d,Float64,              "V"                                           )
-    err = checkType_setDef(err,d,Float64,              "A"                                           )
-    err = checkType_setDef(err,d,Float64,              "LL"                                          )
-    err = checkType_setDef(err,d,Float64,              "Q"                                           ) 
-    err = checkType_setDef(err,d,Vector{Float64},      "Xto"                                         )
-    err = checkType_setDef(err,d,Vector{Float64},      "Sto"                                         )
-    err = checkType_setDef(err,d,Vector{Float64},      "Pbo"                                         )
-    err = checkType_setDef(err,d,Vector{Float64},      "Sbo"                                         )
-    err = checkType_setDef(err,d,Float64,              "Lfo"                                         )
-    err = checkType_setDef(err,d,Array{Float64},       "Yxs"                                         )
-    err = checkType_setDef(err,d,Vector{Float64},      "Dt"                                          )
-    err = checkType_setDef(err,d,Vector{Float64},      "Db"                                          )
-    err = checkType_setDef(err,d,Vector{Float64},      "rho"                                         )
-    err = checkType_setDef(err,d,Float64,              "Kdet"                                        ) 
-    err = checkType_setDef(err,d,Vector{Function},     "Sin"                                         )
-    err = checkType_setDef(err,d,Vector{Function},     "srcS"                                        )
-    err = checkType_setDef(err,d,Vector{Function},     "mu"                                          )
-    err = checkType_setDef(err,d,Vector{Function},     "srcX"                                        )
-    err = checkType_setDef(err,d,Float64,              "Ptot",           default=sum(d["Pbo"])       )
-    err = checkType_setDef(err,d,Int64,                "Nx",             default=length(d["XNames"]) )
-    err = checkType_setDef(err,d,Int64,                "Ns",             default=length(d["SNames"]) )
+    d,err = checkType_setDef(err,d,Float64,              :tFinal                                     )
+    d,err = checkType_setDef(err,d,Float64,              :outPeriod                                  )
+    d,err = checkType_setDef(err,d,Float64,              :tol                                        )
+    d,err = checkType_setDef(err,d,Float64,              :plotPeriod,         default=d[:outPeriod]  )
+    d,err = checkType_setDef(err,d,Bool,                 :makePlots,          default=true           )
+    d,err = checkType_setDef(err,d,Float64,              :discontinuityPeriod,default=Inf            )
+    d,err = checkType_setDef(err,d,String,               :optionalPlot,       default="growthrate"   )
+    d,err = checkType_setDef(err,d,Tuple{Int64, Int64},  :plotSize,           default=(1600,1000)    )
+    d,err = checkType_setDef(err,d,String,               :Title                                      )
+    d,err = checkType_setDef(err,d,Vector{String},       :SNames                                     )
+    d,err = checkType_setDef(err,d,Vector{String},       :XNames                                     )
+    d,err = checkType_setDef(err,d,Int64,                :Nz                                         )
+    d,err = checkType_setDef(err,d,Float64,              :V                                          )
+    d,err = checkType_setDef(err,d,Float64,              :A                                          )
+    d,err = checkType_setDef(err,d,Float64,              :LL,                 default=0.0            )
+    d,err = checkType_setDef(err,d,Float64,              :Q,                                         ) 
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Xto                                        )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Sto                                        )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Pbo                                        )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Sbo                                        )
+    d,err = checkType_setDef(err,d,Float64,              :Lfo                                        )
+    d,err = checkType_setDef(err,d,Array{Float64},       :Yxs                                        )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Dt                                         )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :Db                                         )
+    d,err = checkType_setDef(err,d,Vector{Float64},      :rho                                        )
+    d,err = checkType_setDef(err,d,Float64,              :Kdet                                       ) 
+    d,err = checkType_setDef(err,d,Tuple,                :Sin                                        )
+    d,err = checkType_setDef(err,d,Tuple,                :srcS                                       )
+    d,err = checkType_setDef(err,d,Tuple,                :mu                                         )
+    d,err = checkType_setDef(err,d,Tuple,                :srcX                                       )
+    d,err = checkType_setDef(err,d,Float64,              :Ptot,           default=sum(d[:Pbo])       )
+    d,err = checkType_setDef(err,d,Int64,                :Nx,             default=length(d[:XNames]) )
+    d,err = checkType_setDef(err,d,Int64,                :Ns,             default=length(d[:SNames]) )
         
     # Check if any errors 
     if err 
@@ -130,16 +77,27 @@ function checkTypes_setDefs(d; verbose=false)
     (see https://markowkes.github.io/Biofilm.jl/parameters/) for more information.")
     end
 
-    return nothing 
+    return d 
 end
 
 function checkType_setDef(err,d,type,name; default=nothing)
     myerr = false
     # Check if parameter exists or a default value is provided
-    myerr = checkParamExists_setDef(myerr,d,name,default)
+    d,myerr = checkParamExists_setDef(myerr,d,name,default)
     # Check type
     if myerr == false
         try
+            # Make Tuple of functions if needed 
+            # (functions in Tuple will be tested later)
+            if type == Tuple 
+                if typeof(d[name]) <: Vector 
+                    # convert to Tuple of functions
+                    @reset d[name] = Tuple(d[name])
+                elseif typeof(d[name]) <: Function
+                    @reset d[name] = (d[name], )
+                end
+            end
+            # Check type
             type(d[name])
         catch
             err = printError(err,"Parameter $name should be of type $type")
@@ -147,7 +105,7 @@ function checkType_setDef(err,d,type,name; default=nothing)
     else
         err = true
     end
-    return err
+    return d,err
 end
 
 function checkParamExists_setDef(err,d,name,default)
@@ -157,12 +115,12 @@ function checkParamExists_setDef(err,d,name,default)
         if default !== nothing 
             # Use default value 
             # @printf("Using default value :  %-19s = %s \n",name,default)
-            d[name] = default
+            @reset d[name] = default
         else
-            err = printError(err,"Parameter $name missing from dictionary! Add a line `addParam!( d, $name, VALUE)` to your case file.")
+            err = printError(err,"Parameter $name missing from inputs!")
         end
     end
-    return err
+    return d,err
 end
 
 function printError(err,errMsg)
@@ -175,51 +133,6 @@ function printError(err,errMsg)
     end
     err = true
     return err
-end
-
-
-"""
-    packageParameters(d)
-
-Put parameters in dictionary d into struct p
-"""
-function packageParameters(d)
-    p = param(
-        # Simulation
-        tFinal = d["tFinal"],
-        outPeriod = d["outPeriod"],
-        tol = d["tol"],
-        plotPeriod = d["plotPeriod"],
-        makePlots = d["makePlots"],
-        discontinuityPeriod = d["discontinuityPeriod"],
-        optionalPlot = d["optionalPlot"],
-        plotSize = d["plotSize"],
-        Title = d["Title"],
-        SNames = d["SNames"],
-        XNames = d["XNames"],
-        Nz = d["Nz"],
-        V = d["V"],
-        A = d["A"],
-        LL = d["LL"],
-        Q = d["Q"],
-        Xto = d["Xto"],
-        Sto = d["Sto"],
-        Pbo = d["Pbo"],
-        Sbo = d["Sbo"],
-        Lfo = d["Lfo"],
-        Yxs = d["Yxs"],
-        Dt  = d["Dt"],
-        Db  = d["Db"],
-        rho = d["rho"],
-        Kdet = d["Kdet"],
-        Sin = d["Sin"],
-        srcS = d["srcS"],
-        mu = d["mu"],
-        srcX = d["srcX"],
-        Ptot = d["Ptot"],
-        Nx = d["Nx"],
-        Ns = d["Ns"],
-    )
 end
 
 
@@ -317,13 +230,13 @@ function checkParameters(p)
         catch e
             paramError("The size of Yxs is (",size(Yxs,1),",",size(Yxs,2),"). It should be (",Nx,",",Ns,") \n 
             For two substrates you might use:
-                addParam!(d, \"Yxs\",   [0.5 -0.7]) # Note the space between entries
+                Yxs = [0.5 -0.7],  # Note the space between entries
 
             For two particulates you might use:
-                addParam!(d, \"Yxs\",   [0.5, -0.7]) # Note the comma between entries
+                Yxs = [0.5, -0.7], # Note the comma between entries
             or 
-                addParam!(d, \"Yxs\",   [ 0.5   # With a seperate line for each particulate
-                                       -0.7]) 
+                Yxs= [ 0.5   # With a seperate line for each particulate
+                      -0.7],
             ")
             println(e)
         end
@@ -335,4 +248,5 @@ function checkParameters(p)
     # Make sure plotPeriod is a multiple of outPeriod
     rem(plotPeriod,outPeriod) ≈ 0.0 || paramError("plotPeriod should be a multiple of outPerid.")
     
+    return nothing
 end

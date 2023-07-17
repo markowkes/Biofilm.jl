@@ -10,7 +10,7 @@ Documentation is available at: [https://markowkes.github.io/Biofilm.jl](https://
    * Follow instructions at [https://julialang.org/](https://julialang.org/)
 2) Add Biofilm.jl package
    * Start Julia from the terminal using `>> julia`
-   * Add Biofilm.jl using `julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")`.  Note this will take many minutes to complete as many dependent packages will need to be downloaded and compiled.
+   * Add Biofilm.jl using `julia> using Pkg; Pkg.add("Biofilm")`.  Note this will take many minutes to complete as many dependent packages will need to be downloaded and compiled.
 3) Run an example
    * Download [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing Save Link As. Save the file to your Downloads folder (or other location of your choice)
    * In the terminal, change the directory to the location you downloaded Case1.jl e.g., `>> cd ~/Downloads`

@@ -95,3 +95,27 @@ end
     #     end
     # end
 end
+
+@testset "Postprocessing Functions" begin
+
+    # Redirect stdout to file
+    # open("output_unittests.txt","w") do out
+    #     redirect_stdout(out) do 
+
+            # Run simulation 
+            include("Case1.jl")
+            
+            println("\n Testing biofilm_analyze \n ==============")
+            @test_nowarn biofilm_analyze(sol,p,0.5)
+
+            println("\n Testing biofilm_plot \n ==============")
+            @test_nowarn biofilm_plot(sol,p)
+
+            println("\n Testing biofilm_analyze \n ==============")
+            @test_nowarn biofilm_sol2csv(sol,p; filename="unit_test_123.csv")
+            rm("unit_test_123.csv")
+            
+    #     end
+    # end
+
+end

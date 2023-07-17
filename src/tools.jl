@@ -1,3 +1,5 @@
+using Accessors 
+
 """
     computeGrid(Lf,p)
 
@@ -17,14 +19,15 @@ Convert solution (1D vec) into more meaningful dependent variables
 ## This method is optimized for plotting ##
 
 """
-function unpack_solutionForPlot(sol,p,r)
+function unpack_solutionForPlot(sol,p)
     @unpack Nx,Ns,Nz=p
+    @unpack rXt,rSt,rPb,rSb,rLf = p
     t=sol.t
-    Xt=sol[r.Xt,:]
-    St=sol[r.St,:]
-    Pb=sol[r.Pb,end]
-    Sb=sol[r.Sb,end]
-    Lf=sol[r.Lf,:]
+    Xt=sol[rXt,:]
+    St=sol[rSt,:]
+    Pb=sol[rPb,end]
+    Sb=sol[rSb,end]
+    Lf=sol[rLf,:]
 
     # Reshape biofilm variables
     Pb=reshape(Pb,Nx,Nz)
@@ -46,8 +49,13 @@ function computeRanges(p)
     N=Ns*Nz; rSb=nVar+1:nVar+N; nVar+=N # Sb=u[rSb]
     N=1;     rLf=nVar+1:nVar+N          # Lf=u[rLf]
 
-    # Store ranges in struct to be used in RHS calc
-    ranges(rXt,rSt,rPb,rSb,rLf)
+    # Add ranges to parameter struct to be used in RHS calc
+    @reset p[:rXt] = rXt
+    @reset p[:rSt] = rSt
+    @reset p[:rPb] = rPb
+    @reset p[:rSb] = rSb
+    @reset p[:rLf] = rLf
+    return p
 end
 
 # Return greatest common divisor of floats

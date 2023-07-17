@@ -13,8 +13,7 @@ function outputs(integrator)
 
     # Unpack integrator
     sol=integrator.sol 
-    p=integrator.p[1]
-    r=integrator.p[2]
+    p=integrator.p
     @unpack Nz,outPeriod,plotPeriod= p
 
     # Perform plots on output period 
@@ -23,7 +22,7 @@ function outputs(integrator)
 
 
         # Convert solution to dependent variables
-        t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p,r)
+        t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p)
 
         # Print titles to REPL every 10 outPeriod
         if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
@@ -71,13 +70,9 @@ function processRecipeInputs(h)
             error("1st argument to biofilm_plot should be solution, e.g., biofilm_plot(sol)")
         end
 
-        # Get & check param
-        if typeof(h.args[2]) <: param
-            p = h.args[2]
-            has_p = true
-        else
-            error("2nd argument to biofilm_plot should be param.  Got: $(typeof(h.args[2]))")
-        end
+        # Get param 
+        p = h.args[2]
+        has_p = true
     else
         error("biofilm_plot requries at least two inputs, the solution and parameters e.g., biofilm_plot(sol,p)") 
     end
@@ -87,11 +82,14 @@ function processRecipeInputs(h)
         if typeof(h.args[3]) <: String
             desc = " : " * h.args[3]
         else
-            error("3nd argument to biofilm_plot should be sring.  Got: $(typeof(h.args[2]))")
+            error("3nd argument to biofilm_plot should be sring.  Got: $(typeof(h.args[3]))")
         end
     else
         desc = ""
     end
+
+    # Check paramters and add defaults 
+    p = checkInputs(p)
 
     # Unpack some parameters
     @unpack Nx,Ns,XNames, SNames = p
@@ -101,10 +99,10 @@ function processRecipeInputs(h)
     Ns==1 ? Ss=SNames[1] : Ss=reshape(SNames,1,length(SNames))
 
     # Compute ranges of dependent variables in solution vector 
-    r = computeRanges(p)
+    p = computeRanges(p)
 
     # Extract variables from solution 
-    t,Xt,St,Pb,Sb,Lf = unpack_solutionForPlot(sol,p,r)
+    t,Xt,St,Pb,Sb,Lf = unpack_solutionForPlot(sol,p)
 
     return p,desc,Xs,Ss,t,Xt,St,Pb,Sb,Lf
 end

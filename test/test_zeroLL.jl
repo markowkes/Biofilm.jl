@@ -13,7 +13,7 @@ function test_zeroLL()
     KM = 3;
 
     # Define a structure to hold all the parameters
-    p = param(
+    p = (
         # --------------------- #
         # Simulation Parameters #
         # --------------------- #

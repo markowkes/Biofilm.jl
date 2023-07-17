@@ -11,6 +11,7 @@ julia> Sb_t,Pb_t=MeanBiofilmVarsWithTime(sol,p)
 ```
 """
 function MeanBiofilmVarsWithTime(sol,p)
+    p = checkInputs(p)
     @unpack Nx,Ns,Nz=p
     times = sol.t; Nt=length(times)
     Sb_t=zeros(Ns,Nt)
@@ -42,6 +43,7 @@ julia> X_here,S_here,Pb_here,Sb_here,Lf_here=unpack_solution(sol,p,3)
 ```
 """
 function unpack_solution(sol,p,t)
+    p = checkInputs(p)
     @unpack Nx,Ns,Nz=p
 
     # Check t is a single time 
@@ -51,14 +53,14 @@ function unpack_solution(sol,p,t)
     s=sol(t)
 
     # Compute ranges of dependent variables in sol array
-    r = computeRanges(p)
+    p = computeRanges(p)
 
     # Unpack solution
-    Xt=s[r.Xt]
-    St=s[r.St]
-    Pb=s[r.Pb]
-    Sb=s[r.Sb]
-    Lf=s[r.Lf]
+    Xt=s[p.rXt]
+    St=s[p.rSt]
+    Pb=s[p.rPb]
+    Sb=s[p.rSb]
+    Lf=s[p.rLf]
 
     # Reshape biofilm variables
     Pb=reshape(Pb,Nx,Nz)
@@ -75,7 +77,7 @@ Take solution from biofilm solver and outputs variabes and a plot of biofilm var
 
 """
 function biofilm_analyze(sol,p,times; makePlot=false, plotSize=(1600,500))
-
+    p = checkInputs(p)
     @unpack Nx,Ns,Nz,XNames,SNames,Title = p
 
     println("Analyzing ",Title)
@@ -132,7 +134,7 @@ julia> biofilm_movie(sol,p,0:1:10,filename="biofilm.gif",fps=10)
 ```
 """
 function biofilm_movie(sol,p,times; filename="anim.gif", fps=20)
-
+    p = checkInputs(p)
     # Check times
     minimum(times) >= minimum(sol.t) || 
         error("Minimum time must be >= to ",minimum(sol.t))
@@ -161,6 +163,7 @@ julia> biofilm_sol2csv(sol,p,filename="myfile.csv")
 ```
 """
 function biofilm_sol2csv(sol,p; filename="biofilm.csv")
+    p = checkInputs(p)
     @unpack Nx,Ns,Nz,XNames,SNames = p
 
     # Open file 

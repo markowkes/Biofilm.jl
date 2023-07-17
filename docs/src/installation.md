@@ -14,11 +14,12 @@
     Try running a simple code like `julia> 5+5` to see that you can use Julia.  You could even try learning more about the language by doing a tutorial like this one: "[From zero to Julia!](https://techytok.com/from-zero-to-julia/)". 
 
 ## VS Code - GUI for Julia
-Julia is a programming languages and you can use it in many ways.  One popular way to run Julia code is through Visual Studio Code, which allows you to edit, run, and see results from a code.
+Julia is a programming languages and you can use it in many ways.  One popular way to run Julia code is through Visual Studio Code, which allows you to edit, run, and see results from a code.  **Alternatively**, you could run Julia directly in the terminal (e.g. `>> julia`)
 
 1. Download, install, and open VS Code.  You can find the installers on [code.visualstudio.com](https://code.visualstudio.com/download)
    
-2. Install the Julia extension in VS Code by selecting `File [Code on Mac]` >> `Preferences` >> `Extensions`, then search for Julia.  You should see an extension called Julia provided by julialang.  Click the `Install` button.
+2. Install the Julia extension by julialang in VS Code.  Details on how to install an extension in VS code are available [here](https://code.visualstudio.com/docs/editor/extension-marketplace).
+   
    ![Julia Extension](images/juliaExtension.png)
 
 3. Start the Julia REPL in VS Code by opening the command-pallet using `Ctrl-Shift-p` on Windows or `Cmd-Shfit-p` on Mac then searching for and running `Julia: Start REPL`.  This will start Julia inside of VS Code.
@@ -29,18 +30,18 @@ Julia is a programming languages and you can use it in many ways.  One popular w
 - Run the following command in the Julia REPL within VS Code.
 
   ```julia-repl
-  julia> using Pkg; Pkg.add(url="https://github.com/markowkes/Biofilm.jl")
+  julia> import Pkg; Pkg.add("Biofilm")
   ```
 This will download Biofilm.jl and all the dependencies and can take several minutes to finish.
 
 
 ## Run Biofilm.jl 
 
-Try running the examples.
+Try running Case 1
 
 1. Download [Case1.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case1.jl) by right clicking and choosing *Save Link As*. Save the file to your Downloads folder (or other location of your choice)
 
-2. Run the case by opening the file in VS Code and clicking the play button in the top right corner.  
+2. Run the case by opening the file in VS Code (File -> Open) and clicking the play button in the top right corner.  
     ![Case 1 Run Button](images/Case1_Run.png)
 3. You should see output to the REPL and a plot like this:
     ![Case 1 Run Button](images/Case1_Final.png)

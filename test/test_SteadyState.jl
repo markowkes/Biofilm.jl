@@ -13,7 +13,7 @@ function test_SteadyState()
     KM = 2500;
 
     # Define a structure to hold all the parameters
-    p = param(
+    p = (
         # --------------------- #
         # Simulation Parameters #
         # --------------------- #
@@ -61,7 +61,7 @@ function test_SteadyState()
         Lfo=5.0E-6,     # Biofilm initial thickness [m]
         LL=1e-4,         # Boundary layer thickness [m]
     )
-
+    
     t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 
     # Analytic Result
