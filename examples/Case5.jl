@@ -33,9 +33,6 @@ plot(1e6.*z,map(z -> light(t,z,Lf),z),
     )
 savefig("LightDepth.pdf")
 
-# Source term constant
-#b = 0.1 
-
 # Constants used for growthrates of particulate(s)
 mumax = 0.4;    
 
