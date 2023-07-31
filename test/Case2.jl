@@ -27,9 +27,9 @@ p = (
     # Growthrates for each particulate (constants defined above!)
     mu = [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Solute 1", "Solute 2"],  # Solute names
     Sin = [(t) -> 25, (t) -> 25], # Solute inflow (can be function of time)
     Sto = [25.0,25.0],        # Tank solute concentration initial condition(s)

@@ -39,7 +39,7 @@ function test_TimeIntegration()
         mu=[(S,X,Lf,t,z,p) -> 0.0.*S[1]],
 
         # -------------------- #
-        # Solute Parameters #
+        # Solute Parameters    #
         # -------------------- #
         SNames=["Oxygen"],   # Solute names
         Sin=[(t) -> 100],    # Solute inflow (can be function of time)

@@ -32,9 +32,9 @@ p = (
     mu = [(S,X,Lf,t,z,p) -> mumax * S[1] ./ KM 
           (S,X,Lf,t,z,p) -> mumax * S[2] ./ KM ],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Solute 1","Solute 2"], # Solute names
     Sin = [(t) -> 25,     # Solute inflow (can be function of time)
            (t) -> 25],

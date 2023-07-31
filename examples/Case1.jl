@@ -24,9 +24,9 @@ p = (
     # Growthrates for each particulate
     mu = [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames =["Nutrient"],     # Solute names
     Sin =   [(t) -> 100],   # Solute inflow (can be function of time)
     Sto =   [10.0],         # Tank solute concentration initial condition(s)

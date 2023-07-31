@@ -40,9 +40,9 @@ p = (
     # Growthrates for each particulate
     mu =[(S,X,Lf,t,z,p) -> mumax*light(t,z,Lf)],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Oxygen"],   # Solute names
     Sin =  [(t) -> 8.6],   # Solute inflow (can be function of time)
     Sto =  [8.6],          # Tank solute concentration initial condition(s)

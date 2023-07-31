@@ -36,7 +36,7 @@ function test_S_top()
         mu=[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
 
         # -------------------- #
-        # Solute Parameters #
+        # Solute Parameters    #
         # -------------------- #
         SNames=["Oxygen"],  # Solute names
         Sin=[(t) -> 100],   # Solute inflow (can be function of time)

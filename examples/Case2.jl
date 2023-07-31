@@ -57,9 +57,9 @@ p = (
     # Growthrate: call μ(s,p) for S = [s,p]
     mu = [(S,X,Lf,t,z,p) -> μ(S[1],S[2])],
 
-    # -------------------- #
-    # Solute Parameters    #
-    # -------------------- #
+    # ----------------- #
+    # Solute Parameters #
+    # ----------------- #
     SNames = ["Glucose", "Lactate"],   # Solute names
     Sin =  [(t) -> s⁰, (t) -> 0.0],    # Solute inflow (can be function of time)
     Sto =  [ s⁰, 0.0],      # Tank substrate concentration initial condition(s)

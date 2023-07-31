@@ -45,7 +45,7 @@ function test_Diffusion()
             mu=[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM)],
 
             # -------------------- #
-            # Solute Parameters #
+            # Solute Parameters    #
             # -------------------- #
             SNames=["Oxygen"],   # Solute names
             Sin=[(t) -> 100],    # Solute inflow (can be function of time)
