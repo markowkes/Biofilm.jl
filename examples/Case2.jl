@@ -52,10 +52,10 @@ p = (
     # Growthrates for each particulate
     mu =[(S,X,Lf,t,z,p) -> μ(S[1],S[2])],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
-    SNames = ["Glucose", "Lactate"],    # Solute names
+    # ----------------- #
+    SNames = ["Glucose", "Lactate"],   # Solute names
     Sin =  [(t) -> s⁰, (t) -> 0.0],    # Solute inflow (can be function of time)
     Sto =  [ s⁰, 0.0],      # Tank substrate concentration initial condition(s)
     Sbo =  [0.0, 0.0],      # Biofilm substrates concentration initial condition(s)

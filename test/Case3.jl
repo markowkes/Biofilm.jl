@@ -29,9 +29,9 @@ p = (
     mu =[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1]) 
          (S,X,Lf,t,z,p) -> 0.0 ],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Solute"], # Solute names
     Sin =  [(t) -> 25],     # Solute inflow (can be function of time)
     Sto =  [25.0],          # Tank solute concentration initial condition(s)
