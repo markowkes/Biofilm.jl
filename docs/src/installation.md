@@ -45,7 +45,7 @@ Try running Case 1
     ![Case 1 Run Button](images/Case1_Run.png)
 3. You should see output to the REPL and a plot like this:
     ![Case 1 Run Button](images/Case1_Final.png)
-The top row shows the biomass (particulate) and substrate concentrations and the biofilm thickness as a function of time.  The bottom row shows the particulate volume fraction, substrate concentration, and particulate growth rate as a function of position within the biofilm at the output time (t=1.0 as indicated by the title).
+The top row shows the biomass (particulate) and solute concentrations and the biofilm thickness as a function of time.  The bottom row shows the particulate volume fraction, solute concentration, and particulate growth rate as a function of position within the biofilm at the output time (t=1.0 as indicated by the title).
    
 1. Try editing the case file or explore other [Examples](@ref)
     

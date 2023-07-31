@@ -173,7 +173,7 @@ function checkParameters(p)
             muSize2 = size(mu[i](St,Xt,Lfo,0.0,zm,p),2)
             muSize1 == 1 && muSize2 == 1 || 
             paramError("Error calling mu[",i,"].  mu returns an array of size (",muSize1,",",musize2," it should return an array of size (1,1).
-                Check to make sure substrates are indexed correctly, e.g., S[1].")
+                Check to make sure solutes are indexed correctly, e.g., S[1].")
             
         catch e
             paramError("Error calling mu[",i,"]. mu should be an array of Nx=",Nx," functions providing the growthrate of each particulate. 
@@ -202,7 +202,7 @@ function checkParameters(p)
     for i in 1:Ns
         try srcS[i](Sto,Xto,Lfo,t,Lfo,p)
         catch e
-            paramError("srcS should be an array of Ns=",Ns," functions providing the source of each substrate. 
+            paramError("srcS should be an array of Ns=",Ns," functions providing the source of each solute. 
             The inputs to each function should be (St,Xt,t,z,p) \n
                 For example, if there are two particulates you might use:
                     srcS=[(S,X,Lf,t,z,p) -> -b*X[1,:],
@@ -215,9 +215,9 @@ function checkParameters(p)
     for i in 1:Ns
         try Sin[i](0.0)
         catch e
-            paramError("Sin should be an array of Ns=",Ns," functions providing the inflow substrate concentrations. 
+            paramError("Sin should be an array of Ns=",Ns," functions providing the inflow solute concentrations. 
             The inputs to each function should be (t) \n
-                For example, if there are two substrates you might use:
+                For example, if there are two solutes you might use:
                     Sin=[(t) -> 25,
                          (t) -> 50],")
             println(e)
@@ -229,7 +229,7 @@ function checkParameters(p)
         try Yxs[i,1:Ns]
         catch e
             paramError("The size of Yxs is (",size(Yxs,1),",",size(Yxs,2),"). It should be (",Nx,",",Ns,") \n 
-            For two substrates you might use:
+            For two solutes you might use:
                 Yxs = [0.5 -0.7],  # Note the space between entries
 
             For two particulates you might use:

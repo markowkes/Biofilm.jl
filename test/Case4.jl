@@ -12,7 +12,7 @@ p = (
     # --------------------- #
     # Simulation Parameters #
     # --------------------- #
-    Title = "Multiple Particulates and Substrates Case",
+    Title = "Multiple Particulates and Solutes Case",
     tFinal = 5,      # Simulation time [days]
     tol = 1e-4,      # Tolerance
     outPeriod = 0.5, # Time between outputs [days]
@@ -33,19 +33,19 @@ p = (
           (S,X,Lf,t,z,p) -> mumax * S[2] ./ KM ],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Substrate 1","Substrate 2"], # Substrate names
-    Sin = [(t) -> 25,     # Substrate inflow (can be function of time)
+    SNames = ["Solute 1","Solute 2"], # Solute names
+    Sin = [(t) -> 25,     # Solute inflow (can be function of time)
            (t) -> 25],
-    Sto = [25.0,25.0],     # Tank substrate concentration initial condition(s)
-    Sbo = [25.0,25.0],    # Biofilm substrates concentration initial condition(s)
-    Yxs = [ 0.5  0.0       # Biomass yield coefficient on substrate
+    Sto = [25.0,25.0],     # Tank solute concentration initial condition(s)
+    Sbo = [25.0,25.0],    # Biofilm solutes concentration initial condition(s)
+    Yxs = [ 0.5  0.0       # Biomass yield coefficient on solute
             0.0  0.278],
-    Dt = [4.0e-5,6.0e-5], # Aquious substrate diffusion through tank fluid
-    Db = [1.0e-5,1.5e-5],  # Effective substrate diffusion through biofilm
+    Dt = [4.0e-5,6.0e-5], # Aquious solute diffusion through tank fluid
+    Db = [1.0e-5,1.5e-5],  # Effective solute diffusion through biofilm
     srcS = [(S,X,Lf,t,z,p) -> 0.0,
-            (S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
+            (S,X,Lf,t,z,p) -> 0.0],     # Source of solutes
     # --------------- #
     # Tank Parameters #
     # --------------- #

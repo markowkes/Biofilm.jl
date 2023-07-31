@@ -39,11 +39,11 @@ p = (
          (S,X,Lf,t,z,p) -> 0.0 ],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Glucose","Hydrogen Peroxide"],     # Substrate names
+    SNames = ["Glucose","Hydrogen Peroxide"],     # Solute names
     Sin =  [
-            (t) -> 100,    # Substrate inflow (can be function of time)
+            (t) -> 100,    # Solute inflow (can be function of time)
             (t) -> 500*smoothHeaviside(t,2.5)],
     Sto =  [100.0, 0.0],          # Tank substrate concentration initial condition(s)
     Sbo =  [  0.0, 0.0],          # Biofilm substrates concentration initial condition(s)

@@ -47,11 +47,11 @@ p = (
         (S,X,Lf,t,z,p) -> mumaxC*(S[2]./(KmC2.+S[2])).*(1.0./(1.0.+S[1]/KI))],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Oxygen","Sulfate","Hydrogen Sulfide"],     # Substrate names
+    SNames = ["Oxygen","Sulfate","Hydrogen Sulfide"],     # Solute names
     Sin =  [
-        (t) -> 8.6    # Substrate inflow (can be function of time)
+        (t) -> 8.6    # Solute inflow (can be function of time)
         (t) -> 48.0
         (t) -> 0.0 ],
     Sto =  [8.6,48.0,0.0],          # Tank substrate concentration initial condition(s)

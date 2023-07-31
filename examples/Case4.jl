@@ -39,24 +39,24 @@ p = (
         (S,X,Lf,t,z,p) -> 0.0 ] ,                                              # Dead
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Oxygen","Sulfate","Hydrogen Sulfide"],     # Substrate names
+    SNames = ["Oxygen","Sulfate","Hydrogen Sulfide"],     # Solute names
     Sin =  [
-        (t) -> 8.6     # Substrate inflow (can be function of time)
+        (t) -> 8.6     # Solute inflow (can be function of time)
         (t) -> 48.0
         (t) -> 0.0] , 
-    Sto =  [8.6,48.0,0.0],         # Tank substrate concentration initial condition(s)
-    Sbo =  [8.6,48.0,1e-5],        # Biofilm substrates concentration initial condition(s)
-    # Biomass yield coefficient on substrate
+    Sto =  [8.6,48.0,0.0],         # Tank solute concentration initial condition(s)
+    Sbo =  [8.6,48.0,1e-5],        # Biofilm solutes concentration initial condition(s)
+    # Biomass yield coefficient on solute
         
     Yxs =  [#oxygen  sulfate  Hy. sulfide
             0.058    0.0      0.09    # SOB uses oxygen and sulfide
             0.00    0.584   -1.645    # SRB uses sulfate and produces sulfide
             0.00     0.0      0.0 ],  # Dead not needed/used for growth
-    Dt =   [1.51e-4,8e-5,1.21e-4],     # Aquious substrate diffusion through tank fluid
-    Db =   [6.8e-5,4e-5,6.04e-5],      # Effective substrate diffusion through biofilm
-    srcS = [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
+    Dt =   [1.51e-4,8e-5,1.21e-4],     # Aquious solute diffusion through tank fluid
+    Db =   [6.8e-5,4e-5,6.04e-5],      # Effective solute diffusion through biofilm
+    srcS = [(S,X,Lf,t,z,p) -> 0.0,     # Source of solutes
             (S,X,Lf,t,z,p) -> 0.0,
             (S,X,Lf,t,z,p) -> 0.0],
 

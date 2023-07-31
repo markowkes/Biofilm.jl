@@ -53,21 +53,21 @@ p = (
     mu =[(S,X,Lf,t,z,p) -> μ(S[1],S[2])],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Glucose", "Lactate"],    # Substrate names
-    Sin =  [(t) -> s⁰, (t) -> 0.0],    # Substrate inflow (can be function of time)
+    SNames = ["Glucose", "Lactate"],    # Solute names
+    Sin =  [(t) -> s⁰, (t) -> 0.0],    # Solute inflow (can be function of time)
     Sto =  [ s⁰, 0.0],      # Tank substrate concentration initial condition(s)
     Sbo =  [0.0, 0.0],      # Biofilm substrates concentration initial condition(s)
     Yxs =  [Yxs -Yxs/Yps],  # Biomass yield coefficient on substrate
     Dt =   [ Ds, Dp],       # Aquious substrate diffusion through tank fluid
     Db =   [ Ds, Dp],       # Effective substrate diffusion through biofilm
-
-    srcS = [(S,X,Lf,t,z,p) -> 0.0,     # Source of substrates
-            (S,X,Lf,t,z,p) -> 0.0 ], 
-
-    # --------------- #
-    # Tank Parameters #
+solute
+    srcS = [(S,X,Lf,t,z,p) -> 0.0,     soluteof substrates
+            (S,X,Lf,t,z,p) -> 0.0 ], solute
+solute
+    # --------------- #solute
+    # Tank Parameters #solute
     # --------------- #
     V =0.1,        # Volume of tank [m³]
     A =  1,        # Surface area of biofilm [m²]

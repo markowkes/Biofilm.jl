@@ -36,16 +36,16 @@ function test_SteadyState()
         mu=[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM)],
 
         # -------------------- #
-        # Substrate Parameters #
+        # Solute Parameters #
         # -------------------- #
-        SNames=["Oxygen"],   # Substrate names
-        Sin=[(t) -> 100],    # Substrate inflow (can be function of time)
-        Sto=[25.0],          # Tank substrate concentraion initial condition(s)
-        Sbo=[0.0],           # Biofilm substrates concentration initial condition(s)
-        Yxs=[0.5],           # Biomass yield coefficient on substrate
-        Dt=[100.0],         # Aquious substrate diffusion through tank fluid
-        Db=[100.0],         # Effective substrate diffusion through biofilm
-        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
+        SNames=["Oxygen"],   # Solute names
+        Sin=[(t) -> 100],    # Solute inflow (can be function of time)
+        Sto=[25.0],          # Tank solute concentraion initial condition(s)
+        Sbo=[0.0],           # Biofilm solutes concentration initial condition(s)
+        Yxs=[0.5],           # Biomass yield coefficient on solute
+        Dt=[100.0],         # Aquious solute diffusion through tank fluid
+        Db=[100.0],         # Effective solute diffusion through biofilm
+        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of solutes
         
         # --------------- #
         # Tank Parameters #

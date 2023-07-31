@@ -21,7 +21,7 @@ function biofilmRHS!(dsol,sol,p,t)
     g=computeGrid(Lf,p)
 
     # Compute intermediate variables 
-    fluxS = computeFluxS(St,Sb,p,g)           # Flux of substrate in biofilm
+    fluxS = computeFluxS(St,Sb,p,g)           # Flux of solute in biofilm
     μb    = computeMu_biofilm(Sb,Xb,Lf,t,p,g) # Growthrates in biofilm
     μt    = computeMu_tank(St,Xt,Lf,t,p,g)    # Growthrates in tank
     V     = computeVel(μb,Sb,Pb,Lf,t,p,g)        # Velocity of particulates
@@ -30,9 +30,9 @@ function biofilmRHS!(dsol,sol,p,t)
 
     # Compute RHS's
     dsol[rXt]=dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g) # Tank particulates
-    dsol[rSt]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank substrates
+    dsol[rSt]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank solutes
     dsol[rPb]=dPbdt(t,μb,Sb,Pb,Lf,fluxP,p,g)      # Biofilm particulates 
-    dsol[rSb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm substrates
+    dsol[rSb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm solutes
     dsol[rLf]=dLfdt(V,Vdet)                    # Biofilm thickness
     return nothing
 end
@@ -50,7 +50,7 @@ function dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g)
     return dXt
 end
 
-# RHS of tank substrates
+# RHS of tank solutes
 function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p) 
     @unpack Ns,Q,Sin,srcS,V,A,Yxs = p
     dSt = zeros(Ns); 
@@ -59,7 +59,7 @@ function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)
                 - Q.*St[k]     /V          # Flow out
                 - A.*fluxS[k,end]/V        # Flux into biofilm
                 - sum(μt.*Xt./Yxs[:,k])    # Used by growth
-                + srcS[k](St,Xt,Lf,t,Lf,p)[1] )  # Substrate source
+                + srcS[k](St,Xt,Lf,t,Lf,p)[1] )  # Solute source
         #if p.neutralization == true
         #    dS(k) = dS(k) - p.kB(k)*p.kdis(k)*p.rho(1)*Pb(1,end); # Neutralization
         #end
@@ -85,7 +85,7 @@ function dPbdt(t,μb,Sb,Pb,Lf,fluxPb,p,g)
     return dPb
 end
 
-# RHS of biofilm substrates 
+# RHS of biofilm solutes 
 function dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)
     @unpack Nx,Ns,Nz,srcS,rho,Yxs = p
     @unpack zm,dz = g

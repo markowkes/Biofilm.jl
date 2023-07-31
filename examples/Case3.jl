@@ -29,17 +29,17 @@ p = (
          (S,X,Lf,t,z,p) -> 0.0 ],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Substrate"], # Substrate names
-    Sin =  [(t) -> 25],     # Substrate inflow (can be function of time)
+    SNames = ["Solute"], # Solute names
+    Sin =  [(t) -> 25],     # Solute inflow (can be function of time)
     Sto =  [25.0],          # Tank substrate concentration initial condition(s)
-    Sbo =  [0.0],           # Biofilm substrates concentration initial condition(s)
-    Yxs =  [0.378, 0],      # Biomass yield coefficient on substrate
-    Dt =   [1.38e-4],       # Aquious substrate diffusion through tank fluid
-    Db =   [6.9E-5],        # Effective substrate diffusion through biofilm
-    srcS = [(S,X,Lf,t,z,p) -> 0.0], # Source of substrates
-
+    Sbo =  [0.0],           # Biofisoluteates concentration initial condition(s)
+    Yxs =  [0.378, 0],      # Biomass solutefficient on substrate
+    Dt =   [1.38e-4],       # Aquious substrate diffusion tsolutenk fluid
+    Db =   [6.9E-5],        # Effectivsolutete diffusion through biofilm
+    srcS = [(S,X,Lf,t,z,p) -> 0.0], # Sosoluteubstrates
+solute
     # --------------- #
     # Tank Parameters #
     # --------------- #
