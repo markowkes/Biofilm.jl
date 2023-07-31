@@ -40,7 +40,7 @@ p = (
     Dt =   [1.38e-4],       # Aquious substrate diffusion tsolutenk fluid
     Db =   [6.9E-5],        # Effectivsolutete diffusion through biofilm
     srcS = [(S,X,Lf,t,z,p) -> 0.0], # Sosoluteubstrates
-solute
+
     # --------------- #
     # Tank Parameters #
     # --------------- #
