@@ -46,9 +46,9 @@ p = (
         (S,X,Lf,t,z,p) -> mumaxB*(S[1]./(KmB1.+S[1])).*(S[3]./(KmB3.+S[3])),
         (S,X,Lf,t,z,p) -> mumaxC*(S[2]./(KmC2.+S[2])).*(1.0./(1.0.+S[1]/KI))],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Oxygen","Sulfate","Hydrogen Sulfide"],     # Solute names
     Sin =  [
         (t) -> 8.6    # Solute inflow (can be function of time)

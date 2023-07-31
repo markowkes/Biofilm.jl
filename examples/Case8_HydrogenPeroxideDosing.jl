@@ -38,9 +38,9 @@ p = (
     mu =[(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1]) 
          (S,X,Lf,t,z,p) -> 0.0 ],
 
-    # -------------------- #
+    # ----------------- #
     # Solute Parameters #
-    # -------------------- #
+    # ----------------- #
     SNames = ["Glucose","Hydrogen Peroxide"],     # Solute names
     Sin =  [
             (t) -> 100,    # Solute inflow (can be function of time)
