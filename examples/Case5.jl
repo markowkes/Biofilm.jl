@@ -61,10 +61,10 @@ p = (
     mu =[(S,X,Lf,t,z,p) -> mumax*light(t,z,Lf)],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Oxygen"],   # Substrate names
-    Sin =  [(t) -> 8.6],   # Substrate inflow (can be function of time)
+    SNames = ["Oxygen"],   # Solute names
+    Sin =  [(t) -> 8.6],   # Solute inflow (can be function of time)
     Sto =  [8.6],          # Tank substrate concentration initial condition(s)
     Sbo =  [8.6],          # Biofilm substrates concentration initial condition(s)
     Yxs =  [-0.52],        # Biomass yield coefficient on substrate

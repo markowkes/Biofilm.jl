@@ -1,6 +1,6 @@
 # test_TimeIntegration.jl
 # -----------------------------------------------
-# Checks the temporal changes in substrate in 
+# Checks the temporal changes in solute in 
 # tank without a particulate matches analytical solution
 # -----------------------------------------------
 
@@ -39,16 +39,16 @@ function test_TimeIntegration()
         mu=[(S,X,Lf,t,z,p) -> 0.0.*S[1]],
 
         # -------------------- #
-        # Substrate Parameters #
+        # Solute Parameters #
         # -------------------- #
-        SNames=["Oxygen"],   # Substrate names
-        Sin=[(t) -> 100],    # Substrate inflow (can be function of time)
-        Sto=[25.0],          # Tank substrate concentraion initial condition(s)
-        Sbo=[0.0],           # Biofilm substrates concentration initial condition(s)
-        Yxs=[0.5],           # Biomass yield coefficient on substrate
-        Dt=[1.0E-15],        # Aquious substrate diffusion through tank fluid
-        Db=[1.0E-15],        # Effective substrate diffusion through biofilm
-        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
+        SNames=["Oxygen"],   # Solute names
+        Sin=[(t) -> 100],    # Solute inflow (can be function of time)
+        Sto=[25.0],          # Tank solute concentraion initial condition(s)
+        Sbo=[0.0],           # Biofilm solutes concentration initial condition(s)
+        Yxs=[0.5],           # Biomass yield coefficient on solute
+        Dt=[1.0E-15],        # Aquious solute diffusion through tank fluid
+        Db=[1.0E-15],        # Effective solute diffusion through biofilm
+        srcS=[(S,X,Lf,t,z,p) -> 0.0],     # Source of solutes
         
         # --------------- #
         # Tank Parameters #

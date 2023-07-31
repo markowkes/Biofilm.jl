@@ -116,7 +116,7 @@ end
     biofilm_movie(sol,p,times)
     biofilm_movie(sol,p,times,filename="anim.gif", fps=20)
 
-Make a movie of the biofilm particulate volume fraction, substrate concentration, and particulate growthrates at the specified times.
+Make a movie of the biofilm particulate volume fraction, solute concentration, and particulate growthrates at the specified times.
 
 Optional arguments 
 - filename: name and type of output, i.e., "biofilm.mp4", "biofilm.gif"
@@ -176,7 +176,7 @@ function biofilm_sol2csv(sol,p; filename="biofilm.csv")
         for j = 1:Nx
             write(io, XNames[j]*"_t, ")
         end
-        # Tank Substrates
+        # Tank Solutes
         for j = 1:Ns
             write(io, SNames[j]*"_t, ")
         end
@@ -186,7 +186,7 @@ function biofilm_sol2csv(sol,p; filename="biofilm.csv")
                 write(io, XNames[j]*"_b_"*string(i)*", ")
             end
         end
-        # Biofilm Substrates
+        # Biofilm Solutes
         for j = 1:Ns
             for i=1:Nz
                 write(io, SNames[j]*"_b_"*string(i)*", ")

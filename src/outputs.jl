@@ -143,12 +143,12 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
         x,y
     end
     
-    # Tank substrate concentration
+    # Tank solute concentration
     @series begin 
         subplot := 2
         label := Ss .* desc
         xaxis := (L"\textrm{Time~[days]}")
-        yaxis := (L"\textrm{Tank~Substrate~Conc.~} [g/m^3]")
+        yaxis := (L"\textrm{Tank~Solute~Conc.~} [g/m^3]")
         x=t 
         y=St'
         ylim := pad_ylim(y)
@@ -179,12 +179,12 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
         x, y
     end
 
-    # Biofilm substrate concentration
+    # Biofilm solute concentration
     @series begin
         subplot := 5
         label := Ss .* desc
         xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-        yaxis := (L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")   
+        yaxis := (L"\textrm{Biofilm~Solute~Conc.~} [g/m^3]")   
         x = 1e6.*zm
         y = Sb'
         ylim := pad_ylim(y)
@@ -268,12 +268,12 @@ Plot the solution of a biofilm simulation
         x, y
     end
 
-    # Biofilm substrate concentration
+    # Biofilm solute concentration
     @series begin
         subplot := 2
         label := Ss .* desc
         xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-        yaxis := (L"\textrm{Biofilm~Substrate~Conc.~} [g/m^3]")   
+        yaxis := (L"\textrm{Biofilm~Solute~Conc.~} [g/m^3]")   
         x = 1e6.*zm
         y = Sb'
         ylim := pad_ylim(y)

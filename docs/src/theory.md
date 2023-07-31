@@ -2,9 +2,9 @@
 
 Biofilm.jl simulates a one-dimensional biofilm within a stirred tank reactor.  The dependent variables include the 
 - tank particulates (biomass) concentration(s) ``X``,
-- tank substrate concentrations ``S``,
+- tank solute concentrations ``S``,
 - biofilm particulate (biomass) volume fractions ``P_b``,
-- biofilm substrate concentrations ``S_b``, and
+- biofilm solute concentrations ``S_b``, and
 - biofilm thickness ``L_f``. 
 
 ## Tank Equations
@@ -21,18 +21,18 @@ The terms on the right-hand-side (RHS) are
 3) transfer of particulates from the biofilm to the tank due to detachment, and
 4) source term.
 
-### Substrates
-The governing equation describing the substrate concentrations in the tank environment is
+### Solutes
+The governing equation describing the solute concentrations in the tank environment is
 ```math
 \frac{d S_{t,k}}{dt} = -\sum_{j=1}^{N_x} \frac{\mu_j(\mathbf{S}_t) X_{t,j}}{Y_{j,k}} + \frac{Q S_{\mathrm{in},k}}{V} - \frac{Q S_{t,k}}{V} + \frac{A S_{\mathrm{flux},k}}{V} + \mathrm{src}_{S,k}
 ```
-for ``k=1,\dots,N_s``, where ``S_{\mathrm{flux},k}`` is the flux of substrates from the biofilm into the tank, and ``\mathrm{src}_{S,k}`` is the source term for the ``k^\mathrm{th}`` substrate. 
+for ``k=1,\dots,N_s``, where ``S_{\mathrm{flux},k}`` is the flux of solutes from the biofilm into the tank, and ``\mathrm{src}_{S,k}`` is the source term for the ``k^\mathrm{th}`` solute. 
 
 The terms on the right-hand-side (RHS) are 
-1) consumption of substrates due to the growth of the particulate in the tank, 
+1) consumption of solutes due to the growth of the particulate in the tank, 
 2) transport due to flow into the tank, 
 3) transport due to flow out of the tank,
-4) transfer of substrates into the biofilm due to diffusion, and
+4) transfer of solutes into the biofilm due to diffusion, and
 5) source term.
    
 ## Biofilm Equations
@@ -57,7 +57,7 @@ v_i=  \int_{z=0}^{z_i}{\sum_{j=1}^{N_x} \frac{1}{P_\mathrm{tot}}\left(\mu_j(\mat
 ```
 where ``P_\mathrm{tot}=\sum_{j=1}^{N_x}{P_{b,j}}``
    
-### Substrates
+### Solutes
 ```math
 \frac{d S_{b,k,i}}{dt} = 
 D_{e,k}\frac{d^2 S_{b,k,i}}{dz^2} 
@@ -67,9 +67,9 @@ D_{e,k}\frac{d^2 S_{b,k,i}}{dz^2}
 for ``k=1,\dots,N_s`` and ``i=1,\dots,N_z``.
 
 The terms on the right-hand-side (RHS) are 
-1) diffusion of substrates in the biofilm,
-2) consumption of substrates due to the growth of the particulate in the biofilm, and
-3) source term of substrate at ``i^\mathrm{th}`` location in biofilm.
+1) diffusion of solutes in the biofilm,
+2) consumption of solutes due to the growth of the particulate in the biofilm, and
+3) source term of solute at ``i^\mathrm{th}`` location in biofilm.
 
 The diffusion term with a second derivative w.r.t. ``z`` requires boundary conditions at the top and bottom of the biofilm.  A zero-flux (zero first-derivative) condition is used at the bottom of the biofilm.  At the top of the biofilm the diffusion through the boundary layer is matched with the diffusion into the biofilm, i.e.,
 ```math

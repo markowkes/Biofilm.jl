@@ -1,7 +1,7 @@
 """
     computeS_top(St,Sb,p,g)
 
-Compute substrate concentration at top of biofilm
+Compute solute concentration at top of biofilm
 using flux matching between biofilm and boundary layer
 """
 function computeS_top(St,Sb,p,g)
@@ -12,7 +12,7 @@ function computeS_top(St,Sb,p,g)
     return S_top 
 end
 
-# Fluxes of substrate due to diffusion: F=De*dSb/dz
+# Fluxes of solute due to diffusion: F=De*dSb/dz
 function computeFluxS(St,Sb,p,g)
     @unpack Ns,Nz,Db = p
     @unpack dz = g

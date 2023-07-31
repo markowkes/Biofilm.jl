@@ -41,16 +41,16 @@ p = (
     mu =[(S,X,Lf,t,z,p) -> mumax*light(t,z,Lf)],
 
     # -------------------- #
-    # Substrate Parameters #
+    # Solute Parameters #
     # -------------------- #
-    SNames = ["Oxygen"],   # Substrate names
-    Sin =  [(t) -> 8.6],   # Substrate inflow (can be function of time)
-    Sto =  [8.6],          # Tank substrate concentration initial condition(s)
-    Sbo =  [8.6],          # Biofilm substrates concentration initial condition(s)
-    Yxs =  [-0.52],        # Biomass yield coefficient on substrate
-    Dt =   [1.51e-4],      # Aquious substrate diffusion through tank fluid
-    Db =   [6.8E-5],       # Effective substrate diffusion through biofilm
-    srcS = [(S,X,Lf,t,z,p) -> 0.0],     # Source of substrates
+    SNames = ["Oxygen"],   # Solute names
+    Sin =  [(t) -> 8.6],   # Solute inflow (can be function of time)
+    Sto =  [8.6],          # Tank solute concentration initial condition(s)
+    Sbo =  [8.6],          # Biofilm solutes concentration initial condition(s)
+    Yxs =  [-0.52],        # Biomass yield coefficient on solute
+    Dt =   [1.51e-4],      # Aquious solute diffusion through tank fluid
+    Db =   [6.8E-5],       # Effective solute diffusion through biofilm
+    srcS = [(S,X,Lf,t,z,p) -> 0.0],     # Source of solutes
 
     # --------------- #
     # Tank Parameters #
