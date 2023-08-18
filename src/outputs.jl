@@ -136,7 +136,7 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
             yaxis := (L"\textrm{Tank~Particulate~Conc.~} [g/m^3]")
             x=t 
             y=Xt[n,:]
-            ylim := pad_ylim(y)
+            ylim := pad_ylim(Xt)
             x,y
         end
     end    
@@ -227,6 +227,7 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
         end
         for n in eachindex(view(srcs,:,1))
             @series begin
+                subplot := 6
                 xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
                 yaxis := (L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
                 x = 1e6.*zm
