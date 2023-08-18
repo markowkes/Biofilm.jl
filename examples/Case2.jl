@@ -89,14 +89,14 @@ p = (
 ####################
 p_max = 400
 t_in,zm_in,Xt_in,St_in,Pb_in,Sb_in,Lf_in,sol_in = BiofilmSolver(p)
-plt = biofilm_plot(sol_in,p,"Inhibition",size=(900,600), line=(:blue,[:solid :dash]))
+plt = biofilm_plot(sol_in,p,"Inhibition",size=(900,600), line=(:blue,[:solid :dashdot]))
 
 # Run without inhibition 
 ####################
 p_max  = Inf  
 t_no,zm_no,Xt_no,St_no,Pb_no,Sb_no,Lf_no,sol_no = BiofilmSolver(p)
 # Add to plot
-plt = biofilm_plot!(plt,sol_no,p,"No Inhibition",size=(900,600), line=(:red,[:solid :dash]))
+plt = biofilm_plot!(plt,sol_no,p,"No Inhibition",size=(900,600), line=(:red,[:solid :dashdot]))
 display(plt)
 savefig("Case2.pdf")
 
