@@ -62,12 +62,11 @@ p = (
     Yxs =  [Yxs -Yxs/Yps],  # Biomass yield coefficient on substrate
     Dt =   [ Ds, Dp],       # Aquious substrate diffusion through tank fluid
     Db =   [ Ds, Dp],       # Effective substrate diffusion through biofilm
-solute
-    srcS = [(S,X,Lf,t,z,p) -> 0.0,     soluteof substrates
-            (S,X,Lf,t,z,p) -> 0.0 ], solute
-solute
-    # --------------- #solute
-    # Tank Parameters #solute
+    srcS = [(S,X,Lf,t,z,p) -> 0.0,  
+            (S,X,Lf,t,z,p) -> 0.0 ],
+
+    # --------------- #
+    # Tank Parameters #
     # --------------- #
     V =0.1,        # Volume of tank [m³]
     A =  1,        # Surface area of biofilm [m²]
