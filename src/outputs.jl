@@ -82,7 +82,7 @@ function processRecipeInputs(h)
         if typeof(h.args[3]) <: String
             desc = " : " * h.args[3]
         else
-            error("3nd argument to biofilm_plot should be sring.  Got: $(typeof(h.args[3]))")
+            error("3nd argument to biofilm_plot should be string.  Got: $(typeof(h.args[3]))")
         end
     else
         desc = ""
@@ -93,10 +93,6 @@ function processRecipeInputs(h)
 
     # Unpack some parameters
     @unpack Nx,Ns,XNames, SNames = p
-    
-    # Adjust names to work with legends 
-    Nx==1 ? Xs=XNames[1] : Xs=reshape(XNames,1,length(XNames))
-    Ns==1 ? Ss=SNames[1] : Ss=reshape(SNames,1,length(SNames))
 
     # Compute ranges of dependent variables in solution vector 
     p = computeRanges(p)
@@ -104,7 +100,7 @@ function processRecipeInputs(h)
     # Extract variables from solution 
     t,Xt,St,Pb,Sb,Lf = unpack_solutionForPlot(sol,p)
 
-    return p,desc,Xs,Ss,t,Xt,St,Pb,Sb,Lf
+    return p,desc,t,Xt,St,Pb,Sb,Lf
 end
 
 """
@@ -116,7 +112,7 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
 @userplot Biofilm_Plot
 @recipe function f(h::Biofilm_Plot)
 
-    p,desc,Xs,Ss,t,Xt,St,Pb,Sb,Lf = processRecipeInputs(h)
+    p,desc,t,Xt,St,Pb,Sb,Lf = processRecipeInputs(h)
 
     # set up the subplots 
     layout --> (2,3)
@@ -132,27 +128,31 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
     zm = g.zm
     
     # Tank particulate concentration
-    @series begin 
-        subplot := 1
-        label := Xs .* desc
-        xaxis := (L"\textrm{Time~[days]}")
-        yaxis := (L"\textrm{Tank~Particulate~Conc.~} [g/m^3]")
-        x=t 
-        y=Xt'
-        ylim := pad_ylim(y)
-        x,y
-    end
+    for n in eachindex(view(Xt,:,1))
+        @series begin 
+            subplot := 1
+            label := p.XNames[n] .* desc
+            xaxis := (L"\textrm{Time~[days]}")
+            yaxis := (L"\textrm{Tank~Particulate~Conc.~} [g/m^3]")
+            x=t 
+            y=Xt[n,:]
+            ylim := pad_ylim(y)
+            x,y
+        end
+    end    
     
     # Tank solute concentration
-    @series begin 
-        subplot := 2
-        label := Ss .* desc
-        xaxis := (L"\textrm{Time~[days]}")
-        yaxis := (L"\textrm{Tank~Solute~Conc.~} [g/m^3]")
-        x=t 
-        y=St'
-        ylim := pad_ylim(y)
-        x,y
+    for n in eachindex(view(St,:,1))
+        @series begin 
+            subplot := 2
+            label := p.SNames[n] .* desc
+            xaxis := (L"\textrm{Time~[days]}")
+            yaxis := (L"\textrm{Tank~Solute~Conc.~} [g/m^3]")
+            x=t 
+            y=St[n,:]
+            ylim := pad_ylim(St)
+            (x,y)
+        end
     end
 
     # Biofilm thickness
@@ -166,68 +166,77 @@ Plot the solution of a biofilm simulation.  Makes 6 plots Xt(t), St(t), Lf(t), P
         ylim := pad_ylim(y)
         x,y
     end
-
+    
     # Biofilm particulate volume fraction 
-    @series begin
-        subplot := 4
-        label := Xs .* desc
-        xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-        yaxis := (L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
-        x = 1e6.*zm
-        y = Pb'
-        ylim := pad_ylim(y)
-        x, y
+    for n in eachindex(view(Pb,:,1))
+        @series begin
+            subplot := 4
+            label := p.XNames[n] .* desc
+            xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
+            yaxis := (L"\textrm{Biofilm~Particulate~Vol.~Frac.~[-]}")
+            x = 1e6.*zm
+            y = Pb[n,:]
+            ylim := pad_ylim(Pb)
+            x, y
+        end
     end
 
     # Biofilm solute concentration
-    @series begin
-        subplot := 5
-        label := Ss .* desc
-        xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-        yaxis := (L"\textrm{Biofilm~Solute~Conc.~} [g/m^3]")   
-        x = 1e6.*zm
-        y = Sb'
-        ylim := pad_ylim(y)
-        x, y
+    for n in eachindex(view(Sb,:,1))
+        @series begin
+            subplot := 5
+            label := p.SNames[n] .* desc
+            xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
+            yaxis := (L"\textrm{Biofilm~Solute~Conc.~} [g/m^3]")   
+            x = 1e6.*zm
+            y = Sb[n,:]
+            ylim := pad_ylim(Sb)
+            x, y
+        end
     end
 
     # Optional 6th plot
-    @series begin 
-        subplot := 6
-        @unpack Nx,Nz,optionalPlot,rho,srcX = p
-        if optionalPlot == "growthrate"
-            # Particulate growthrates vs depth
-            Xb=similar(Pb)
-            for j=1:Nx
-                Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
-            end
-            μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
-            p6=plot(1e6.*zm,μb',label=Xs,ylim=pad_ylim(μb))
-            xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-            yaxis := (L"\textrm{Particulate~Growthrates~[-]}")
-            x = 1e6.*zm 
-            y = μb'
-            label := Xs .* desc
-            ylim := pad_ylim(y)
-            x,y 
-        
-        elseif optionalPlot == "source"
-            # Particulate source term vs depth
-            srcs=similar(Pb)
-            for i=1:Nz
-                for j=1:Nx
-                    srcs[j,i]=srcX[j](Sb[:,i],Pb[:,i]*rho[j],Lf[end],t,zm[i],p)[1]
-                end
-            end
-            xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
-            yaxis := (L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
-            x = 1e6.*zm
-            y = srcs'
-            label := Xs .* desc
-            x,y
-        else
-            error("Unknown optionalPlot type of $optionalPlot.  Should be \"growthrate\" or \"source\".")
+    @unpack Nx,Nz,optionalPlot,rho,srcX = p
+    if optionalPlot == "growthrate"
+        # Particulate growthrates vs depth
+        Xb=similar(Pb)
+        for j=1:Nx
+            Xb[j,:] = rho[j]*Pb[j,:]  # Compute particulate concentrations
         end
+        μb    = computeMu_biofilm(Sb,Xb,Lf[end],t[end],p,g)   # Growthrates in biofilm
+        for n in eachindex(view(μb,:,1))
+            @series begin 
+                subplot := 6    
+                xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
+                yaxis := (L"\textrm{Particulate~Growthrates~[-]}")
+                x = 1e6.*zm 
+                y = μb[n,:]
+                label := p.XNames[n] .* desc
+                ylim := pad_ylim(μb)
+                x,y 
+            end
+        end
+        
+    elseif optionalPlot == "source"
+        # Particulate source term vs depth
+        srcs=similar(Pb)
+        for i=1:Nz
+            for j=1:Nx
+                srcs[j,i]=srcX[j](Sb[:,i],Pb[:,i]*rho[j],Lf[end],t,zm[i],p)[1]
+            end
+        end
+        for n in eachindex(view(srcs,:,1))
+            @series begin
+                xaxis := (L"\textrm{Height~in~Biofilm~} [\mu m]")
+                yaxis := (L"\textrm{Particulate~Source~} [g/m^3\cdot d]")
+                x = 1e6.*zm
+                y = srcs[n,:]
+                label := p.XNames[n] .* desc
+                x,y
+            end
+        end
+    else
+        error("Unknown optionalPlot type of $optionalPlot.  Should be \"growthrate\" or \"source\".")
     end
 end
 
