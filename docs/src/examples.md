@@ -32,7 +32,7 @@ where `b=0.1` is a constant.  The first source term reduces living bugs and the 
 **Download link: [Case4.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case4.jl)** (right-click & Save Link As)
 
 ## Case 5 - Phototroph
-**Download link: [Case5_Photroph.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case5_Photroph.jl)** (right-click & Save Link As)
+**Download link: [Case5_Phototroph.jl](https://raw.githubusercontent.com/markowkes/Biofilm.jl/main/examples/Case5_Phototroph.jl)** (right-click & Save Link As)
 
 This case shows how you can simulate a species that grows in light.  The light turns off and on throughout each day and also only penetrates the top of the biofilm.  Since the light has discontinuities, the case has an additional parameter
 ```
