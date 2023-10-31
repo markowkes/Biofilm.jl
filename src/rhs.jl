@@ -25,7 +25,7 @@ function biofilmRHS!(dsol,sol,p,t)
     μb    = computeMu_biofilm(Sb,Xb,Lf,t,p,g) # Growthrates in biofilm
     μt    = computeMu_tank(St,Xt,Lf,t,p,g)    # Growthrates in tank
     V     = computeVel(μb,Sb,Pb,Lf,t,p,g)        # Velocity of particulates
-    Vdet  = Kdet*Lf^2                         # Detachment velocity
+    Vdet  = Kdet*Lf^2                         # Detachment velocity                         #this is the variable that needs to be changed and periodized
     fluxP = computeFluxP(Pb,V,p)              # Flux of particulates in biofilm
 
     # Compute RHS's
@@ -114,3 +114,4 @@ function dLfdt(V,Vdet)
     dLf = Vfilm - Vdet    # Surface Velocity 
     return [dLf]
 end
+

@@ -22,7 +22,7 @@ function BiofilmSolver(p)
     p = checkInputs(p)
 
     # Unpack parameters
-    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod, tDeto, detPeriod, prem = p
 
     # Compute ranges of dependent variables in sol array (add to p)
     p = computeRanges(p)
@@ -45,6 +45,15 @@ function BiofilmSolver(p)
     outTimes = range(start=0.0,step=solverStep,stop=tFinal)
     affect!(integrator) = outputs(integrator)
     cb = PresetTimeCallback(outTimes,affect!)
+
+    # Biofilm detachment event
+    tdet = detachmentTimes(tDeto, detPeriod, tFinal)                   
+    condition(sol, t, integrator) = t ∈ tdet
+
+    affect2!(integrator) = biofilmdetachment(integrator)
+
+    cb2 = DiscreteCallback(condition, affect2!, save_positions = (true, true))
+    cbs = CallbackSet(cb, cb2)
     
     # Run solver
     #GC.enable(false)
@@ -52,11 +61,11 @@ function BiofilmSolver(p)
         Sundials.CVODE_BDF(),
         reltol=tol,
         abstol=tol,
-        callback=cb,
+        callback=cbs,
         progress = true,
         progress_steps = 100,
         alg_hints = [:stiff],
-        
+        tstops = tdet       #scott added, ensures solver evaluates when biofilm detachment condition met
         )
     #GC.enable(true)
 

@@ -1,3 +1,4 @@
+using Revise
 using Biofilm 
 
 # Input parameters
@@ -7,7 +8,7 @@ p = (
     # Simulation Parameters #
     # --------------------- #
     Title =    "Single Solute and Particulate Case",
-    tFinal =   1.0,   # Simulation time [days]
+    tFinal =   3.0,   # Simulation time [days]
     tol =      1e-2,  # Tolerance
     outPeriod =0.1,   # Time between outputs [days]
 
@@ -17,8 +18,8 @@ p = (
     XNames =["Heterotroph"],    # Particulate names
     Xto =   [10.0],        # Tank particulate concentration initial condition(s)
     Pbo =   [0.08],        # Biofilm particulates volume fraction initial condition(s) 
-    rho =   [2.0E4],       # Particulate densities
-    Kdet =  20000.0,       # Particulates detachment coefficient
+    rho =   [2.5E5],  #was 2.0E4     # Particulate densities
+    Kdet =  0.0, #20000.0,       # Particulates detachment coefficient
     srcX =  [(S,X,Lf,t,z,p) -> 0.0],     # Source of particulates
     # Growthrates for each particulate
     mu = [(S,X,Lf,t,z,p) -> (mumax * S[1]) ./ (KM .+ S[1])],
@@ -48,7 +49,11 @@ p = (
     Nz =  50,       # Number of grid points in biofilm
     Lfo = 1.0E-5,   # Biofilm initial thickness [m]
     LL =  1.00E-7,  # Boundary layer thickness [m]
-)
+    tDeto = 0.4,
+    detPeriod = 0.15,
+    prem = 0.5
+    
+    )
 
 t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
 biofilm_plot(sol,p) # Plot final results
