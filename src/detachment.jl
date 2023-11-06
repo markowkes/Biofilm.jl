@@ -4,7 +4,6 @@ using UnPack
 using OrdinaryDiffEq
 using DiffEqCallbacks
 using Interpolations
-using Distributions
  
 #Biofilm detachment function
 function biofilmdetachment(integrator)
@@ -96,13 +95,10 @@ function detachmentTimes(tDeto, detPeriod, tFinal, deviation)
 
         #change lazily defined vector returned by range function into an array
         detTimes = collect(detTimes)
-  
-        #create uniformly distributed random number -1 to 1 for each time in detTimes
-        numberTimes = length(detTimes)
-        randomchange = rand(Uniform(-1,1), numberTimes)
 
-        #scale random numbers by deviation
-        randomchange = randomchange.*deviation
+        #create uniformly distributed random number -1 to 1 for each time in detTimes and multiply by deviation
+        numberTimes = length(detTimes)
+        randomchange = (rand(numberTimes).-0.5).*2*deviation
 
         #add random deviations to original times
         detTimes = detTimes .+ randomchange
