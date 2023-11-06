@@ -33,7 +33,7 @@ function biofilmRHS!(dsol,sol,p,t)
     dsol[rSt]=dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)  # Tank solutes
     dsol[rPb]=dPbdt(t,μb,Sb,Pb,Lf,fluxP,p,g)      # Biofilm particulates 
     dsol[rSb]=dSbdt(t,μb,Sb,Xb,Lf,fluxS,p,g)      # Biofilm solutes
-    dsol[rLf]=dLfdt(V,Vdet)                    # Biofilm thickness
+    dsol[rLf]= dLfdt(V,Vdet)                      # Biofilm thickness
     return nothing
 end
 
@@ -46,6 +46,7 @@ function dXtdt(t,Xt,St,Xb,Lf,Vdet,μt,p,g)
                 - Q*Xt[j]/V                # Flow out
                 + Vdet*A*Xb[j,end]/V       # From biofilm
                 + srcX[j](St,Xt,Lf,t,Lf,p)[1] )  # Source term
+                # add attachment term, - ... 
     end
     return dXt
 end
@@ -68,7 +69,7 @@ function dStdt(t,Xt,St,Lf,Pb,fluxS,μt,p)
 end
 
 # RHS of biofilm particulates 
-function dPbdt(t,μb,Sb,Pb,Lf,fluxPb,p,g) 
+function dPbdt(t,μb,Sb,Pb,Lf,fluxPb,p,g) #add Xtank as input
     @unpack Nx,Nz,srcX,rho = p
     @unpack zm,dz = g
     netFlux= (fluxPb[:,2:end]-fluxPb[:,1:end-1])/dz # Flux in/out
@@ -80,6 +81,7 @@ function dPbdt(t,μb,Sb,Pb,Lf,fluxPb,p,g)
         end
     end
     dPb  = growth - netFlux + Source;
+    #add Pb[:, Nz] = ...
     # Return RHS as a column vector
     dPb=reshape(dPb,Nx*Nz,1)
     return dPb

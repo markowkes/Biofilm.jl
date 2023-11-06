@@ -22,7 +22,7 @@ function BiofilmSolver(p)
     p = checkInputs(p)
 
     # Unpack parameters
-    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod, tDeto, detPeriod, prem = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod, tDeto, detPeriod, prem, deviation = p
 
     # Compute ranges of dependent variables in sol array (add to p)
     p = computeRanges(p)
@@ -47,13 +47,15 @@ function BiofilmSolver(p)
     cb = PresetTimeCallback(outTimes,affect!)
 
     # Biofilm detachment event
-    tdet = detachmentTimes(tDeto, detPeriod, tFinal)                   
+    tdet = detachmentTimes(tDeto, detPeriod, tFinal, deviation)                   
     condition(sol, t, integrator) = t ∈ tdet
 
     affect2!(integrator) = biofilmdetachment(integrator)
 
-    cb2 = DiscreteCallback(condition, affect2!, save_positions = (true, true))
+    cb2 = ContinuousCallback(condition, affect2!, save_positions = (true, true))
     cbs = CallbackSet(cb, cb2)
+    
+
     
     # Run solver
     #GC.enable(false)

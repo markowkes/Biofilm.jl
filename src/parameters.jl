@@ -69,10 +69,11 @@ function checkTypes_setDefs(d; verbose=false)
     d,err = checkType_setDef(err,d,Float64,              :Ptot,           default=sum(d[:Pbo])       )
     d,err = checkType_setDef(err,d,Int64,                :Nx,             default=length(d[:XNames]) )
     d,err = checkType_setDef(err,d,Int64,                :Ns,             default=length(d[:SNames]) )
-    d,err = checkType_setDef(err,d,Float64,              :tDeto,            default=-1               )
-    d,err = checkType_setDef(err,d,Float64,              :detPeriod,        default=-1               )
-    d,err = checkType_setDef(err,d,Float64,              :prem,             default=1                )
-
+    d,err = checkType_setDef(err,d,Float64,              :tDeto,              default=-1             )
+    d,err = checkType_setDef(err,d,Float64,              :detPeriod,          default=-1             )
+    d,err = checkType_setDef(err,d,Float64,              :deviation,          default=-1             )
+    d,err = checkType_setDef(err,d,Float64,              :prem,               default=1              )
+    
     # Check if any errors x
     if err 
         println("")
@@ -150,7 +151,7 @@ end
 
 function checkParameters(p)
 
-    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs, tDeto, detPeriod, prem = p
+    @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,SNames,XNames,Title,mu,srcX,srcS,Sin,tFinal,outPeriod,plotPeriod,Yxs, tDeto, detPeriod, prem, deviation = p
 
     # Check provided initial conditions 
     Nx == length(Xto) || paramError("Number of Xto initial conditions should be Nx=", Nx)
@@ -168,6 +169,7 @@ function checkParameters(p)
     tDeto < tFinal || paramError("Initial detachment time should occur before the end of the evaluation time period, tFinal")     #by Scott. Add something saying tDeto default value is -1?
     detPeriod < (tFinal - tDeto) || paramError("Detachment period should be less than the difference between the initial detachment, tDeto, and the end of the evaluation time period, tFinal")        #by Scott. above exception for tDeto should catch edge cases, but need to check. detPeriod default = -1. Need leq for comparison? 
     (prem <= 1 && prem > 0) || paramError("Percent detachment should be in the range (0, 1]") #by Scott. Should use just normal & for comparison, or is && okay?
+    (deviation <= detPeriod || deviation == 0) || paramError("Deviation should not exceed the time between detachments, detPeriod") #by Scott, added deviation == 0 condition in case someone decides to do that instead of letting it be -1
 
     # Growthrate - check that can call it correctly
     for i in 1:Nx
