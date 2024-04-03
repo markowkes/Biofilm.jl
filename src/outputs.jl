@@ -20,6 +20,8 @@ function outputs(integrator)
     modt=mod(sol.t[end],outPeriod)
     if modt≈0.0 || modt≈outPeriod
 
+        # Tell solver solution didn't change
+        u_modified!(integrator,false)
 
         # Convert solution to dependent variables
         t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p)
