@@ -37,12 +37,11 @@ function BiofilmSolver(p)
     # Prepare ODE Solver 
     prob = ODEProblem(biofilmRHS!,sol0,(0.0,p.tFinal),p)
 
-    # Compute solver step size 
-    # greatest common divisor of output and discontinutity periods
-    solverStep=gcd(outPeriod,discontinuityPeriod)
-    
+    # Times of discontinuities
+    tdiscont = range(start=0.0,step=discontinuityPeriod,stop=tFinal)
+
     # Output times 
-    outTimes = range(start=0.0,step=solverStep,stop=tFinal)
+    outTimes = range(start=0.0,step=outPeriod,stop=tFinal)
     affect!(integrator) = outputs(integrator)
     cb = PresetTimeCallback(outTimes,affect!)
     
@@ -56,7 +55,7 @@ function BiofilmSolver(p)
         progress = true,
         progress_steps = 100,
         alg_hints = [:stiff],
-        
+        d_discontinuities = tdiscont,
         )
     #GC.enable(true)
 
