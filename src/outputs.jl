@@ -35,12 +35,21 @@ function outputs(integrator)
         printBiofilmValues(t[end],Xt[:,end],St[:,end],Pb,Sb,Lf[end],p)
 
         # Plot results
-        if p.makePlots && (mod(sol.t[end],plotPeriod)≈0.0 || mod(sol.t[end],plotPeriod)≈plotPeriod)
-            plt = biofilm_plot(sol,p)
-            display(plt)
+        if (mod(sol.t[end],plotPeriod)≈0.0 || mod(sol.t[end],plotPeriod)≈plotPeriod)
+            if p.makePlots || p.savePlots
+                plt = biofilm_plot(sol,p)
+            end
+            if p.makePlots
+                display(plt)
+            end
+            if p.savePlots
+                ispath("savePlots") || mkpath("savePlots")
+                savefig(String("savePlots/plot_$(integrator.t).png"))
+            end
         end
 
     end
+    return
 end 
 
 """
