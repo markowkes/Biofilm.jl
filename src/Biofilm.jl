@@ -11,5 +11,7 @@ include("solver.jl")
 include("parameters.jl")
 include("computes.jl")
 include("postprocess.jl")
+include("precompile.jl")
+
 
 end

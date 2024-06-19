@@ -98,8 +98,8 @@ function checkType_setDef(err,d,type,name; default=nothing)
                     @reset d[name] = (d[name], )
                 end
             end
-            # Check type
-            type(d[name])
+            # Enforce type
+            @reset d[name] = type(d[name])
         catch
             err = printError(err,"Parameter $name should be of type $type")
         end
