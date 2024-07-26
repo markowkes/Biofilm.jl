@@ -16,8 +16,9 @@ using PrecompileTools: @setup_workload, @compile_workload
             tFinal =   1.0,   # Simulation time [days]
             tol =      1e-2,  # Tolerance
             outPeriod =0.1,   # Time between outputs [days]
-            makePlots = true,
-            savePlots = true,
+            makePlots = false,
+            savePlots = false,
+            cmdLineOutput = false,
 
             # ---------------------- #
             # Particulate Parameters #
