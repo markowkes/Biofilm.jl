@@ -1,5 +1,3 @@
-using Biofilm 
-
 # Define light as a function of time and depth within biofilm
 diss=2000;  # Dissipation rate into biofilm [1/m]
 smoothHeaviside(t,t0)=0.5*tanh.(100*(t.-t0).-0.5).+0.5
@@ -66,5 +64,3 @@ p = (
     Lfo =5.0e-6,   # Biofilm initial thickness [m]
     LL = 2.0e-4,  # Boundary layer thickness [m]
 )
-
-t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver

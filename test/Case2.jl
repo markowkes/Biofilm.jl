@@ -1,5 +1,3 @@
-using Biofilm
-
 # Constants used for growthrates of particulate(s)
 mumax = 20;
 KM = 3;
@@ -53,5 +51,3 @@ p = (
     Lfo = 5.0e-6,     # Biofilm initial thickness [m]
     LL = 1.0e-4,      # Boundary layer thickness [m]
 )
-
-t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver

@@ -1,5 +1,3 @@
-using Biofilm 
-
 # Input constants 
 b = 0.1 # Source term constant
 mumax = 2; KM = 1; # Growthrate constants
@@ -55,5 +53,3 @@ p = (
     Lfo =5.0e-6,   # Biofilm initial thickness [m]
     LL = 1.0e-5,  # Boundary layer thickness [m]
 )
-
-t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver

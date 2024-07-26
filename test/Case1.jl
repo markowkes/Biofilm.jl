@@ -1,5 +1,3 @@
-using Biofilm 
-
 # Input parameters
 mumax = 20; KM = 3;
 p = (
@@ -50,5 +48,3 @@ p = (
     Lfo = 1.0E-5,   # Biofilm initial thickness [m]
     LL =  1.00E-7,  # Boundary layer thickness [m]
 )
-
-t,zm,Xt,St,Pb,Sb,Lf,sol = BiofilmSolver(p) # Run solver
