@@ -37,6 +37,7 @@ function checkTypes_setDefs(d; verbose=false)
     # !!! set to default if missing and default exists !!!
     err = false
     d,err = checkType_setDef(err,d,Float64,              :tFinal                                     )
+    d,err = checkType_setDef(err,d,Bool,                 :cmdLineOutput,      default=true           )
     d,err = checkType_setDef(err,d,Float64,              :outPeriod                                  )
     d,err = checkType_setDef(err,d,Float64,              :tol                                        )
     d,err = checkType_setDef(err,d,Float64,              :plotPeriod,         default=d[:outPeriod]  )

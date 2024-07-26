@@ -16,10 +16,11 @@ Take parameters defining a biofilm case and computes solution
 """
 function BiofilmSolver(p)
 
-    println("Starting Solver ...")
-
     # Check inputs 
     p = checkInputs(p)
+
+    # Initial output to command line
+    p.cmdLineOutput && println("Starting Solver ...")
 
     # Unpack parameters
     @unpack Nx,Ns,Nz,Xto,Sto,Pbo,Sbo,Lfo,tol,tFinal,outPeriod,discontinuityPeriod = p
@@ -52,7 +53,7 @@ function BiofilmSolver(p)
         reltol=tol,
         abstol=tol,
         callback=cb,
-        progress = true,
+        progress = p.cmdLineOutput,
         progress_steps = 100,
         alg_hints = [:stiff],
         d_discontinuities = tdiscont,

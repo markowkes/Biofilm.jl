@@ -14,7 +14,7 @@ function outputs(integrator)
     # Unpack integrator
     sol=integrator.sol 
     p=integrator.p
-    @unpack Nz,outPeriod,plotPeriod= p
+    @unpack Nz,outPeriod,plotPeriod,cmdLineOutput = p
 
     # Perform plots on output period 
     modt=mod(sol.t[end],outPeriod)
@@ -27,12 +27,16 @@ function outputs(integrator)
         t,Xt,St,Pb,Sb,Lf=unpack_solutionForPlot(sol,p)
 
         # Print titles to REPL every 10 outPeriod
-        if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
-            printBiofilmTitles(p)
+        if cmdLineOutput
+            if mod(sol.t[end],outPeriod*10)≈0.0 || mod(sol.t[end],outPeriod*10)≈outPeriod*10
+                printBiofilmTitles(p)
+            end
         end
 
         # Print values to REPL every 1 outPeriod
-        printBiofilmValues(t[end],Xt[:,end],St[:,end],Pb,Sb,Lf[end],p)
+        if cmdLineOutput
+            printBiofilmValues(t[end],Xt[:,end],St[:,end],Pb,Sb,Lf[end],p)
+        end
 
         # Plot results
         if (mod(sol.t[end],plotPeriod)≈0.0 || mod(sol.t[end],plotPeriod)≈plotPeriod)
