@@ -252,3 +252,65 @@ function checkParameters(p)
     
     return nothing
 end
+
+
+"""
+Reads a file (ARGS[1]), extracts p, and processes p 
+"""
+function process_command_line_args(ARGS)
+    
+    # Check ARGS 
+    length(ARGS) >= 1 || error("Provide name of paramater file as command line argument e.g. `>> julia inputs.jl`")
+
+    # Assume filename is the first arguement 
+    filename = ARGS[1] 
+
+    # Load file containing parameters
+    include(filename)
+
+    # Check file loaded parameter variable p 
+    (@isdefined p) || error("Parameter file should contain a NamedTuple with name `p`")
+    (p isa NamedTuple) || error("Parameter file contains p, but p is not a NamedTuple")
+
+    # Copy variables into new tuple and process functions
+    d = NamedTuple()
+    for (key,val) in zip(keys(p), p)
+        # Check if this parameter contains a vector
+        if val isa Vector 
+            # Process vector entries
+            val_vec = Any[]
+            for n in eachindex(val)
+                # Process each entry in the vector
+                push!(val_vec,process_var(val[n]))
+            end
+            # Copy entries into d 
+            d = merge(d, NamedTuple{(key,)}((val_vec,)))
+        else 
+            # Process value and copy into d
+            d = merge(d, NamedTuple{(key,)}((process_var(val),)))
+        end
+    end
+    return d
+end
+
+"""
+Takes a variable, and makes functions executable
+"""
+function process_var(var)
+    if var isa Function
+        # Determine number of function arguments 
+        m = first(methods(var))
+        n = m.nargs - 1 # remove 1 because includes function name as 1st arg
+        if     n==0; return (           ) -> Base.invokelatest(var,            )
+        elseif n==1; return (a          ) -> Base.invokelatest(var, a          )
+        elseif n==2; return (a,b        ) -> Base.invokelatest(var, a,b        )
+        elseif n==3; return (a,b,c      ) -> Base.invokelatest(var, a,b,c      )
+        elseif n==4; return (a,b,c,d    ) -> Base.invokelatest(var, a,b,c,d    )
+        elseif n==5; return (a,b,c,d,e  ) -> Base.invokelatest(var, a,b,c,d,e  )
+        elseif n==6; return (a,b,c,d,e,f) -> Base.invokelatest(var, a,b,c,d,e,f)
+        else; error("Processing a function with $n arguments is not programmed")
+        end
+    else
+        return var
+    end
+end
