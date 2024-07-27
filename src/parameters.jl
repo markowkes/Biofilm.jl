@@ -298,18 +298,8 @@ Takes a variable, and makes functions executable
 """
 function process_var(var)
     if var isa Function
-        # Determine number of function arguments 
-        m = first(methods(var))
-        n = m.nargs - 1 # remove 1 because includes function name as 1st arg
-        if     n==0; return (           ) -> Base.invokelatest(var,            )
-        elseif n==1; return (a          ) -> Base.invokelatest(var, a          )
-        elseif n==2; return (a,b        ) -> Base.invokelatest(var, a,b        )
-        elseif n==3; return (a,b,c      ) -> Base.invokelatest(var, a,b,c      )
-        elseif n==4; return (a,b,c,d    ) -> Base.invokelatest(var, a,b,c,d    )
-        elseif n==5; return (a,b,c,d,e  ) -> Base.invokelatest(var, a,b,c,d,e  )
-        elseif n==6; return (a,b,c,d,e,f) -> Base.invokelatest(var, a,b,c,d,e,f)
-        else; error("Processing a function with $n arguments is not programmed")
-        end
+        _func(x...) = Base.invokelatest(var, x...)
+        return _func
     else
         return var
     end
