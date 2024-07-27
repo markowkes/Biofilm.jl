@@ -254,6 +254,17 @@ function checkParameters(p)
 end
 
 
+""" 
+Macro that loads a file with input parameters
+"""
+macro include(filename)
+    return quote
+        file_contents = read($filename, String)
+        load_expr = Meta.parse(file_contents)
+        return Meta.eval(load_expr)
+    end |> esc
+end
+
 """
 Reads a file (ARGS[1]), extracts p, and processes p 
 """
@@ -266,41 +277,11 @@ function process_command_line_args(ARGS)
     filename = ARGS[1] 
 
     # Load file containing parameters
-    include(filename)
+    @include(filename)
 
     # Check file loaded parameter variable p 
     (@isdefined p) || error("Parameter file should contain a NamedTuple with name `p`")
     (p isa NamedTuple) || error("Parameter file contains p, but p is not a NamedTuple")
 
-    # Copy variables into new tuple and process functions
-    d = NamedTuple()
-    for (key,val) in zip(keys(p), p)
-        # Check if this parameter contains a vector
-        if val isa Vector 
-            # Process vector entries
-            val_vec = Any[]
-            for n in eachindex(val)
-                # Process each entry in the vector
-                push!(val_vec,process_var(val[n]))
-            end
-            # Copy entries into d 
-            d = merge(d, NamedTuple{(key,)}((val_vec,)))
-        else 
-            # Process value and copy into d
-            d = merge(d, NamedTuple{(key,)}((process_var(val),)))
-        end
-    end
-    return d
-end
-
-"""
-Takes a variable, and makes functions executable
-"""
-function process_var(var)
-    if var isa Function
-        _func(x...) = Base.invokelatest(var, x...)
-        return _func
-    else
-        return var
-    end
+    return p
 end
