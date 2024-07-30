@@ -37,6 +37,11 @@ end
             include("test_TimeIntegration.jl")
             println("Checking result") 
             @test error <= 1e-1
+
+            println("\n Running test_commandLineArgs\n ==============")
+            include("test_commandLineArgs.jl")
+            println("Checking result")
+            @test errCode == 0
     #     end
     # end
 
